@@ -154,7 +154,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\main.c" />
+    <ClCompile Include="GlutManager.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Ship.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Defines.h" />
+    <ClInclude Include="GlutHeaders.h" />
+    <ClInclude Include="GlutManager.h" />
+    <ClInclude Include="Asteroid.h" />
+    <ClInclude Include="Structs.h" />
+    <ClInclude Include="Ship.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

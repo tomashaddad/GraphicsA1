@@ -1,0 +1,4 @@
+#ifndef I3D_ASTEROID_H
+#define I3D_ASTEROID_H
+
+#endif // I3D_ASTEROID_H
