@@ -23,9 +23,9 @@ public:
 private:
 	// Viewport dimensions
 	GLfloat plane_lim_, max_x_, max_y_, max_z_;
-	std::unique_ptr<Ship> ship;
-	float last_time;
-	float dt;
+	std::unique_ptr<Ship> ship_;
+	float last_time_;
+	float dt_;
 };
 
 #endif // I3D_GLUTMANAGER_H

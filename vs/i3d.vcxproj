@@ -157,12 +157,14 @@
     <ClCompile Include="GlutManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Ship.cpp" />
+    <ClCompile Include="Structs.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Defines.h" />
     <ClInclude Include="GlutHeaders.h" />
     <ClInclude Include="GlutManager.h" />
     <ClInclude Include="Asteroid.h" />
+    <ClInclude Include="State.h" />
     <ClInclude Include="Structs.h" />
     <ClInclude Include="Ship.h" />
   </ItemGroup>

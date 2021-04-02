@@ -1,5 +1,6 @@
 #include "GlutManager.h"
 #include "Defines.h"
+#include "State.h"
 #include <iostream>
 
 GameManager::GameManager()
@@ -7,9 +8,9 @@ GameManager::GameManager()
 	  max_x_(MAX_ARENA_X),
 	  max_y_(MAX_ARENA_Y),
 	  max_z_(MAX_ARENA_Z),
-	  ship(std::make_unique<Ship>()),
-	  dt(0),
-	  last_time(glutGet(GLUT_ELAPSED_TIME) / 1000.0) {}
+	  ship_(std::make_unique<Ship>(-max_x_ + 0.1 * (2 * max_x_), -max_y_ + 0.1 * (2 * max_y_), SHIP_WIDTH, SHIP_HEIGHT, SHIP_STARTING_ANGLE)),
+	  dt_(0),
+	  last_time_(glutGet(GLUT_ELAPSED_TIME) / 1000.0) {}
 
 void GameManager::startGameLoop() {
 	glutMainLoop();
@@ -38,6 +39,18 @@ void GameManager::onKeyboardPress(unsigned char key, int x, int y) {
 	case 'q':
 		exit(EXIT_SUCCESS);
 		break;
+	case 'w':
+		ship_->translate(Movement::MOVE_FORWARD);
+		break;
+	case 'a':
+		ship_->rotate(Movement::ROTATE_LEFT);
+		break;
+	case 's':
+		ship_->translate(Movement::MOVE_BACKWARD);
+		break;
+	case 'd':
+		ship_->rotate(Movement::ROTATE_RIGHT);
+		break;
 	default:
 		break;
 	}
@@ -56,7 +69,8 @@ void GameManager::onDisplay() {
 		glVertex3f(max_x_, -max_y_, 0.0);
 	glEnd();
 
-	ship->drawSpaceShip(-max_x_ + 20, -max_y_ + 20, 7, 10);
+	// Draw the ship bottom left of arena, 1/10th inside
+	ship_->drawSpaceShip();
 
 	int err;
 	while ((err = glGetError()) != GL_NO_ERROR)
@@ -67,7 +81,7 @@ void GameManager::onDisplay() {
 
 void GameManager::onIdle() {
 	float cur_time = glutGet(GLUT_ELAPSED_TIME) / 1000.0;
-	dt = cur_time - last_time;
-	last_time = cur_time;
+	dt_ = cur_time - last_time_;
+	last_time_ = cur_time;
 	glutPostRedisplay();
 }
