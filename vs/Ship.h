@@ -5,7 +5,8 @@
 
 class Ship {
 public:
-	void drawSpaceShip();
+	Ship();
+	void drawSpaceShip(double x, double y, double width, double height);
 
 private:
 	vec2d pos;

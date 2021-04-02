@@ -2,32 +2,36 @@
 #include "Defines.h"
 #include <iostream>
 
-GameManager::GameManager() : planeLim(PLANE_LIM), maxArenaX(MAX_ARENA_X), maxArenaY(MAX_ARENA_Y), maxArenaZ(MAX_ARENA_Z) {}
+GameManager::GameManager()
+	: plane_lim_(PLANE_LIM),
+	  max_x_(MAX_ARENA_X),
+	  max_y_(MAX_ARENA_Y),
+	  max_z_(MAX_ARENA_Z),
+	  ship(std::make_unique<Ship>()),
+	  dt(0),
+	  last_time(glutGet(GLUT_ELAPSED_TIME) / 1000.0) {}
 
-void GameManager::startGameLoop()
-{
+void GameManager::startGameLoop() {
 	glutMainLoop();
 }
 
-void GameManager::onReshape(int w, int h)
-{
-	GLdouble aspect = (GLdouble)h / (GLdouble)w;
+void GameManager::onReshape(int w, int h) {
+	GLdouble aspect = (GLdouble)w / (GLdouble)h;
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	if (h >= w) {
-		glOrtho(-planeLim, planeLim, -planeLim * aspect, planeLim * aspect, -planeLim, 1);
+	if (w >= h) {
+		glOrtho(-plane_lim_ * aspect, plane_lim_ * aspect, -plane_lim_, plane_lim_, -plane_lim_, 1);
 	}
 	else {
-		glOrtho(-planeLim / aspect, planeLim / aspect, -planeLim, 1, -1, 1);
+		glOrtho(-plane_lim_, plane_lim_, -plane_lim_ / aspect, plane_lim_ / aspect, -1, 1);
 	}
 	glMatrixMode(GL_MODELVIEW);
 
 	glViewport(0, 0, w, h);
 }
 
-void GameManager::onKeyboardPress(unsigned char key, int x, int y)
-{
+void GameManager::onKeyboardPress(unsigned char key, int x, int y) {
 	switch (key)
 	{
 	case 27:
@@ -39,21 +43,20 @@ void GameManager::onKeyboardPress(unsigned char key, int x, int y)
 	}
 }
 
-void GameManager::onDisplay()
-{
+void GameManager::onDisplay() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
 
-
+	glLineWidth(1.0);
 	glBegin(GL_LINE_LOOP);
 		glColor3f(1, 1, 1);
-		glVertex3f(-maxArenaX, -maxArenaY, 0.0);
-		glVertex3f(-maxArenaX, maxArenaY, 0.0);
-		glVertex3f(maxArenaX, maxArenaY, 0.0);
-		glVertex3f(maxArenaX, -maxArenaY, 0.0);
+		glVertex3f(-max_x_, -max_y_, 0.0);
+		glVertex3f(-max_x_, max_y_, 0.0);
+		glVertex3f(max_x_, max_y_, 0.0);
+		glVertex3f(max_x_, -max_y_, 0.0);
 	glEnd();
 
-	ship.drawSpaceShip();
+	ship->drawSpaceShip(-max_x_ + 20, -max_y_ + 20, 7, 10);
 
 	int err;
 	while ((err = glGetError()) != GL_NO_ERROR)
@@ -62,7 +65,9 @@ void GameManager::onDisplay()
 	glutSwapBuffers();
 }
 
-void GameManager::onIdle()
-{
+void GameManager::onIdle() {
+	float cur_time = glutGet(GLUT_ELAPSED_TIME) / 1000.0;
+	dt = cur_time - last_time;
+	last_time = cur_time;
 	glutPostRedisplay();
 }

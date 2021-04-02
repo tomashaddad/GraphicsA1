@@ -16,28 +16,12 @@
 #include <iostream>
 #include <memory>
 
-void onReshape(int w, int h);
-void onKeyboardPress(unsigned char key, int x, int y);
-void onDisplay();
-void onIdle();
+void reshape_callback(int w, int h);
+void keyboard_callback(unsigned char key, int x, int y);
+void display_callback();
+void idle_callback();
 
 std::unique_ptr<GameManager> game = std::make_unique<GameManager>();
-
-void onReshape(int w, int h) {
-	game->onReshape(w, h);
-}
-
-void onKeyboardPress(unsigned char key, int x, int y) {
-	game->onKeyboardPress(key, x, y);
-}
-
-void onDisplay() {
-	game->onDisplay();
-}
-
-void onIdle() {
-	game->onIdle();
-}
 
 int main(int argc, char** argv)
 {
@@ -45,12 +29,28 @@ int main(int argc, char** argv)
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 	glutCreateWindow("Asteroid Arena");
 
-	glutReshapeFunc(onReshape);
-	glutKeyboardFunc(onKeyboardPress);
-	glutDisplayFunc(onDisplay);
-	glutIdleFunc(onIdle);
+	glutReshapeFunc(reshape_callback);
+	glutKeyboardFunc(keyboard_callback);
+	glutDisplayFunc(display_callback);
+	glutIdleFunc(idle_callback);
 
 	game->startGameLoop();
 
 	return EXIT_SUCCESS;
+}
+
+void reshape_callback(int w, int h) {
+	game->onReshape(w, h);
+}
+
+void keyboard_callback(unsigned char key, int x, int y) {
+	game->onKeyboardPress(key, x, y);
+}
+
+void display_callback() {
+	game->onDisplay();
+}
+
+void idle_callback() {
+	game->onIdle();
 }
