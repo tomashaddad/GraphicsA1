@@ -5,6 +5,7 @@
 #include <math.h>
 
 class Vector {
+public:
 	Vector(float angle_degrees);
 	Vector(float x, float y);
 
@@ -13,9 +14,8 @@ class Vector {
 	void rotate(float angle_degrees);
 	float getAngle();
 
-	//vec2d operator*(const float& scalar);
-	Vector operator+(const Vector& vector);
-	Vector operator-(const Vector& vector);
+	Vector& operator+=(const Vector& rhs);
+	Vector& operator-=(const Vector& rhs);
 };
 
 #endif // I3D_STRUCTS_H

@@ -9,7 +9,8 @@
     <ClCompile Include="GlutManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Ship.cpp" />
-    <ClCompile Include="Structs.cpp" />
+    <ClCompile Include="Vector.cpp" />
+    <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Defines.h" />
@@ -17,7 +18,8 @@
     <ClInclude Include="GlutHeaders.h" />
     <ClInclude Include="Asteroid.h" />
     <ClInclude Include="Ship.h" />
-    <ClInclude Include="Structs.h" />
+    <ClInclude Include="Vector.h" />
     <ClInclude Include="State.h" />
+    <ClInclude Include="Wall.h" />
   </ItemGroup>
 </Project>

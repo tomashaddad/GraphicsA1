@@ -1,7 +1,7 @@
 #ifndef I3D_SHIP_H
 #define I3D_SHIP_H
 
-#include "Structs.h"
+#include "Vector.h"
 #include "State.h"
 
 class Ship {
@@ -11,13 +11,14 @@ public:
 
 	void translate(Movement movement);
 	void rotate(Movement movement);
+	void setPos(float x, float y);
 
 private:
 	GLfloat width;
 	GLfloat height;
 
-	vec2d pos;
-	vec2d dir;
+	Vector pos;
+	Vector dir;
 	GLfloat velocity;
 };
 

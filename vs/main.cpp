@@ -18,6 +18,8 @@
 
 void reshape_callback(int w, int h);
 void keyboard_callback(unsigned char key, int x, int y);
+void mouseclick_callback(int button, int state, int x, int y);
+void mousedrag_callback(int x, int y);
 void display_callback();
 void idle_callback();
 
@@ -31,6 +33,8 @@ int main(int argc, char** argv)
 
 	glutReshapeFunc(reshape_callback);
 	glutKeyboardFunc(keyboard_callback);
+	glutMouseFunc(mouseclick_callback);
+	glutMotionFunc(mousedrag_callback);
 	glutDisplayFunc(display_callback);
 	glutIdleFunc(idle_callback);
 
@@ -45,6 +49,14 @@ void reshape_callback(int w, int h) {
 
 void keyboard_callback(unsigned char key, int x, int y) {
 	game->onKeyboardPress(key, x, y);
+}
+
+void mouseclick_callback(int button, int state, int x, int y) {
+	game->onMouseClick(button, state, x, y);
+}
+
+void mousedrag_callback(int x, int y) {
+	game->onMouseClickDrag(x, y);
 }
 
 void display_callback() {

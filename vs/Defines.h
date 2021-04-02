@@ -7,7 +7,6 @@
 // Arena parameters
 #define MAX_ARENA_X PLANE_LIM * 0.9
 #define MAX_ARENA_Y PLANE_LIM * 0.7
-#define MAX_ARENA_Z 0
 
 // Ship parameters
 #define SHIP_FILL_RGB 1, 0, 0
@@ -18,7 +17,7 @@
 #define SHIP_WIDTH PLANE_LIM * SHIP_SCALING * 0.2
 #define SHIP_HEIGHT PLANE_LIM * SHIP_SCALING * 0.15
 
-#define SHIP_STARTING_ANGLE 0
+#define SHIP_STARTING_ANGLE 45
 
 #define FPS 30
 

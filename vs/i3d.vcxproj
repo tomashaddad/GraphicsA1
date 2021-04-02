@@ -157,7 +157,8 @@
     <ClCompile Include="GlutManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Ship.cpp" />
-    <ClCompile Include="Structs.cpp" />
+    <ClCompile Include="Vector.cpp" />
+    <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Defines.h" />
@@ -165,8 +166,9 @@
     <ClInclude Include="GlutManager.h" />
     <ClInclude Include="Asteroid.h" />
     <ClInclude Include="State.h" />
-    <ClInclude Include="Structs.h" />
+    <ClInclude Include="Vector.h" />
     <ClInclude Include="Ship.h" />
+    <ClInclude Include="Wall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
