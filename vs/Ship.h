@@ -15,13 +15,15 @@ public:
 	void rotate(Movement movement);
 	void setPos(Point point);
 
-private:
-	GLfloat width;
-	GLfloat height;
+	Vector getPosition();
 
-	Vector pos;
-	Vector dir;
-	GLfloat velocity;
+private:
+	GLfloat width_;
+	GLfloat height_;
+
+	Vector pos_;
+	Vector dir_;
+	//GLfloat velocity;
 };
 
 #endif // I3D_SHIP_H

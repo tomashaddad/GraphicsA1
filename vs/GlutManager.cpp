@@ -9,19 +9,7 @@
 GameManager::GameManager()
 	: ship_(Ship(win_)),
 	  dt_(0),
-	  last_time_(glutGet(GLUT_ELAPSED_TIME) / 1000.0) 
-{
-	double arena_width = 2 * MAX_ARENA_X;
-	double arena_height = 2 * MAX_ARENA_Y;
-
-	double slope = arena_height / arena_width;
-	double angle = 180.0 * ( atanf(slope) / M_PI );
-
-	double margin = 0.1; // arbitrarily chosen to be a 10% margin
-	double ship_x = -MAX_ARENA_X + arena_width * margin; 
-	double ship_y = slope * ship_x; // y = mx + c, m = slope, c = 0
-	Point starting_coords{ ship_x, ship_y };
-}
+	  last_time_(glutGet(GLUT_ELAPSED_TIME) / 1000.0) { }
 
 void GameManager::startGameLoop() {
 	glutMainLoop();
@@ -107,12 +95,23 @@ void GameManager::onDisplay() {
 
 	glLineWidth(1.0);
 	glBegin(GL_LINE_LOOP);
-	glColor3f(1, 1, 1);
-	glVertex2f(-MAX_ARENA_X, -MAX_ARENA_Y);
-	glVertex2f(-MAX_ARENA_X, MAX_ARENA_Y);
-	glVertex2f(MAX_ARENA_X, MAX_ARENA_Y);
-	glVertex2f(MAX_ARENA_X, -MAX_ARENA_Y);
+		glColor3f(1, 1, 1);
+		glVertex2f(-MAX_ARENA_X, -MAX_ARENA_Y);
+		glVertex2f(-MAX_ARENA_X, MAX_ARENA_Y);
+		glVertex2f(MAX_ARENA_X, MAX_ARENA_Y);
+		glVertex2f(MAX_ARENA_X, -MAX_ARENA_Y);
 	glEnd();
+
+	Vector ship_position = ship_.getPosition();
+
+	if (ship_position.x - (-MAX_ARENA_X) < 10) {
+		glLineWidth(5.0);
+		glBegin(GL_LINES);
+			glColor3f(1, 0, 0);
+			glVertex2f(-MAX_ARENA_X, -MAX_ARENA_Y);
+			glVertex2f(-MAX_ARENA_X, MAX_ARENA_Y);
+		glEnd();
+	}
 
 	if (mouse_.isDragging()) {
 		ship_.setPos(mouse_.getMouseCoords());
