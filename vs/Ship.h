@@ -3,15 +3,17 @@
 
 #include "Vector.h"
 #include "State.h"
+#include "Point.h"
+#include "Window.h"
 
 class Ship {
 public:
-	Ship(GLfloat x, GLfloat y, GLfloat width, GLfloat height, GLfloat angle);
+	Ship(Window window);
 	void drawSpaceShip();
 
 	void translate(Movement movement);
 	void rotate(Movement movement);
-	void setPos(float x, float y);
+	void setPos(Point point);
 
 private:
 	GLfloat width;

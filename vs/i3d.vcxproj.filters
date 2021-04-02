@@ -11,6 +11,8 @@
     <ClCompile Include="Ship.cpp" />
     <ClCompile Include="Vector.cpp" />
     <ClCompile Include="Wall.cpp" />
+    <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Defines.h" />
@@ -21,5 +23,8 @@
     <ClInclude Include="Vector.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="Wall.h" />
+    <ClInclude Include="Point.h" />
+    <ClInclude Include="Window.h" />
+    <ClInclude Include="Mouse.h" />
   </ItemGroup>
 </Project>

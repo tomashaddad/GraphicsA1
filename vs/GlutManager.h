@@ -4,6 +4,8 @@
 #include "GlutHeaders.h"
 #include "Ship.h"
 #include "Wall.h"
+#include "Mouse.h"
+#include "Window.h"
 #include <memory>
 #include <array>
 
@@ -20,12 +22,9 @@ public:
 	void onIdle();
 
 private:
-	// Viewport dimensions
-	GLfloat plane_lim_, xmin_, ymin_, xmax_, ymax_, mouse_x_, mouse_y_;
-	int win_width_, win_height_;
-	bool dragging_;
-	std::unique_ptr<Ship> ship_;
-	std::array<std::unique_ptr<Wall>, 4> walls_;
+	Window win_;
+	Mouse mouse_;
+	Ship ship_;
 	float last_time_;
 	float dt_;
 };

@@ -1,6 +1,8 @@
 #include "Vector.h"
 #include <iostream>
 
+Vector::Vector() : x(0), y(0) {}
+
 Vector::Vector(float x, float y) : x(x), y(y) { }
 
 Vector::Vector(float angle_degrees) {
