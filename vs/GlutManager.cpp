@@ -1,9 +1,12 @@
 #include "GlutManager.h"
 #include "Defines.h"
-#include "State.h"
+#include "Enums.h"
+#include "Collision.h"
+#include "Vector.h"
 
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include <utility>
 #include <iostream>
 
 GameManager::GameManager()
@@ -77,12 +80,31 @@ void GameManager::onDisplay() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
 
+	arena_.drawArena();
 	ship_.drawSpaceShip();
 
+	int err;
+	while ((err = glGetError()) != GL_NO_ERROR)
+		printf("display: %s\n", gluErrorString(err));
+
+	glutSwapBuffers();
+}
+
+void GameManager::calculateTimeDelta() {
+	float cur_time = glutGet(GLUT_ELAPSED_TIME) / 1000.0;
+	dt_ = cur_time - last_time_;
+	last_time_ = cur_time;
+
+	glutPostRedisplay();
+}
+
+void GameManager::handleKeyboardInput() {
+	// quit
 	if (keyboard_.getKeyState('q')) {
 		exit(EXIT_SUCCESS);
 	}
-	
+
+	// forward/backward (+ acceleration case)
 	if (keyboard_.getKeyState('w')) {
 		ship_.translate(Movement::MOVE_FORWARD, dt_);
 	}
@@ -92,8 +114,8 @@ void GameManager::onDisplay() {
 	else {
 		ship_.deaccelerate(dt_);
 	}
-	
-	
+
+	// rotation
 	if (keyboard_.getKeyState('a')) {
 		ship_.rotate(Movement::ROTATE_LEFT);
 	}
@@ -101,40 +123,33 @@ void GameManager::onDisplay() {
 		ship_.rotate(Movement::ROTATE_RIGHT);
 	}
 
-	glLineWidth(1.0);
-	glBegin(GL_LINE_LOOP);
-		glColor3f(1, 1, 1);
-		glVertex2f(-MAX_ARENA_X, -MAX_ARENA_Y);
-		glVertex2f(-MAX_ARENA_X, MAX_ARENA_Y);
-		glVertex2f(MAX_ARENA_X, MAX_ARENA_Y);
-		glVertex2f(MAX_ARENA_X, -MAX_ARENA_Y);
-	glEnd();
-
-	Vector ship_position = ship_.getPosition();
-
-	if (ship_position.x - (-MAX_ARENA_X) < 10) {
-		glLineWidth(5.0);
-		glBegin(GL_LINES);
-			glColor3f(1, 0, 0);
-			glVertex2f(-MAX_ARENA_X, -MAX_ARENA_Y);
-			glVertex2f(-MAX_ARENA_X, MAX_ARENA_Y);
-		glEnd();
-	}
-
-	if (mouse_.isDragging()) {
-		ship_.setPos(mouse_.getMouseCoords());
-	}
-
-	int err;
-	while ((err = glGetError()) != GL_NO_ERROR)
-		printf("display: %s\n", gluErrorString(err));
-
-	glutSwapBuffers();
+	glutPostRedisplay();
 }
 
-void GameManager::onIdle() {
-	float cur_time = glutGet(GLUT_ELAPSED_TIME) / 1000.0;
-	dt_ = cur_time - last_time_;
-	last_time_ = cur_time;
-	glutPostRedisplay();
+void GameManager::handleMouseInput() {
+	// allows ship to be moved by click-drag
+	if (mouse_.isDragging()) {
+		ship_.setPosition(mouse_.getMouseCoords());
+	}
+}
+
+void GameManager::checkWallCollisions() {
+	for (Wall& wall : arena_.getWalls()) {
+		Point p1 = wall.p1;
+		Point p2 = wall.p2;
+		Vector pos = ship_.getPosition();
+		float r_warning = ship_.getWarningRadius();
+		float r_collision = ship_.getCollisionRadius();
+
+		if (Collision::circleWithLine(p1.x, p1.y, p2.x, p2.y, pos.x, pos.y, r_warning)) {
+			wall.setColour(Colour::RED);
+		}
+		else {
+			wall.setColour(Colour::WHITE);
+		}
+
+		if (Collision::circleWithLine(p1.x, p1.y, p2.x, p2.y, pos.x, pos.y, r_collision)) {
+			ship_.resetPosition();
+		}
+	}
 }

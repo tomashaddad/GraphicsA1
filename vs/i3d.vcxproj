@@ -154,6 +154,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Arena.cpp" />
+    <ClCompile Include="Collision.cpp" />
     <ClCompile Include="GlutManager.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="main.cpp" />
@@ -164,6 +166,8 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Arena.h" />
+    <ClInclude Include="Collision.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="GlutHeaders.h" />
     <ClInclude Include="GlutManager.h" />
@@ -171,7 +175,7 @@
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Point.h" />
-    <ClInclude Include="State.h" />
+    <ClInclude Include="Enums.h" />
     <ClInclude Include="Vector.h" />
     <ClInclude Include="Ship.h" />
     <ClInclude Include="Wall.h" />

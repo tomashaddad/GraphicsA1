@@ -8,4 +8,9 @@ enum class Movement {
 	ROTATE_RIGHT
 };
 
+enum class Colour {
+	RED,
+	WHITE
+};
+
 #endif  // I3D_STATE_H

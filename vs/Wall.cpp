@@ -1,26 +1,28 @@
 #include "Wall.h"
+#include "Enums.h"
 
 Wall::Wall(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2)
-	: x1(x1),
-	  x2(x2),
-	  y1(y1),
-	  y2(y2) { }
+	: p1{ x1, y1 },
+	  p2{ x2, y2 },
+	  colour(Colour::WHITE) { }
 
-void Wall::drawArena() {
-	glLineWidth(1.0);
-	glBegin(GL_LINE_LOOP);
+void Wall::drawWall() {
+
+	if (colour == Colour::RED) {
+		glLineWidth(3.0);
+		glColor3f(1, 0, 0);
+	}
+	else {
+		glLineWidth(1.0);
 		glColor3f(1, 1, 1);
-		glVertex2f(-MAX_ARENA_X, -MAX_ARENA_Y);
-		glVertex2f(-MAX_ARENA_X, MAX_ARENA_Y);
-		glVertex2f(MAX_ARENA_X, MAX_ARENA_Y);
-		glVertex2f(MAX_ARENA_X, -MAX_ARENA_Y);
+	}
+
+		glBegin(GL_LINES);
+		glVertex2f(p1.x, p1.y);
+		glVertex2f(p2.x, p2.y);
 	glEnd();
 }
 
-void Wall::drawWall() {
-	glBegin(GL_LINES);
-		glColor3f(1, 1, 1);
-		glVertex2f(x1, y1);
-		glVertex2f(x2, y2);
-	glEnd();
+void Wall::setColour(Colour colour) {
+	this->colour = colour;
 }

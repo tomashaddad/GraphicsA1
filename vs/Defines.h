@@ -19,6 +19,8 @@
 
 #define SHIP_STARTING_ANGLE 45
 
-#define FPS 30
+#define SHIP_ACCELERATION 10
+#define SHIP_WARNING_RADIUS 15 // Warning radius
+#define SHIP_RADIUS 2.5 // Actual ship radius used for collision detection
 
 #endif // I3D_DEFINES_H

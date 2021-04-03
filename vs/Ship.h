@@ -2,7 +2,7 @@
 #define I3D_SHIP_H
 
 #include "Vector.h"
-#include "State.h"
+#include "Enums.h"
 #include "Point.h"
 #include "Window.h"
 
@@ -13,19 +13,29 @@ public:
 
 	void translate(Movement movement, float dt);
 	void rotate(Movement movement);
-	void setPos(Point point);
+	void setPosition(Point point);
 	void deaccelerate(float dt);
+	void resetPosition();
 
 	Vector getPosition();
+	float getCollisionRadius();
+	float getWarningRadius();
 
 private:
 	GLfloat width_;
 	GLfloat height_;
 
-	Vector pos_;
+	Vector starting_position_;
+	Vector starting_dir_;
+
+	Vector position_;
 	Vector dir_;
+
 	GLfloat velocity_;
 	GLfloat acceleration_;
+	
+	float radius_;
+	float warning_radius_;
 };
 
 #endif // I3D_SHIP_H

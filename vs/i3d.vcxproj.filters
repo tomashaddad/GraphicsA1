@@ -14,6 +14,8 @@
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="Keyboard.cpp" />
+    <ClCompile Include="Arena.cpp" />
+    <ClCompile Include="Collision.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Defines.h" />
@@ -22,11 +24,13 @@
     <ClInclude Include="Asteroid.h" />
     <ClInclude Include="Ship.h" />
     <ClInclude Include="Vector.h" />
-    <ClInclude Include="State.h" />
+    <ClInclude Include="Enums.h" />
     <ClInclude Include="Wall.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Keyboard.h" />
+    <ClInclude Include="Arena.h" />
+    <ClInclude Include="Collision.h" />
   </ItemGroup>
 </Project>

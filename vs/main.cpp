@@ -70,5 +70,8 @@ void display_callback() {
 }
 
 void idle_callback() {
-	game->onIdle();
+	game->calculateTimeDelta();
+	game->handleKeyboardInput();
+	game->handleMouseInput();
+	game->checkWallCollisions();
 }

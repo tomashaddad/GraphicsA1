@@ -3,7 +3,7 @@
 
 #include "GlutHeaders.h"
 #include "Ship.h"
-#include "Wall.h"
+#include "Arena.h"
 #include "Mouse.h"
 #include "Keyboard.h"
 #include "Window.h"
@@ -21,13 +21,17 @@ public:
 	void onMouseClick(int button, int state, int x, int y);
 	void onMouseClickDrag(int x, int y);
 	void onDisplay();
-	void onIdle();
+	void calculateTimeDelta();
+	void handleKeyboardInput();
+	void handleMouseInput();
+	void checkWallCollisions();
 
 private:
 	Window win_;
 	Keyboard keyboard_;
 	Mouse mouse_;
 	Ship ship_;
+	Arena arena_;
 	float last_time_;
 	float dt_;
 };

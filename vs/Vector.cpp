@@ -28,6 +28,11 @@ float Vector::getAngle() {
 	return (atan2f(y, x) * 180.0) / M_PI;
 }
 
+Vector Vector::operator=(const Vector& rhs)
+{
+	return Vector(x = rhs.x, y = rhs.y);
+}
+
 Vector& Vector::operator+=(const Vector& rhs) {
 	this->x += rhs.x;
 	this->y += rhs.y;

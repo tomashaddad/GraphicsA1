@@ -15,6 +15,7 @@ public:
 	void rotate(float angle_degrees);
 	float getAngle();
 
+	Vector operator=(const Vector& rhs);
 	Vector& operator+=(const Vector& rhs);
 	Vector& operator-=(const Vector& rhs);
 	Vector operator*(float x);
