@@ -11,9 +11,10 @@ public:
 	Ship(Window window);
 	void drawSpaceShip();
 
-	void translate(Movement movement);
+	void translate(Movement movement, float dt);
 	void rotate(Movement movement);
 	void setPos(Point point);
+	void deaccelerate(float dt);
 
 	Vector getPosition();
 
@@ -23,7 +24,8 @@ private:
 
 	Vector pos_;
 	Vector dir_;
-	//GLfloat velocity;
+	GLfloat velocity_;
+	GLfloat acceleration_;
 };
 
 #endif // I3D_SHIP_H

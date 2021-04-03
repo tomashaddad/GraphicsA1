@@ -5,6 +5,7 @@
 #include "Ship.h"
 #include "Wall.h"
 #include "Mouse.h"
+#include "Keyboard.h"
 #include "Window.h"
 #include <memory>
 #include <array>
@@ -15,7 +16,8 @@ public:
 	void startGameLoop();
 
 	void onReshape(int w, int h);
-	void onKeyboardPress(unsigned char key, int x, int y);
+	void onKeyDown(unsigned char key, int x, int y);
+	void onKeyUp(unsigned char key, int x, int y);
 	void onMouseClick(int button, int state, int x, int y);
 	void onMouseClickDrag(int x, int y);
 	void onDisplay();
@@ -23,6 +25,7 @@ public:
 
 private:
 	Window win_;
+	Keyboard keyboard_;
 	Mouse mouse_;
 	Ship ship_;
 	float last_time_;

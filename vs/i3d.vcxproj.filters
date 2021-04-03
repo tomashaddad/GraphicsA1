@@ -13,6 +13,7 @@
     <ClCompile Include="Wall.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Window.cpp" />
+    <ClCompile Include="Keyboard.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Defines.h" />
@@ -26,5 +27,6 @@
     <ClInclude Include="Point.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="Mouse.h" />
+    <ClInclude Include="Keyboard.h" />
   </ItemGroup>
 </Project>

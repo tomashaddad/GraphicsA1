@@ -7,7 +7,9 @@
 
 Ship::Ship(Window window)
 	: width_(SHIP_WIDTH),
-	  height_(SHIP_HEIGHT)
+	  height_(SHIP_HEIGHT),
+	  velocity_(10),
+	  acceleration_(10)
 {
 	double slope = window.arena_height_ / window.arena_width_;
 	double angle = 180.0 * (atanf(slope) / M_PI);
@@ -66,12 +68,33 @@ void Ship::drawSpaceShip() {
 	//glEnd();
 }
 
-void Ship::translate(Movement movement) {
-	movement == Movement::MOVE_FORWARD ? pos_ += dir_ : pos_ -= dir_;
+void Ship::translate(Movement movement, float dt) {
+	if (movement == Movement::MOVE_FORWARD) {
+		velocity_ += acceleration_ * dt;
+	}
+	else if (movement == Movement::MOVE_BACKWARD) {
+		velocity_ -= acceleration_ * dt;
+	}
+	pos_ += dir_ * velocity_ * dt;
+}
+
+void Ship::deaccelerate(float dt) {
+	if (velocity_ > 0) {
+		velocity_ -= acceleration_ * dt;
+	}
+	else {
+		velocity_ += acceleration_ * dt;
+	}
+	pos_ += dir_ * velocity_ * dt;
 }
 
 void Ship::rotate(Movement movement) {
-	movement == Movement::ROTATE_RIGHT ? dir_.rotate(-2) : dir_.rotate(2);
+	if (movement == Movement::ROTATE_RIGHT) {
+		dir_.rotate(-2);
+	}
+	else if (movement == Movement::ROTATE_LEFT) {
+		dir_.rotate(2);
+	}
 }
 
 void Ship::setPos(Point point) {

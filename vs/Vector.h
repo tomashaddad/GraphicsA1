@@ -6,7 +6,7 @@
 
 class Vector {
 public:
-	Vector();
+	Vector() = default;
 	Vector(float angle_degrees);
 	Vector(float x, float y);
 
@@ -17,6 +17,7 @@ public:
 
 	Vector& operator+=(const Vector& rhs);
 	Vector& operator-=(const Vector& rhs);
+	Vector operator*(float x);
 };
 
 #endif // I3D_STRUCTS_H

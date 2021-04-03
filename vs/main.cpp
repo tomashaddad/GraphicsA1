@@ -17,7 +17,8 @@
 #include <memory>
 
 void reshape_callback(int w, int h);
-void keyboard_callback(unsigned char key, int x, int y);
+void keyboard_down_callback(unsigned char key, int x, int y);
+void keyboard_up_callback(unsigned char key, int x, int y);
 void mouseclick_callback(int button, int state, int x, int y);
 void mousedrag_callback(int x, int y);
 void display_callback();
@@ -32,12 +33,13 @@ int main(int argc, char** argv)
 	glutCreateWindow("Asteroid Arena");
 
 	glutReshapeFunc(reshape_callback);
-	glutKeyboardFunc(keyboard_callback);
+	glutKeyboardFunc(keyboard_down_callback);
+	glutKeyboardUpFunc(keyboard_up_callback);
 	glutMouseFunc(mouseclick_callback);
 	glutMotionFunc(mousedrag_callback);
 	glutDisplayFunc(display_callback);
 	glutIdleFunc(idle_callback);
-
+	glutIgnoreKeyRepeat(GLUT_KEY_REPEAT_OFF);
 	game->startGameLoop();
 
 	return EXIT_SUCCESS;
@@ -47,8 +49,12 @@ void reshape_callback(int w, int h) {
 	game->onReshape(w, h);
 }
 
-void keyboard_callback(unsigned char key, int x, int y) {
-	game->onKeyboardPress(key, x, y);
+void keyboard_down_callback(unsigned char key, int x, int y) {
+	game->onKeyDown(key, x, y);
+}
+
+void keyboard_up_callback(unsigned char key, int x, int y) {
+	game->onKeyUp(key, x, y);
 }
 
 void mouseclick_callback(int button, int state, int x, int y) {
