@@ -60,29 +60,46 @@ void Ship::drawSpaceShip() {
 		glEnd();
 	glPopMatrix();
 
-	float x, y, dx, dy, theta;
+	float x, y, theta;
 	glBegin(GL_LINE_LOOP);
 	glColor3f(1, 1, 1);
 	for (int i = 0; i < 30; ++i) {
 		theta = i / (float)30 * 2 * M_PI;
 		x = radius_ * cosf(theta) + position_.x;
 		y = radius_ * sinf(theta) + position_.y;
-
-		dx = warning_radius_ * cosf(theta) + position_.x;
-		dy = warning_radius_ * sinf(theta) + position_.y;
-
 		glVertex2f(x, y);
-		glVertex2f(dx, dy);
+	}
+	glEnd();
+
+	glBegin(GL_LINE_LOOP);
+	glColor3f(1, 1, 1);
+	for (int i = 0; i < 30; ++i) {
+		theta = i / (float)30 * 2 * M_PI;
+		x = warning_radius_ * cosf(theta) + position_.x;
+		y = warning_radius_ * sinf(theta) + position_.y;
+		glVertex2f(x, y);
 	}
 	glEnd();
 }
 
+// TODO: ASK IF THIS IS CORRECT LOGIC?
+
 void Ship::translate(Movement movement, float dt) {
 	if (movement == Movement::MOVE_FORWARD) {
-		velocity_ += acceleration_ * dt;
+		if (velocity_ < 0) {
+			velocity_ += 3.0 * acceleration_ * dt;
+		}
+		else {
+			velocity_ += acceleration_ * dt;
+		}
 	}
 	else if (movement == Movement::MOVE_BACKWARD) {
-		velocity_ -= acceleration_ * dt;
+		if (velocity_ > 0) {
+			velocity_ -= 3.0 * acceleration_ * dt;
+		}
+		else {
+			velocity_ -= acceleration_ * dt;
+		}
 	}
 	position_ += dir_ * velocity_ * dt;
 }

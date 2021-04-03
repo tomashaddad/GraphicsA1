@@ -19,7 +19,7 @@
 
 #define SHIP_STARTING_ANGLE 45
 
-#define SHIP_ACCELERATION 10
+#define SHIP_ACCELERATION 15
 #define SHIP_WARNING_RADIUS 15 // Warning radius
 #define SHIP_RADIUS 2.5 // Actual ship radius used for collision detection
 
