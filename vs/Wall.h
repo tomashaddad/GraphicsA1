@@ -11,6 +11,8 @@ class Wall {
 public:
 	Wall() = default;
 	Wall(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2);
+
+	void setCoordinates(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2);
 	void drawWall();
 	void setColour(Colour colour);
 

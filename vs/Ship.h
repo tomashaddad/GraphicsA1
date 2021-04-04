@@ -18,6 +18,7 @@ public:
 	void resetPosition();
 
 	Vector getPosition();
+	Vector getDirection();
 	float getCollisionRadius();
 	float getWarningRadius();
 
@@ -29,7 +30,7 @@ private:
 	Vector starting_dir_;
 
 	Vector position_;
-	Vector dir_;
+	Vector direction_;
 
 	GLfloat velocity_;
 	GLfloat acceleration_;

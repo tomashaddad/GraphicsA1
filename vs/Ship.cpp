@@ -19,10 +19,10 @@ Ship::Ship(Window window)
 
 	position_.x = -MAX_ARENA_X + window.arena_width_ * margin;
 	position_.y = slope * this->position_.x; // y = mx + c
-	dir_ = Vector(angle);
+	direction_ = Vector(angle);
 
 	starting_position_ = position_;
-	starting_dir_ = dir_;
+	starting_dir_ = direction_;
 }
 
 void Ship::drawSpaceShip() {
@@ -34,7 +34,7 @@ void Ship::drawSpaceShip() {
 	glPushMatrix();
 		// Handle rotations
 		glTranslatef(position_.x, position_.y, 0);
-		glRotatef(dir_.getAngle(), 0, 0, 1);
+		glRotatef(direction_.getAngle(), 0, 0, 1);
 		glTranslatef(-position_.x, -position_.y, 0);
 
 		// Draw outline
@@ -101,15 +101,15 @@ void Ship::translate(Movement movement, float dt) {
 			velocity_ -= acceleration_ * dt;
 		}
 	}
-	position_ += dir_ * velocity_ * dt;
+	position_ += direction_ * velocity_ * dt;
 }
 
 void Ship::rotate(Movement movement) {
 	if (movement == Movement::ROTATE_RIGHT) {
-		dir_.rotate(-2);
+		direction_.rotate(-2);
 	}
 	else if (movement == Movement::ROTATE_LEFT) {
-		dir_.rotate(2);
+		direction_.rotate(2);
 	}
 }
 
@@ -120,7 +120,7 @@ void Ship::deaccelerate(float dt) {
 	else {
 		velocity_ += acceleration_ * dt;
 	}
-	position_ += dir_ * velocity_ * dt;
+	position_ += direction_ * velocity_ * dt;
 }
 
 void Ship::setPosition(Point point) {
@@ -130,6 +130,10 @@ void Ship::setPosition(Point point) {
 
 Vector Ship::getPosition() {
 	return position_;
+}
+
+Vector Ship::getDirection() {
+	return direction_;
 }
 
 float Ship::getCollisionRadius() {
@@ -142,5 +146,5 @@ float Ship::getWarningRadius() {
 
 void Ship::resetPosition() {
 	position_ = starting_position_;
-	dir_ = starting_dir_;
+	direction_ = starting_dir_;
 }

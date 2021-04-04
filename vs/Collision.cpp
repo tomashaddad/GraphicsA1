@@ -1,6 +1,6 @@
 #include "Collision.h"
 #define _USING_MATH_DEFINES
-#include <math.h>
+#include <cmath>
 
 bool Collision::lineWithPoint(double x1, double y1, double x2, double y2, double px, double py) {
 	double line_length = distanceBetweenPoints(x1, y1, x2, y2);
@@ -11,20 +11,29 @@ bool Collision::lineWithPoint(double x1, double y1, double x2, double y2, double
 	return d1 + d2 >= line_length - buffer && d1 + d2 <= line_length + buffer;
 }
 
+// https://math.stackexchange.com/questions/4087977/distance-from-circle-to-line-segment-what-is-the-intuition-or-geometry-behind-t/
 bool Collision::circleWithLine(double x1, double y1, double x2, double y2, double cx, double cy, double r) {
-	double line_length = distanceBetweenPoints(x1, y1, x2, y2);
-	double dot_product = (((cx - x1) * (x2 - x1)) + ((cy - y1) * (y2 - y1))) / pow(line_length, 2);
-	double closest_x = x1 + (dot_product * (x2 - x1));
-	double closest_y = y1 + (dot_product * (y2 - y1));
+	x1 -= cx;
+	y1 -= cy;
+	x2 -= cx;
+	y2 -= cy;
 
-	bool on_line = lineWithPoint(x1, y1, x2, y2, closest_x, closest_y);
-	if (!on_line) {
-		return false;
-	}
+	double r2 = r * r;
+	double len2 = (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
 
-	float distance = distanceBetweenPoints(closest_x, closest_y, cx, cy);
+	double nx = y2 - y1;
+	double ny = x1 - x2;
 
-	return distance <= r;
+	double dist2 = nx * x1 + ny * y1;
+
+	dist2 *= dist2;
+
+	if (dist2 > len2 * r2) return false;
+
+	double index = (x1 * (x1 - x2) + y1 * (y1 - y2));
+	if (index < 0) return false;
+	if (index > len2) return false;
+	return true;
 }
 
 double Collision::distanceBetweenPoints(double x1, double y1, double x2, double y2) {

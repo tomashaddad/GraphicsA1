@@ -1,8 +1,7 @@
 #ifndef I3D_DEFINES_H
 #define I3D_DEFINES_H
 
-// Plane limit of 50 from origin means arena is a 100x100 cube
-#define PLANE_LIM 100
+#define PLANE_LIM 50 // Plane limit of 50 from origin means arena is a 100x100
 
 // Arena parameters
 #define MAX_ARENA_X PLANE_LIM * 0.9

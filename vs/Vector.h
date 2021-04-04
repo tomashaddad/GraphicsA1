@@ -2,7 +2,6 @@
 #define I3D_VECTOR_H
 
 #define _USE_MATH_DEFINES
-#include <math.h>
 
 class Vector {
 public:
@@ -19,6 +18,7 @@ public:
 	Vector& operator+=(const Vector& rhs);
 	Vector& operator-=(const Vector& rhs);
 	Vector operator*(float x);
+	Vector operator-();
 };
 
 #endif // I3D_STRUCTS_H

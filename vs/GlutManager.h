@@ -3,6 +3,7 @@
 
 #include "GlutHeaders.h"
 #include "Ship.h"
+#include "Asteroid.h"
 #include "Arena.h"
 #include "Mouse.h"
 #include "Keyboard.h"

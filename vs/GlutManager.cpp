@@ -18,6 +18,33 @@ void GameManager::startGameLoop() {
 	glutMainLoop();
 }
 
+//Asteroid asteroid(window_, ship_);
+void GameManager::onDisplay() {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_DEPTH_TEST);
+
+	arena_.drawArena();
+	ship_.drawSpaceShip();
+	//asteroid.drawAsteroid();
+
+	float x, y, theta;
+	glBegin(GL_LINE_LOOP);
+	glColor3f(1, 1, 1);
+	for (int i = 0; i < 30; ++i) {
+		theta = i / (float)30 * 2 * M_PI;
+		x = 10 * cosf(theta) + 50;
+		y = 10 * sinf(theta) + 50;
+		glVertex2f(x, y);
+	}
+	glEnd();
+
+	int err;
+	while ((err = glGetError()) != GL_NO_ERROR)
+		printf("display: %s\n", gluErrorString(err));
+
+	glutSwapBuffers();
+}
+
 void GameManager::onReshape(int w, int h) {
 	win_.win_width_ = w;
 	win_.win_height_ = h;
@@ -76,19 +103,6 @@ void GameManager::onMouseClickDrag(int x, int y)
 	mouse_.setMouseCoords(xmouse, ymouse);
 }
 
-void GameManager::onDisplay() {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glEnable(GL_DEPTH_TEST);
-
-	arena_.drawArena();
-	ship_.drawSpaceShip();
-
-	int err;
-	while ((err = glGetError()) != GL_NO_ERROR)
-		printf("display: %s\n", gluErrorString(err));
-
-	glutSwapBuffers();
-}
 
 void GameManager::calculateTimeDelta() {
 	float cur_time = glutGet(GLUT_ELAPSED_TIME) / 1000.0;

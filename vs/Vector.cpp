@@ -1,5 +1,5 @@
 #include "Vector.h"
-#include <iostream>
+#include <cmath>
 
 Vector::Vector(float x, float y) : x(x), y(y) { }
 
@@ -48,4 +48,9 @@ Vector& Vector::operator-=(const Vector& rhs) {
 
 Vector Vector::operator*(float x) {
 	return Vector(this->x * x, this->y * x);
+}
+
+Vector Vector::operator-()
+{
+	return Vector(-x, -y);
 }

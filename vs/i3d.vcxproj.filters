@@ -16,6 +16,7 @@
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Arena.cpp" />
     <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="Asteroid.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Defines.h" />

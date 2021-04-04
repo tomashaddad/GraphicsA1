@@ -6,6 +6,13 @@ Wall::Wall(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2)
 	  p2{ x2, y2 },
 	  colour(Colour::WHITE) { }
 
+void Wall::setCoordinates(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2) {
+	p1.x = x1;
+	p1.y = y1;
+	p2.x = x2;
+	p2.y = y2;
+}
+
 void Wall::drawWall() {
 
 	if (colour == Colour::RED) {
