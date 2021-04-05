@@ -12,7 +12,7 @@
 #define SHIP_LINE_RGB 1, 1, 1
 
 // Only change ship scaling, do not touch SHIP_WIDTH or SHIP_HEIGHT
-#define SHIP_SCALING 0.4
+#define SHIP_SCALING 0.5
 #define SHIP_WIDTH PLANE_LIM * SHIP_SCALING * 0.2
 #define SHIP_HEIGHT PLANE_LIM * SHIP_SCALING * 0.15
 

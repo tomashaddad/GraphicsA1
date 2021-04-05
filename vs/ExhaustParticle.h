@@ -8,9 +8,7 @@ class ExhaustParticle {
 public:
 	ExhaustParticle(Vector position, Vector direction, GLfloat velocity);
 	void update(float dt);
-	
-	GLfloat getX();
-	GLfloat getY();
+	void draw();
 
 	int size();
 

@@ -1,5 +1,8 @@
 #include "ExhaustParticle.h"
 #include <iostream>
+#include <random>
+
+
 ExhaustParticle::ExhaustParticle(Vector position, Vector direction,
 	GLfloat velocity)
 	: size_(10),
@@ -8,17 +11,36 @@ ExhaustParticle::ExhaustParticle(Vector position, Vector direction,
 	  velocity_(velocity) {}
 
 void ExhaustParticle::update(float dt) {
-	position_ += direction_ * velocity_ * dt;
+
+	std::random_device engine;
+
+	std::uniform_real_distribution<float> real_dist =
+		std::uniform_real_distribution<float>{ -5, 5 };
+
+	float rand_angle = real_dist(engine);
+
+	direction_.rotate(rand_angle);
+
+	position_ += direction_ * velocity_ * dt * 3;
+	--size_;
 }
 
 int ExhaustParticle::size() {
 	return size_;
 }
 
-GLfloat ExhaustParticle::getX() {
-	return position_.x;
-}
-
-GLfloat ExhaustParticle::getY() {
-	return position_.y;
+void ExhaustParticle::draw() {
+	glPointSize(size_);
+	glBegin(GL_POINTS);
+	if (size_ > 6) {
+		glColor3f(1.0, 1.0, 0);
+	}
+	else if (size_ > 4) {
+		glColor3f(1.0, 0.5, 0.0);
+	}
+	else {
+		glColor3f(1.0, 0.0, 0.0);
+	}
+		glVertex2f(position_.x, position_.y);
+	glEnd();
 }

@@ -131,6 +131,8 @@ void Ship::deaccelerate(float dt) {
 		velocity_ += acceleration_ * dt;
 	}
 	position_ += direction_ * velocity_ * dt;
+
+	exhaust_.addParticle(position_, -direction_, velocity_);
 	exhaust_.updateParticles(dt);
 }
 

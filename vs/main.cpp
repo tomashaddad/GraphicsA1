@@ -39,6 +39,7 @@ int main(int argc, char** argv)
 	glutMotionFunc(mousedrag_callback);
 	glutDisplayFunc(display_callback);
 	glutIdleFunc(idle_callback);
+
 	glutIgnoreKeyRepeat(GLUT_KEY_REPEAT_OFF);
 	game->startGameLoop();
 

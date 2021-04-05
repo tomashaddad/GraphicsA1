@@ -32,12 +32,6 @@ void GameManager::onDisplay() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
 
-	glPointSize(10);
-	glColor3f(1.0, 1.0, 1.0);
-	glBegin(GL_POINTS);
-	glVertex2f(0,0);
-	glEnd();
-
 	arena_.drawArena();
 
 	if (playing) {
