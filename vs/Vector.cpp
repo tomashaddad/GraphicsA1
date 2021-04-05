@@ -19,9 +19,7 @@ void Vector::rotate(float angle_degrees) {
 	y = old_x * sinf(angle_radians) + old_y * cosf(angle_radians);
 
 	// turn back into a unit vector due to math error
-	float magnitude = sqrtf(powf(x, 2) + powf(y, 2));
-	x = x / magnitude;
-	y = y / magnitude;
+	normalise();
 }
 
 float Vector::getAngle() {
@@ -46,11 +44,24 @@ Vector& Vector::operator-=(const Vector& rhs) {
 	return *this;
 }
 
-Vector Vector::operator*(float x) {
-	return Vector(this->x * x, this->y * x);
+Vector Vector::operator*(float scalar) {
+	return Vector(x * scalar, y * scalar);
 }
 
 Vector Vector::operator-()
 {
 	return Vector(-x, -y);
+}
+
+Vector& Vector::operator-(const Vector& rhs)
+{
+	x -= rhs.x;
+	y -= rhs.y;
+	return *this;
+}
+
+void Vector::normalise() {
+	float magnitude = sqrtf(powf(x, 2) + powf(y, 2));
+	x /= magnitude;
+	y /= magnitude;
 }

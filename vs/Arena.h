@@ -7,7 +7,7 @@
 class Arena {
 public:
 	Arena();
-	
+
 	void addWall(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2);
 	void drawArena();
 	std::vector<Wall>& getWalls();
@@ -15,6 +15,5 @@ public:
 private:
 	std::vector<Wall> walls;
 };
-
 
 #endif // I3D_ARENA_H

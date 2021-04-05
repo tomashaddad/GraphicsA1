@@ -5,20 +5,25 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-Ship::Ship(Window window)
-	: width_(SHIP_WIDTH),
-	  height_(SHIP_HEIGHT),
-	  radius_(SHIP_RADIUS),
-	  warning_radius_(SHIP_WARNING_RADIUS),
-	  velocity_(0),
-	  acceleration_(SHIP_ACCELERATION)
+Ship::Ship(GLfloat width, GLfloat height, GLfloat radius, GLfloat warning_radius,
+	GLfloat velocity, GLfloat acceleration)
+	: width_(width),
+	height_(height),
+	radius_(radius),
+	warning_radius_(warning_radius),
+	velocity_(velocity),
+	acceleration_(acceleration)
 {
-	double slope = window.arena_height_ / window.arena_width_;
-	double angle = 180.0 * (atanf(slope) / M_PI);
-	double margin = 0.1; // arbitrary
+	setStartingPosition(2 * MAX_ARENA_X, 2 * MAX_ARENA_Y);
+}
 
-	position_.x = -MAX_ARENA_X + window.arena_width_ * margin;
-	position_.y = slope * this->position_.x; // y = mx + c
+void Ship::setStartingPosition(float arena_width, float arena_height) {
+	float slope = arena_height / arena_width;
+	float angle = 180.0 * (atanf(slope) / M_PI);
+	float margin = 0.1; // arbitrary
+
+	position_.x = -MAX_ARENA_X + arena_width * margin;
+	position_.y = slope * position_.x; // y = mx + c
 	direction_ = Vector(angle);
 
 	starting_position_ = position_;
@@ -144,7 +149,8 @@ float Ship::getWarningRadius() {
 	return warning_radius_;
 }
 
-void Ship::resetPosition() {
+void Ship::reset() {
+	velocity_ = 0;
 	position_ = starting_position_;
 	direction_ = starting_dir_;
 }

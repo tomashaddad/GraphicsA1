@@ -6,7 +6,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GlutManager.cpp" />
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Ship.cpp" />
     <ClCompile Include="Vector.cpp" />
@@ -17,10 +17,11 @@
     <ClCompile Include="Arena.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Asteroid.cpp" />
+    <ClCompile Include="AsteroidField.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Defines.h" />
-    <ClInclude Include="GlutManager.h" />
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="GlutHeaders.h" />
     <ClInclude Include="Asteroid.h" />
     <ClInclude Include="Ship.h" />
@@ -33,5 +34,9 @@
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Arena.h" />
     <ClInclude Include="Collision.h" />
+    <ClInclude Include="AsteroidField.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".editorconfig" />
   </ItemGroup>
 </Project>

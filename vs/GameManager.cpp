@@ -1,4 +1,4 @@
-#include "GlutManager.h"
+#include "GameManager.h"
 #include "Defines.h"
 #include "Enums.h"
 #include "Collision.h"
@@ -10,33 +10,36 @@
 #include <iostream>
 
 GameManager::GameManager()
-	: ship_(Ship(win_)),
+	: ship_(Ship(
+		(GLfloat)SHIP_WIDTH,
+		(GLfloat)SHIP_HEIGHT,
+		(GLfloat)SHIP_RADIUS,
+		(GLfloat)SHIP_WARNING_RADIUS,
+		(GLfloat)SHIP_STARTING_VELOCITY,
+		(GLfloat)SHIP_ACCELERATION)),
 	  dt_(0),
 	  last_time_(0) { }
 
 void GameManager::startGameLoop() {
 	glutMainLoop();
 }
-
-//Asteroid asteroid(window_, ship_);
+int i = 0;
 void GameManager::onDisplay() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
 
 	arena_.drawArena();
 	ship_.drawSpaceShip();
-	//asteroid.drawAsteroid();
 
-	float x, y, theta;
-	glBegin(GL_LINE_LOOP);
-	glColor3f(1, 1, 1);
-	for (int i = 0; i < 30; ++i) {
-		theta = i / (float)30 * 2 * M_PI;
-		x = 10 * cosf(theta) + 50;
-		y = 10 * sinf(theta) + 50;
-		glVertex2f(x, y);
+	if (i < 2) {
+		asteroid_field_.launchAsteroidAtShip(ship_.getPosition());
+		++i;
 	}
-	glEnd();
+
+	for (Asteroid& asteroid : asteroid_field_.getAsteroids()) {
+		asteroid.update(dt_);
+		asteroid.drawAsteroid();
+	}
 
 	int err;
 	while ((err = glGetError()) != GL_NO_ERROR)
@@ -148,10 +151,10 @@ void GameManager::handleMouseInput() {
 }
 
 void GameManager::checkWallCollisions() {
+	Vector pos = ship_.getPosition();
 	for (Wall& wall : arena_.getWalls()) {
 		Point p1 = wall.p1;
 		Point p2 = wall.p2;
-		Vector pos = ship_.getPosition();
 		float r_warning = ship_.getWarningRadius();
 		float r_collision = ship_.getCollisionRadius();
 
@@ -163,7 +166,31 @@ void GameManager::checkWallCollisions() {
 		}
 
 		if (Collision::circleWithLine(p1.x, p1.y, p2.x, p2.y, pos.x, pos.y, r_collision)) {
-			ship_.resetPosition();
+			resetGame();
 		}
 	}
+}
+
+void GameManager::updateAsteroids() {
+	asteroid_field_.updateRadius(win_.xmax_ - win_.xmin_,
+								 win_.ymax_ - win_.ymin_);
+}
+
+void GameManager::checkAsteroidCollisions() {
+	Vector s_pos = ship_.getPosition();
+	for (Asteroid& asteroid : asteroid_field_.getAsteroids()) {
+		Vector a_pos = asteroid.getPosition();
+		if (Collision::circleWithCircle(
+							s_pos.x, s_pos.y,
+							ship_.getCollisionRadius(),
+							a_pos.x, a_pos.y,
+							asteroid.getCollisionRadius())) {
+			resetGame();
+		}
+	}
+}
+
+void GameManager::resetGame() {
+	ship_.reset();
+	asteroid_field_.reset();
 }

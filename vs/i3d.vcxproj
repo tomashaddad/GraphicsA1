@@ -156,8 +156,9 @@
   <ItemGroup>
     <ClCompile Include="Arena.cpp" />
     <ClCompile Include="Asteroid.cpp" />
+    <ClCompile Include="AsteroidField.cpp" />
     <ClCompile Include="Collision.cpp" />
-    <ClCompile Include="GlutManager.cpp" />
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mouse.cpp" />
@@ -168,10 +169,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Arena.h" />
+    <ClInclude Include="AsteroidField.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="GlutHeaders.h" />
-    <ClInclude Include="GlutManager.h" />
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="Asteroid.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Mouse.h" />
@@ -181,6 +183,9 @@
     <ClInclude Include="Ship.h" />
     <ClInclude Include="Wall.h" />
     <ClInclude Include="Window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".editorconfig" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -11,7 +11,7 @@
 #   include <GL/glut.h>
 #endif
 
-#include "GlutManager.h"
+#include "GameManager.h"
 
 #include <iostream>
 #include <memory>
@@ -74,4 +74,6 @@ void idle_callback() {
 	game->handleKeyboardInput();
 	game->handleMouseInput();
 	game->checkWallCollisions();
+	game->updateAsteroids();
+	game->checkAsteroidCollisions();
 }

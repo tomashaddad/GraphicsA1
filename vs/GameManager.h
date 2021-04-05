@@ -8,6 +8,7 @@
 #include "Mouse.h"
 #include "Keyboard.h"
 #include "Window.h"
+#include "AsteroidField.h"
 #include <memory>
 #include <array>
 
@@ -26,6 +27,10 @@ public:
 	void handleKeyboardInput();
 	void handleMouseInput();
 	void checkWallCollisions();
+	void updateAsteroids();
+	void checkAsteroidCollisions();
+
+	void resetGame();
 
 private:
 	Window win_;
@@ -33,6 +38,7 @@ private:
 	Mouse mouse_;
 	Ship ship_;
 	Arena arena_;
+	AsteroidField asteroid_field_;
 	float last_time_;
 	float dt_;
 };

@@ -8,14 +8,18 @@
 
 class Ship {
 public:
-	Ship(Window window);
+	Ship(GLfloat width, GLfloat height, GLfloat radius, GLfloat warning_radius,
+		GLfloat velocity, GLfloat acceleration);
+
 	void drawSpaceShip();
+
+	void setStartingPosition(float arena_width, float arena_height);
 
 	void translate(Movement movement, float dt);
 	void rotate(Movement movement);
 	void setPosition(Point point);
 	void deaccelerate(float dt);
-	void resetPosition();
+	void reset();
 
 	Vector getPosition();
 	Vector getDirection();
@@ -34,7 +38,7 @@ private:
 
 	GLfloat velocity_;
 	GLfloat acceleration_;
-	
+
 	float radius_;
 	float warning_radius_;
 };
