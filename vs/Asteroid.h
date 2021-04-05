@@ -27,6 +27,8 @@ private:
 	Vector position_;
 	Vector direction_;
 	float velocity_;
+	float rotation_speed_;
+	int rotation_direction_;
 };
 
 #endif // I3D_ASTEROID_H

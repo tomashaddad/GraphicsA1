@@ -28,7 +28,6 @@ public:
 
 	Vector getPosition();
 	Vector getDirection();
-	GLfloat getVelocity();
 
 	float getCollisionRadius();
 	float getWarningRadius();
@@ -44,8 +43,8 @@ private:
 
 	Vector position_;
 	Vector direction_;
+	Vector velocity_;
 
-	GLfloat velocity_;
 	GLfloat acceleration_;
 
 	float radius_;

@@ -115,8 +115,8 @@ void GameManager::onMouseClick(int button, int state, int x, int y) {
 
 void GameManager::onMouseClickDrag(int x, int y)
 {
-	double xmouse = win_.xmin_ + (double(x) / win_.win_width_) * (win_.xmax_ - win_.xmin_);
-	double ymouse = win_.ymax_ + (double(y) / win_.win_height_) * (win_.ymin_ - win_.ymax_);
+	float xmouse = win_.xmin_ + (float(x) / win_.win_width_) * (win_.xmax_ - win_.xmin_);
+	float ymouse = win_.ymax_ + (float(y) / win_.win_height_) * (win_.ymin_ - win_.ymax_);
 	
 	mouse_.setMouseCoords(xmouse, ymouse);
 }

@@ -4,14 +4,13 @@
 
 
 ExhaustParticle::ExhaustParticle(Vector position, Vector direction,
-	GLfloat velocity)
+	Vector velocity)
 	: size_(10),
 	  position_(position),
 	  direction_(direction),
 	  velocity_(velocity) {}
 
 void ExhaustParticle::update(float dt) {
-
 	std::random_device engine;
 
 	std::uniform_real_distribution<float> real_dist =
@@ -21,10 +20,13 @@ void ExhaustParticle::update(float dt) {
 
 	direction_.rotate(rand_angle);
 
-	position_ += direction_ * velocity_ * dt * 3;
-	--size_;
+	velocity_ = velocity_ + direction_ * dt * 200;
+	position_ = position_ + velocity_ * dt;
+	size_ -= 0.1f;
 }
 
+// Note to self: Changing this from int to float will kill program since
+//  this is used for glPointSize() which only likes integers
 int ExhaustParticle::size() {
 	return size_;
 }
@@ -32,13 +34,15 @@ int ExhaustParticle::size() {
 void ExhaustParticle::draw() {
 	glPointSize(size_);
 	glBegin(GL_POINTS);
-	if (size_ > 6) {
+	if (size_ > 9) {
+		glColor3f(1.0, 1.0, 1.0);
+	} else if (size_ > 7) {
+		glColor3f(1.0, 1.0, 0.5);
+	} else if (size_ > 5) {
 		glColor3f(1.0, 1.0, 0);
-	}
-	else if (size_ > 4) {
+	} else if (size_ > 3) {
 		glColor3f(1.0, 0.5, 0.0);
-	}
-	else {
+	} else {
 		glColor3f(1.0, 0.0, 0.0);
 	}
 		glVertex2f(position_.x, position_.y);

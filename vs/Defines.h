@@ -19,12 +19,14 @@
 #define SHIP_STARTING_ANGLE 45
 
 #define SHIP_STARTING_VELOCITY 0.0
-#define SHIP_ACCELERATION 30.0
+#define SHIP_ACCELERATION 20
 #define SHIP_WARNING_RADIUS 10.0 // Warning radius
 #define SHIP_RADIUS 2.5 // Actual ship radius used for collision detection
 
 #define ASTEROID_MIN_SPEED 30
 #define ASTEROID_MAX_SPEED 50
+#define ASTEROID_MIN_ROTATION_SPEED 1
+#define ASTEROID_MAX_ROTATION_SPEED 5
 #define ASTEROID_BASE_SIZE 10
 #define ASTEROID_DEVIATION 2
 

@@ -3,7 +3,7 @@
 #include "GlutHeaders.h"
 #include <iostream>
 
-void Exhaust::addParticle(Vector position_, Vector direction_, GLfloat velocity) {
+void Exhaust::addParticle(Vector position_, Vector direction_, Vector velocity) {
 	exhaust_.emplace_back(position_, direction_, velocity);
 }
 

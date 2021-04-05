@@ -31,37 +31,45 @@ Vector Vector::operator=(const Vector& rhs)
 	return Vector(x = rhs.x, y = rhs.y);
 }
 
-Vector& Vector::operator+=(const Vector& rhs) {
-	this->x += rhs.x;
-	this->y += rhs.y;
-	return *this;
-}
-
-
-Vector& Vector::operator-=(const Vector& rhs) {
-	this->x -= rhs.x;
-	this->y -= rhs.y;
-	return *this;
-}
-
 Vector Vector::operator*(float scalar) {
 	return Vector(x * scalar, y * scalar);
 }
 
-Vector Vector::operator-()
-{
+Vector Vector::operator-() {
 	return Vector(-x, -y);
 }
 
-Vector& Vector::operator-(const Vector& rhs)
+Vector Vector::operator-(const Vector& rhs) {
+	return Vector(x - rhs.x, y - rhs.y);
+}
+
+Vector Vector::operator+(const Vector& rhs)
 {
-	x -= rhs.x;
-	y -= rhs.y;
-	return *this;
+	return Vector(x + rhs.x, y + rhs.y);
+}
+
+float Vector::operator*(const Vector& rhs) {
+	return x * rhs.x + y * rhs.x;
+}
+
+float Vector::getMagnitude() const {
+	return sqrtf(x * x + y * y);
+}
+
+bool Vector::operator>(const Vector& rhs) {
+	return this->getMagnitude() > rhs.getMagnitude();
 }
 
 void Vector::normalise() {
 	float magnitude = sqrtf(powf(x, 2) + powf(y, 2));
 	x /= magnitude;
 	y /= magnitude;
+}
+
+std::ostream& operator<<(std::ostream& ostream, Vector& vector)
+{
+	ostream << "Magnitude: " << vector.getMagnitude() << ", Angle: " <<
+		vector.getAngle() << ", (x, y) = (" << vector.x << ", " << vector.y << ")";
+
+	return ostream;
 }

@@ -8,11 +8,11 @@
 Ship::Ship(GLfloat width, GLfloat height, GLfloat radius, GLfloat warning_radius,
 	GLfloat velocity, GLfloat acceleration)
 	: width_(width),
-	height_(height),
-	radius_(radius),
-	warning_radius_(warning_radius),
-	velocity_(velocity),
-	acceleration_(acceleration)
+	  height_(height),
+	  radius_(radius),
+	  warning_radius_(warning_radius),
+	  velocity_(velocity),
+	  acceleration_(acceleration)
 {
 	setStartingPosition(2 * MAX_ARENA_X, 2 * MAX_ARENA_Y);
 }
@@ -24,7 +24,10 @@ void Ship::setStartingPosition(float arena_width, float arena_height) {
 
 	position_.x = -MAX_ARENA_X + arena_width * margin;
 	position_.y = slope * position_.x; // y = mx + c
-	direction_ = Vector(angle);
+
+	std::cout << angle << std::endl;
+
+	direction_ = Vector(0);
 
 	starting_position_ = position_;
 	starting_dir_ = direction_;
@@ -89,22 +92,12 @@ void Ship::traceVertices(GLfloat width, GLfloat height, GLfloat tail) {
 
 void Ship::move(Movement movement, float dt) {
 	if (movement == Movement::MOVE_FORWARD) {
-		if (velocity_ < 0) {
-			velocity_ += 3.0 * acceleration_ * dt;
-		}
-		else {
-			velocity_ += acceleration_ * dt;
-		}
+		velocity_ = velocity_ + direction_ * acceleration_ * dt;
 	}
 	else if (movement == Movement::MOVE_BACKWARD) {
-		if (velocity_ > 0) {
-			velocity_ -= 3.0 * acceleration_ * dt;
-		}
-		else {
-			velocity_ -= acceleration_ * dt;
-		}
+		velocity_ = velocity_ - direction_ * acceleration_ * dt;
 	}
-	position_ += direction_ * velocity_ * dt;
+	position_ = position_ + velocity_ * dt;
 
 	exhaust_.addParticle(position_, -direction_, velocity_);
 	exhaust_.updateParticles(dt);
@@ -124,15 +117,9 @@ void Ship::rotate(Movement movement) {
 }
 
 void Ship::deaccelerate(float dt) {
-	if (velocity_ > 0) {
-		velocity_ -= acceleration_ * dt;
-	}
-	else {
-		velocity_ += acceleration_ * dt;
-	}
-	position_ += direction_ * velocity_ * dt;
+	velocity_ = velocity_ * 0.99;
+	position_ = position_ + velocity_ * dt;
 
-	exhaust_.addParticle(position_, -direction_, velocity_);
 	exhaust_.updateParticles(dt);
 }
 
@@ -147,10 +134,6 @@ Vector Ship::getPosition() {
 
 Vector Ship::getDirection() {
 	return direction_;
-}
-
-GLfloat Ship::getVelocity() {
-	return velocity_;
 }
 
 float Ship::getCollisionRadius() {

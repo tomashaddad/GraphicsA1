@@ -6,7 +6,7 @@
 
 class ExhaustParticle {
 public:
-	ExhaustParticle(Vector position, Vector direction, GLfloat velocity);
+	ExhaustParticle(Vector position, Vector direction, Vector velocity);
 	void update(float dt);
 	void draw();
 
@@ -15,9 +15,9 @@ public:
 private:
 	Vector position_;
 	Vector direction_;
-	GLfloat velocity_;
+	Vector velocity_;
 
-	int size_;
+	float size_;
 };
 
 #endif // I3D_EXHAUSTPARTICLE_H

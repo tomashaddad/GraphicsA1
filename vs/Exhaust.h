@@ -8,7 +8,7 @@
 
 class Exhaust {
 public:
-	void addParticle(Vector position_, Vector direction_, GLfloat velocity);
+	void addParticle(Vector position_, Vector direction_, Vector velocity);
 	void updateParticles(float dt);
 
 	void drawAll();
