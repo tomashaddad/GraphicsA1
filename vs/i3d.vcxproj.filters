@@ -18,6 +18,7 @@
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Asteroid.cpp" />
     <ClCompile Include="AsteroidField.cpp" />
+    <ClCompile Include="Text.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Defines.h" />
@@ -35,6 +36,7 @@
     <ClInclude Include="Arena.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="AsteroidField.h" />
+    <ClInclude Include="Text.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

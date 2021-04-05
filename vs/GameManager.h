@@ -10,7 +10,6 @@
 #include "Window.h"
 #include "AsteroidField.h"
 #include <memory>
-#include <array>
 
 class GameManager {
 public:
@@ -29,6 +28,7 @@ public:
 	void checkWallCollisions();
 	void updateAsteroids();
 	void checkAsteroidCollisions();
+	void incrementLevel();
 
 	void resetGame();
 
@@ -41,6 +41,9 @@ private:
 	AsteroidField asteroid_field_;
 	float last_time_;
 	float dt_;
+
+	bool playing;
+	bool levellingUp;
 };
 
 #endif // I3D_GLUTMANAGER_H

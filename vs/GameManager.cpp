@@ -3,11 +3,13 @@
 #include "Enums.h"
 #include "Collision.h"
 #include "Vector.h"
+#include "Text.h"
 
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <utility>
 #include <iostream>
+#include <string>
 
 GameManager::GameManager()
 	: ship_(Ship(
@@ -18,27 +20,39 @@ GameManager::GameManager()
 		(GLfloat)SHIP_STARTING_VELOCITY,
 		(GLfloat)SHIP_ACCELERATION)),
 	  dt_(0),
-	  last_time_(0) { }
+	  last_time_(0),
+	  playing(false),
+	  levellingUp(true) { }
 
 void GameManager::startGameLoop() {
 	glutMainLoop();
 }
-int i = 0;
+
 void GameManager::onDisplay() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
 
 	arena_.drawArena();
-	ship_.drawSpaceShip();
 
-	if (i < 2) {
-		asteroid_field_.launchAsteroidAtShip(ship_.getPosition());
-		++i;
-	}
+	if (playing) {
+		ship_.drawSpaceShip();
 
-	for (Asteroid& asteroid : asteroid_field_.getAsteroids()) {
-		asteroid.update(dt_);
-		asteroid.drawAsteroid();
+		if (asteroid_field_.isEmpty()) {
+			for (int i = 0; i < asteroid_field_.asteroidCount(); ++i) {
+				asteroid_field_.launchAsteroidAtShip(ship_.getPosition());
+			}
+			asteroid_field_.increaseAsteroidCountBy(1);
+		}
+
+		asteroid_field_.updateAsteroids(dt_);
+
+		for (Asteroid& asteroid : asteroid_field_.getAsteroids()) {
+			asteroid.drawAsteroid();
+		}
+	} else {
+		Text::renderText("Press 'B' to begin!",
+			win_.win_width_ / 2.0f, win_.win_height_ / 2.0f,
+			win_.win_width_, win_.win_height_);
 	}
 
 	int err;
@@ -111,8 +125,6 @@ void GameManager::calculateTimeDelta() {
 	float cur_time = glutGet(GLUT_ELAPSED_TIME) / 1000.0;
 	dt_ = cur_time - last_time_;
 	last_time_ = cur_time;
-
-	glutPostRedisplay();
 }
 
 void GameManager::handleKeyboardInput() {
@@ -121,23 +133,29 @@ void GameManager::handleKeyboardInput() {
 		exit(EXIT_SUCCESS);
 	}
 
-	// forward/backward (+ acceleration case)
-	if (keyboard_.getKeyState('w')) {
-		ship_.translate(Movement::MOVE_FORWARD, dt_);
-	}
-	else if (keyboard_.getKeyState('s')) {
-		ship_.translate(Movement::MOVE_BACKWARD, dt_);
-	}
-	else {
-		ship_.deaccelerate(dt_);
+	if (keyboard_.getKeyState('b') && !playing) {
+		playing = true;
 	}
 
-	// rotation
-	if (keyboard_.getKeyState('a')) {
-		ship_.rotate(Movement::ROTATE_LEFT);
-	}
-	else if (keyboard_.getKeyState('d')) {
-		ship_.rotate(Movement::ROTATE_RIGHT);
+	if (playing) {
+		// forward/backward (+ acceleration case)
+		if (keyboard_.getKeyState('w')) {
+			ship_.translate(Movement::MOVE_FORWARD, dt_);
+		}
+		else if (keyboard_.getKeyState('s')) {
+			ship_.translate(Movement::MOVE_BACKWARD, dt_);
+		}
+		else {
+			ship_.deaccelerate(dt_);
+		}
+
+		// rotation
+		if (keyboard_.getKeyState('a')) {
+			ship_.rotate(Movement::ROTATE_LEFT);
+		}
+		else if (keyboard_.getKeyState('d')) {
+			ship_.rotate(Movement::ROTATE_RIGHT);
+		}
 	}
 
 	glutPostRedisplay();
@@ -193,4 +211,9 @@ void GameManager::checkAsteroidCollisions() {
 void GameManager::resetGame() {
 	ship_.reset();
 	asteroid_field_.reset();
+	playing = false;
+}
+
+void GameManager::incrementLevel() {
+
 }

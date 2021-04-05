@@ -10,6 +10,10 @@
 #include <random>
 #include <iostream>
 
+AsteroidField::AsteroidField()
+	: asteroid_count_(1),
+	  radius(0) {}
+
 AsteroidField::AsteroidField(GLfloat window_width, GLfloat window_height) {
 	updateRadius(window_width, window_height);
 }
@@ -47,8 +51,8 @@ void AsteroidField::launchAsteroidAtShip(Vector ship_position) {
 		Asteroid(
 			asteroid_position,
 			asteroid_direction,
-			10.0,
-			2.0,
+			ASTEROID_BASE_SIZE,
+			ASTEROID_DEVIATION,
 			30,
 			velocity
 		)
@@ -61,4 +65,32 @@ std::vector<Asteroid>& AsteroidField::getAsteroids() {
 
 void AsteroidField::reset() {
 	asteroids.clear();
+	asteroid_count_ = 1;
+}
+
+void AsteroidField::increaseAsteroidCountBy(int counter) {
+	asteroid_count_ += counter;
+}
+
+int AsteroidField::asteroidCount() {
+	return asteroid_count_;
+}
+
+bool AsteroidField::isEmpty() {
+	return asteroids.size() == 0;
+}
+
+void AsteroidField::updateAsteroids(float dt) {
+	for (auto i = 0; i < asteroids.size(); ++i) {
+		asteroids[i].update(dt);
+
+		Vector a_pos = asteroids[i].getPosition();
+		float dist_from_center = sqrtf(a_pos.x * a_pos.x + a_pos.y * a_pos.y);
+
+		if (dist_from_center > radius) {
+			using std::swap;
+			swap(asteroids[i], asteroids.back());
+			asteroids.pop_back();
+		}
+	}
 }
