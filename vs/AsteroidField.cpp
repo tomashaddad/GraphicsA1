@@ -47,15 +47,13 @@ void AsteroidField::launchAsteroidAtShip(Vector ship_position) {
 	Vector asteroid_direction = ship_position - asteroid_position;
 	asteroid_direction.normalise();
 
-	asteroids.push_back(
-		Asteroid(
-			asteroid_position,
-			asteroid_direction,
-			ASTEROID_BASE_SIZE,
-			ASTEROID_DEVIATION,
-			30,
-			velocity
-		)
+	asteroids.emplace_back(
+		asteroid_position,
+		asteroid_direction,
+		ASTEROID_BASE_SIZE,
+		ASTEROID_DEVIATION,
+		30,
+		velocity
 	);
 }
 

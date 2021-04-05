@@ -158,6 +158,8 @@
     <ClCompile Include="Asteroid.cpp" />
     <ClCompile Include="AsteroidField.cpp" />
     <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="Exhaust.cpp" />
+    <ClCompile Include="ExhaustParticle.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="main.cpp" />
@@ -173,6 +175,8 @@
     <ClInclude Include="AsteroidField.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Defines.h" />
+    <ClInclude Include="Exhaust.h" />
+    <ClInclude Include="ExhaustParticle.h" />
     <ClInclude Include="GlutHeaders.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Asteroid.h" />

@@ -32,10 +32,17 @@ void GameManager::onDisplay() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
 
+	glPointSize(10);
+	glColor3f(1.0, 1.0, 1.0);
+	glBegin(GL_POINTS);
+	glVertex2f(0,0);
+	glEnd();
+
 	arena_.drawArena();
 
 	if (playing) {
 		ship_.drawSpaceShip();
+		ship_.drawExhaust();
 
 		if (asteroid_field_.isEmpty()) {
 			for (int i = 0; i < asteroid_field_.asteroidCount(); ++i) {
@@ -140,12 +147,13 @@ void GameManager::handleKeyboardInput() {
 	if (playing) {
 		// forward/backward (+ acceleration case)
 		if (keyboard_.getKeyState('w')) {
-			ship_.translate(Movement::MOVE_FORWARD, dt_);
+			ship_.move(Movement::MOVE_FORWARD, dt_);
 		}
 		else if (keyboard_.getKeyState('s')) {
-			ship_.translate(Movement::MOVE_BACKWARD, dt_);
+			ship_.move(Movement::MOVE_BACKWARD, dt_);
 		}
 		else {
+			// TODO: This is a constant calculation, fix it!
 			ship_.deaccelerate(dt_);
 		}
 

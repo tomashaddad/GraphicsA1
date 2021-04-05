@@ -19,6 +19,8 @@
     <ClCompile Include="Asteroid.cpp" />
     <ClCompile Include="AsteroidField.cpp" />
     <ClCompile Include="Text.cpp" />
+    <ClCompile Include="Exhaust.cpp" />
+    <ClCompile Include="ExhaustParticle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Defines.h" />
@@ -37,6 +39,8 @@
     <ClInclude Include="Collision.h" />
     <ClInclude Include="AsteroidField.h" />
     <ClInclude Include="Text.h" />
+    <ClInclude Include="Exhaust.h" />
+    <ClInclude Include="ExhaustParticle.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

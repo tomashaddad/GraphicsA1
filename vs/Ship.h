@@ -5,6 +5,9 @@
 #include "Enums.h"
 #include "Point.h"
 #include "Window.h"
+#include "Exhaust.h"
+
+#include <queue>
 
 class Ship {
 public:
@@ -15,18 +18,24 @@ public:
 
 	void setStartingPosition(float arena_width, float arena_height);
 
-	void translate(Movement movement, float dt);
+	void move(Movement movement, float dt);
 	void rotate(Movement movement);
 	void setPosition(Point point);
 	void deaccelerate(float dt);
 	void reset();
 
+	void drawExhaust();
+
 	Vector getPosition();
 	Vector getDirection();
+	GLfloat getVelocity();
+
 	float getCollisionRadius();
 	float getWarningRadius();
 
 private:
+	void traceVertices(GLfloat width, GLfloat height, GLfloat tail);
+
 	GLfloat width_;
 	GLfloat height_;
 
@@ -41,6 +50,8 @@ private:
 
 	float radius_;
 	float warning_radius_;
+
+	Exhaust exhaust_;
 };
 
 #endif // I3D_SHIP_H
