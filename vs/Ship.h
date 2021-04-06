@@ -11,11 +11,11 @@
 
 class Ship {
 public:
-	Ship(GLfloat width, GLfloat height, GLfloat radius, GLfloat warning_radius);
+	Ship(float width, float height, float radius, float warning_radius);
 
 	void drawSpaceShip();
 
-	void setStartingPosition(float arena_width, float arena_height);
+	void setStartingPosition(float x, float y);
 
 	void move(Movement movement, float dt);
 	void rotate(Movement movement, float dt);
@@ -26,7 +26,7 @@ public:
 	void drawExhaust();
 
 	Vector getPosition();
-	Vector getDirection();
+	void setRotation(float rotation);
 
 	float getCollisionRadius();
 	float getWarningRadius();
@@ -34,10 +34,10 @@ public:
 	void setAcceleration(Vector vec);
 
 private:
-	void traceVertices(GLfloat width, GLfloat height, GLfloat tail);
+	void traceVertices(float width, float height, float tail);
 
-	GLfloat width_;
-	GLfloat height_;
+	float width_;
+	float height_;
 
 	Vector starting_position_;
 	Vector starting_dir_;
@@ -48,7 +48,8 @@ private:
 	
 	Vector acceleration_;
 
-	float rotation_degree_;
+	float cur_angle_;
+	float init_angle_;
 
 	float radius_;
 	float warning_radius_;

@@ -1,47 +1,34 @@
 #include "GlutHeaders.h"
 #include "Ship.h"
 #include "Defines.h"
-#include <iostream>
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-Ship::Ship(GLfloat width, GLfloat height, GLfloat radius, GLfloat warning_radius)
+Ship::Ship(float width, float height, float radius, float warning_radius)
 	: width_(width),
 	  height_(height),
 	  radius_(radius),
 	  warning_radius_(warning_radius),
-	  velocity_({ 0,0 }),
-	  acceleration_({ 0,0 })
-{
-	setStartingPosition(2 * MAX_ARENA_X, 2 * MAX_ARENA_Y);
-}
+	  cur_angle_(0),
+	  init_angle_(0) {}
 
-void Ship::setStartingPosition(float arena_width, float arena_height) {
-	float slope = arena_height / arena_width;
-	float angle = 180.0 * (atanf(slope) / M_PI);
-	float margin = 0.1; // arbitrary
-
-	position_.x = -MAX_ARENA_X + arena_width * margin;
-	position_.y = slope * position_.x; // y = mx + c
-
-	std::cout << angle << std::endl;
-
-	direction_ = Vector(0);
-
+void Ship::setStartingPosition(float x, float y) {
+	position_.x = x;
+	position_.y = y;
 	starting_position_ = position_;
-	starting_dir_ = direction_;
+	init_angle_ = cur_angle_;
 }
 
 void Ship::drawSpaceShip() {
-	GLfloat half_width = width_ / (GLfloat)2.0;
-	GLfloat half_height = height_ / (GLfloat)2.0;
-	GLfloat tail = position_.x - (GLfloat)1/3 * width_;
+	float half_width = width_ / (GLfloat)2.0;
+	float half_height = height_ / (GLfloat)2.0;
+	float tail = position_.x - (GLfloat)1/3 * width_;
 
 	// Isolate ship
 	glPushMatrix();
 		// Handle rotations
 		glTranslatef(position_.x, position_.y, 0);
-		glRotatef(rotation_degree_, 0, 0, 1);
+		glRotatef(cur_angle_, 0, 0, 1);
 		glTranslatef(-position_.x, -position_.y, 0);
 
 		// Draw outline
@@ -91,17 +78,14 @@ void Ship::traceVertices(GLfloat width, GLfloat height, GLfloat tail) {
 
 void Ship::move(Movement movement, float dt) {
 	if (movement == Movement::MOVE_FORWARD) {
-		//velocity_ = velocity_ + acceleration_ * dt;
-		// no dt needed here because acceleration is a fixed value (using constant acceleration magnitude/formulas)
-		acceleration_ = Vector((float)rotation_degree_) * (float)SHIP_ACCELERATION;
+		acceleration_ = Vector((float)cur_angle_) * (float)SHIP_ACCELERATION;
 	}
 	else if (movement == Movement::MOVE_BACKWARD) {
-		// TODO: Check if backwards movement is required
-		acceleration_ = -Vector((float)rotation_degree_) * (float)SHIP_ACCELERATION;
+		acceleration_ = -Vector((float)cur_angle_) * (float)SHIP_ACCELERATION;
 	}
 
-	exhaust_.addParticle(position_, -direction_, velocity_);
-	exhaust_.updateParticles(dt);
+	exhaust_.addParticle(position_, acceleration_);
+	exhaust_.updateParticles();
 }
 
 void Ship::drawExhaust() {
@@ -110,12 +94,10 @@ void Ship::drawExhaust() {
 
 void Ship::rotate(Movement movement, float dt) {
 	if (movement == Movement::ROTATE_RIGHT) {
-		//direction_.rotate(-100*dt);
-		rotation_degree_ -= 360 * dt;
+		cur_angle_ -= 360 * dt;
 	}
 	else if (movement == Movement::ROTATE_LEFT) {
-		//direction_.rotate(100*dt);
-		rotation_degree_ += 360 * dt;
+		cur_angle_ += 360 * dt;
 	}
 }
 
@@ -128,7 +110,7 @@ void Ship::update(float dt) {
 	velocity_ = velocity_ + (acceleration_ + drag) * dt;
 	position_ = position_ + velocity_ * dt;
 
-	exhaust_.updateParticles(dt);
+	exhaust_.updateParticles();
 }
 
 void Ship::setPosition(Point point) {
@@ -140,10 +122,6 @@ Vector Ship::getPosition() {
 	return position_;
 }
 
-Vector Ship::getDirection() {
-	return direction_;
-}
-
 float Ship::getCollisionRadius() {
 	return radius_;
 }
@@ -153,7 +131,13 @@ float Ship::getWarningRadius() {
 }
 
 void Ship::reset() {
-	velocity_ = 0;
+	acceleration_ = { 0,0 };
+	velocity_ = { 0,0 };
 	position_ = starting_position_;
-	direction_ = starting_dir_;
+	cur_angle_ = init_angle_;
+	exhaust_.clear();
+}
+
+void Ship::setRotation(float rotation) {
+	cur_angle_ = rotation;
 }

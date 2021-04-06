@@ -8,10 +8,10 @@
 
 class Exhaust {
 public:
-	void addParticle(Vector position_, Vector direction_, Vector velocity);
-	void updateParticles(float dt);
-
+	void addParticle(Vector position, Vector ship_velocity);
+	void updateParticles();
 	void drawAll();
+	void clear();
 
 private:
 	std::deque<ExhaustParticle> exhaust_;

@@ -1,28 +1,14 @@
 #include "ExhaustParticle.h"
 #include <iostream>
-#include <random>
+#include "Utility.h"
 
 
-ExhaustParticle::ExhaustParticle(Vector position, Vector direction,
-	Vector velocity)
+ExhaustParticle::ExhaustParticle(Vector position)
 	: size_(10),
-	  position_(position),
-	  direction_(direction),
-	  velocity_(velocity) {}
+	  position_(position) {}
 
-void ExhaustParticle::update(float dt) {
-	std::random_device engine;
-
-	std::uniform_real_distribution<float> real_dist =
-		std::uniform_real_distribution<float>{ -5, 5 };
-
-	float rand_angle = real_dist(engine);
-
-	direction_.rotate(rand_angle);
-
-	velocity_ = velocity_ + direction_ * dt * 200;
-	position_ = position_ + velocity_ * dt;
-	size_ -= 0.1f;
+void ExhaustParticle::update() {
+	size_ -= 0.05f;
 }
 
 // Note to self: Changing this from int to float will kill program since

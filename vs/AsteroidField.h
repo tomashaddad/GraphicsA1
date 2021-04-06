@@ -8,10 +8,10 @@
 class AsteroidField {
 public:
 	AsteroidField();
-	AsteroidField(GLfloat window_width, GLfloat window_height);
+	AsteroidField(float window_width, float window_height);
 
 	void launchAsteroidAtShip(Vector ship_pos);
-	void updateRadius(GLfloat window_width, GLfloat window_height);
+	void updateRadius(float window_width, float window_height);
 
 	void increaseAsteroidCountBy(int counter);
 	int asteroidCount();
@@ -25,8 +25,8 @@ public:
 
 private:
 	int asteroid_count_;
-	GLfloat radius;
-	std::vector<Asteroid> asteroids;
+	float radius_;
+	std::vector<Asteroid> asteroids_;
 };
 
 #endif // I3D_ASTEROIDFIELD_H

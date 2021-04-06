@@ -4,55 +4,52 @@
 #include "GlutHeaders.h"
 #include "Point.h"
 #include "Defines.h"
+#include "Utility.h"
 
 #include <random>
 
-#include <iostream>
-
-Asteroid::Asteroid(Vector position, Vector direction, float base_size,
-	float deviation, int segments, float velocity)
+Asteroid::Asteroid(Vector position, Vector velocity, float base_size, float deviation,
+	int segments)
 	: position_(position),
-	  direction_(direction),
 	  average_radius_(base_size),
 	  radius_deviation_(deviation),
 	  segments_(segments),
-	  velocity_(velocity)
+	  velocity_(velocity),
+	  angle_(0),
+	  rotation_dir_(1)
 {
 	float x, y, theta;
 	float radius;
-	std::random_device engine;
-	std::uniform_real_distribution<float> real_dist;
 	for (int i = 0; i < segments_; ++i) {
-		real_dist = std::uniform_real_distribution<float>
-			{ average_radius_ - radius_deviation_,
-			  average_radius_ + radius_deviation_};
-		radius = real_dist(engine);
+		radius = 
+			Utility::getRandomFloatBetween(average_radius_ - radius_deviation_,
+										   average_radius_ + radius_deviation_);
 
-		theta = i / (float)segments_ * 2 * M_PI;
+		theta = (float)i / (float)segments_ * 2.0 * M_PI;
 		x = radius * cosf(theta);
 		y = radius * sinf(theta);
 
 		points_.push_back(Point{ x, y });
 	}
 
-	real_dist =
-		std::uniform_real_distribution<float>{ ASTEROID_MIN_ROTATION_SPEED,
-											   ASTEROID_MAX_ROTATION_SPEED };
-	rotation_speed_ = real_dist(engine);
+	rotation_speed_ =
+		Utility::getRandomFloatBetween(ASTEROID_MIN_ROTATION_SPEED,
+									   ASTEROID_MAX_ROTATION_SPEED);
 
+	std::random_device engine;
 	std::discrete_distribution<int> int_dist{ 1, 2 };
-	rotation_direction_ = int_dist(engine) % 2 == 0 ? 1 : -1;
+	rotation_dir_ = int_dist(engine) % 2 == 0 ? 1 : -1;
 }
 
 void Asteroid::update(float dt) {
-	position_ = position_ + direction_ * velocity_ * dt;
-	direction_.rotate(rotation_direction_ * rotation_speed_);
+	position_ = position_ + velocity_ * dt;
+	angle_ += 180 * dt;
 }
 
 void Asteroid::drawAsteroid() {
 	glPushMatrix();
 		glTranslatef(position_.x, position_.y, 0);
-		glRotatef(direction_.getAngle(), 0, 0, 1);
+		glRotatef(angle_ * rotation_dir_, 0, 0, 1);
 		glTranslatef(-position_.x, -position_.y, 0);
 
 		glBegin(GL_LINE_LOOP);

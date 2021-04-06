@@ -6,17 +6,13 @@
 
 class ExhaustParticle {
 public:
-	ExhaustParticle(Vector position, Vector direction, Vector velocity);
-	void update(float dt);
+	ExhaustParticle(Vector position);
+	void update();
 	void draw();
-
 	int size();
 
 private:
 	Vector position_;
-	Vector direction_;
-	Vector velocity_;
-
 	float size_;
 };
 

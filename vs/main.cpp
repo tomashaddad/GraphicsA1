@@ -81,8 +81,7 @@ void idle_callback() {
 	game->handleKeyboardInput();
 	game->handleMouseInput();
 	game->checkWallCollisions();
-	game->updateAsteroids();
+	game->updateAsteroidFieldRadius();
 	game->checkAsteroidCollisions();
-	game->incrementLevel();
 	glutPostRedisplay();
 }

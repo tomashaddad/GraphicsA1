@@ -7,7 +7,7 @@
 
 class Vector {
 public:
-	Vector() = default;
+	Vector();
 	Vector(float angle_degrees);
 	Vector(float x, float y);
 

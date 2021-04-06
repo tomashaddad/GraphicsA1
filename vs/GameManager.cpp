@@ -12,15 +12,18 @@
 #include <string>
 
 GameManager::GameManager()
-	: ship_(Ship(
-		(GLfloat)SHIP_WIDTH,
-		(GLfloat)SHIP_HEIGHT,
-		(GLfloat)SHIP_RADIUS,
-		(GLfloat)SHIP_WARNING_RADIUS)),
+	: ship_(Ship(SHIP_WIDTH, SHIP_HEIGHT, SHIP_RADIUS, SHIP_WARNING_RADIUS)),
 	  dt_(0),
 	  last_time_(0),
-	  playing(false),
-	  levellingUp(true) { }
+	  playing(false)
+{
+	// diagonal of arena
+	float slope = win_.arena_height_ / win_.arena_width_;
+	ship_.setRotation(180.0 * (atanf(slope) / M_PI));
+
+	// 1/3 in from the bottom left
+	ship_.setStartingPosition(-0.3 * win_.arena_width_, -0.3 * win_.arena_height_);
+}
 
 void GameManager::startGameLoop() {
 	glutMainLoop();
@@ -36,6 +39,8 @@ void GameManager::onDisplay() {
 		ship_.drawSpaceShip();
 		ship_.drawExhaust();
 
+		// Asteroids are only shot at the ship if there are no asteroids
+		// currently in the arena
 		if (asteroid_field_.isEmpty()) {
 			for (int i = 0; i < asteroid_field_.asteroidCount(); ++i) {
 				asteroid_field_.launchAsteroidAtShip(ship_.getPosition());
@@ -190,7 +195,7 @@ void GameManager::checkWallCollisions() {
 	}
 }
 
-void GameManager::updateAsteroids() {
+void GameManager::updateAsteroidFieldRadius() {
 	asteroid_field_.updateRadius(win_.xmax_ - win_.xmin_,
 								 win_.ymax_ - win_.ymin_);
 }
@@ -213,8 +218,4 @@ void GameManager::resetGame() {
 	ship_.reset();
 	asteroid_field_.reset();
 	playing = false;
-}
-
-void GameManager::incrementLevel() {
-
 }

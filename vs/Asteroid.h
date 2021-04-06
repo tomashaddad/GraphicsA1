@@ -10,8 +10,8 @@
 
 class Asteroid {
 public:
-	Asteroid(Vector position, Vector direction, float base_size,
-		float deviation, int segments, float velocity);
+	Asteroid(Vector position, Vector velocity, float base_size, float deviation,
+		int segments);
 	
 	float getCollisionRadius();
 	Vector getPosition();
@@ -19,16 +19,17 @@ public:
 	void drawAsteroid();
 
 private:
-	float average_radius_;
-	float radius_deviation_;
-	int segments_;
 	std::vector<Point> points_;
 
 	Vector position_;
-	Vector direction_;
-	float velocity_;
+	Vector velocity_;
+	float angle_;
 	float rotation_speed_;
-	int rotation_direction_;
+	int rotation_dir_;
+
+	float average_radius_;
+	float radius_deviation_;
+	int segments_;
 };
 
 #endif // I3D_ASTEROID_H

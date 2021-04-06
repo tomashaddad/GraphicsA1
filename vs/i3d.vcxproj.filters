@@ -21,6 +21,7 @@
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="Exhaust.cpp" />
     <ClCompile Include="ExhaustParticle.cpp" />
+    <ClCompile Include="Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Defines.h" />
@@ -41,6 +42,7 @@
     <ClInclude Include="Text.h" />
     <ClInclude Include="Exhaust.h" />
     <ClInclude Include="ExhaustParticle.h" />
+    <ClInclude Include="Utility.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
