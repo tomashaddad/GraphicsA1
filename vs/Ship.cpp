@@ -5,14 +5,13 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-Ship::Ship(GLfloat width, GLfloat height, GLfloat radius, GLfloat warning_radius,
-	GLfloat velocity, GLfloat acceleration)
+Ship::Ship(GLfloat width, GLfloat height, GLfloat radius, GLfloat warning_radius)
 	: width_(width),
 	  height_(height),
 	  radius_(radius),
 	  warning_radius_(warning_radius),
-	  velocity_(velocity),
-	  acceleration_(acceleration)
+	  velocity_({ 0,0 }),
+	  acceleration_({ 0,0 })
 {
 	setStartingPosition(2 * MAX_ARENA_X, 2 * MAX_ARENA_Y);
 }
@@ -42,7 +41,7 @@ void Ship::drawSpaceShip() {
 	glPushMatrix();
 		// Handle rotations
 		glTranslatef(position_.x, position_.y, 0);
-		glRotatef(direction_.getAngle(), 0, 0, 1);
+		glRotatef(rotation_degree_, 0, 0, 1);
 		glTranslatef(-position_.x, -position_.y, 0);
 
 		// Draw outline
@@ -92,12 +91,14 @@ void Ship::traceVertices(GLfloat width, GLfloat height, GLfloat tail) {
 
 void Ship::move(Movement movement, float dt) {
 	if (movement == Movement::MOVE_FORWARD) {
-		velocity_ = velocity_ + direction_ * acceleration_ * dt;
+		//velocity_ = velocity_ + acceleration_ * dt;
+		// no dt needed here because acceleration is a fixed value (using constant acceleration magnitude/formulas)
+		acceleration_ = Vector((float)rotation_degree_) * (float)SHIP_ACCELERATION;
 	}
 	else if (movement == Movement::MOVE_BACKWARD) {
-		velocity_ = velocity_ - direction_ * acceleration_ * dt;
+		// TODO: Check if backwards movement is required
+		acceleration_ = -Vector((float)rotation_degree_) * (float)SHIP_ACCELERATION;
 	}
-	position_ = position_ + velocity_ * dt;
 
 	exhaust_.addParticle(position_, -direction_, velocity_);
 	exhaust_.updateParticles(dt);
@@ -107,17 +108,24 @@ void Ship::drawExhaust() {
 	exhaust_.drawAll();
 }
 
-void Ship::rotate(Movement movement) {
+void Ship::rotate(Movement movement, float dt) {
 	if (movement == Movement::ROTATE_RIGHT) {
-		direction_.rotate(-2);
+		//direction_.rotate(-100*dt);
+		rotation_degree_ -= 360 * dt;
 	}
 	else if (movement == Movement::ROTATE_LEFT) {
-		direction_.rotate(2);
+		//direction_.rotate(100*dt);
+		rotation_degree_ += 360 * dt;
 	}
 }
 
-void Ship::deaccelerate(float dt) {
-	velocity_ = velocity_ * 0.99;
+void Ship::setAcceleration(Vector vec) {
+	acceleration_ = vec;
+}
+
+void Ship::update(float dt) {
+	Vector drag = -velocity_ * 0.5;
+	velocity_ = velocity_ + (acceleration_ + drag) * dt;
 	position_ = position_ + velocity_ * dt;
 
 	exhaust_.updateParticles(dt);

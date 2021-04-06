@@ -16,9 +16,7 @@ GameManager::GameManager()
 		(GLfloat)SHIP_WIDTH,
 		(GLfloat)SHIP_HEIGHT,
 		(GLfloat)SHIP_RADIUS,
-		(GLfloat)SHIP_WARNING_RADIUS,
-		(GLfloat)SHIP_STARTING_VELOCITY,
-		(GLfloat)SHIP_ACCELERATION)),
+		(GLfloat)SHIP_WARNING_RADIUS)),
 	  dt_(0),
 	  last_time_(0),
 	  playing(false),
@@ -147,17 +145,18 @@ void GameManager::handleKeyboardInput() {
 			ship_.move(Movement::MOVE_BACKWARD, dt_);
 		}
 		else {
-			// TODO: This is a constant calculation, fix it!
-			ship_.deaccelerate(dt_);
+			ship_.setAcceleration(Vector{ 0,0 });
 		}
 
 		// rotation
 		if (keyboard_.getKeyState('a')) {
-			ship_.rotate(Movement::ROTATE_LEFT);
+			ship_.rotate(Movement::ROTATE_LEFT, dt_);
 		}
 		else if (keyboard_.getKeyState('d')) {
-			ship_.rotate(Movement::ROTATE_RIGHT);
+			ship_.rotate(Movement::ROTATE_RIGHT, dt_);
 		}
+
+		ship_.update(dt_);
 	}
 
 	glutPostRedisplay();

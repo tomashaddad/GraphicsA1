@@ -49,7 +49,7 @@ Vector Vector::operator+(const Vector& rhs)
 }
 
 float Vector::operator*(const Vector& rhs) {
-	return x * rhs.x + y * rhs.x;
+	return x * rhs.x + y * rhs.y;
 }
 
 float Vector::getMagnitude() const {
