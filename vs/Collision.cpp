@@ -1,13 +1,14 @@
 #include "Collision.h"
 #define _USING_MATH_DEFINES
 #include <cmath>
+#include "Vector.h"
+#include <iostream>
 
 bool Collision::lineWithPoint(float x1, float y1, float x2, float y2, float px, float py) {
 	float line_length = distanceBetweenPoints(x1, y1, x2, y2);
 	float d1 = distanceBetweenPoints(x1, y1, px, py);
 	float d2 = distanceBetweenPoints(x2, y2, px, py);
 	float buffer = 0.1;
-
 	return d1 + d2 >= line_length - buffer && d1 + d2 <= line_length + buffer;
 }
 
@@ -41,5 +42,5 @@ bool Collision::circleWithLine(float x1, float y1, float x2, float y2, float cx,
 }
 
 float Collision::distanceBetweenPoints(float x1, float y1, float x2, float y2) {
-	return sqrtf(powf(x1 - x2, 2) + powf(y1 - y2, 2));
+	return sqrtf(powf(x2 - x1, 2) + powf(y2 - y1, 2));
 }

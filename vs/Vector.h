@@ -4,6 +4,7 @@
 #define _USE_MATH_DEFINES
 
 #include <iostream>
+#include "Point.h"
 
 class Vector {
 public:

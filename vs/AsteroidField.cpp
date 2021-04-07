@@ -6,6 +6,7 @@
 #include "GlutHeaders.h"
 #include "Defines.h"
 #include "Utility.h"
+#include "Point.h"
 
 #include <vector>
 #include <random>
@@ -36,7 +37,7 @@ void AsteroidField::launchAsteroidAtShip(Vector ship_position) {
 	velocity = velocity * scalar;
 
 	asteroids_.emplace_back(position, velocity, ASTEROID_BASE_SIZE,
-		ASTEROID_DEVIATION, 30);
+		ASTEROID_RADIUS_DEVIATION, 30);
 }
 
 std::vector<Asteroid>& AsteroidField::getAsteroids() {

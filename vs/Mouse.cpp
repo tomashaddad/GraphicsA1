@@ -2,7 +2,8 @@
 
 Mouse::Mouse()
 	: mouse_coords_{ 0, 0 },
-	  dragging_(false) {}
+	  left_clicking_(false),
+	  right_clicking_(false){}
 
 Point Mouse::getMouseCoords() {
 	return mouse_coords_;
@@ -13,10 +14,18 @@ void Mouse::setMouseCoords(double x, double y) {
 	mouse_coords_.y = y;
 }
 
-bool Mouse::isDragging() {
-	return dragging_;
+bool Mouse::isHoldingLeftClick() {
+	return left_clicking_;
 }
 
-void Mouse::setDragging(bool state) {
-	dragging_ = state;
+void Mouse::setHoldingLeftClick(bool state) {
+	left_clicking_ = state;
+}
+
+bool Mouse::isHoldingRightClick() {
+	return right_clicking_;
+}
+
+void Mouse::setHoldingRightClick(bool state) {
+	right_clicking_ = state;
 }

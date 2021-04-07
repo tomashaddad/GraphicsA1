@@ -6,14 +6,14 @@
 
 #include <cmath>
 
-void Exhaust::addParticle(Vector position, Vector ship_velocity) {
+void Exhaust::addParticle(Vector position, Vector ship_acceleration) {
 
-	ship_velocity.normalise();
+	ship_acceleration.normalise();
 
-	ship_velocity = -ship_velocity;
+	ship_acceleration = -ship_acceleration;
 
-	position.x = position.x + 5*ship_velocity.x;
-	position.y = position.y + 5*ship_velocity.y;
+	position.x = position.x + 5 * ship_acceleration.x;
+	position.y = position.y + 5 * ship_acceleration.y;
 
 	float spread = 1.87;
 

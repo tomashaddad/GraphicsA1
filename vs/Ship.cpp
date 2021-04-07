@@ -10,7 +10,9 @@ Ship::Ship(float width, float height, float radius, float warning_radius)
 	  radius_(radius),
 	  warning_radius_(warning_radius),
 	  cur_angle_(0),
-	  init_angle_(0) {}
+	  init_angle_(0),
+	  bullet_timer_(0),
+	  fire_rate_(FIRE_RATE) {}
 
 void Ship::setStartingPosition(float x, float y) {
 	position_.x = x;
@@ -65,7 +67,7 @@ void Ship::drawSpaceShip() {
 	//glEnd();
 }
 
-void Ship::traceVertices(GLfloat width, GLfloat height, GLfloat tail) {
+void Ship::traceVertices(float width, float height, float tail) {
 	glBegin(GL_TRIANGLE_STRIP);
 		glVertex2f(position_.x - width, position_.y + height);
 		glVertex2f(tail, position_.y);
@@ -140,4 +142,28 @@ void Ship::reset() {
 
 void Ship::setRotation(float rotation) {
 	cur_angle_ = rotation;
+}
+
+BulletStream& Ship::getBulletStream() {
+	return bulletStream_;
+}
+
+void Ship::drawBullets(float dt) {
+	bulletStream_.updateBullets(dt);
+	bulletStream_.drawAll();
+}
+
+void Ship::shootBullet(float dt) {
+	// only shoot a bullet if we have elapsed the fire rate, then reset timer
+	if (bullet_timer_ >= fire_rate_) {
+		bulletStream_.addBullet(position_, cur_angle_);
+		bullet_timer_ = 0;
+	}
+}
+
+void Ship::updateBulletTimer(float dt) {
+	// only increment timer if time doesn't permit a new bullet to be shot
+	if (bullet_timer_ < fire_rate_) {
+		bullet_timer_ += dt;
+	}
 }

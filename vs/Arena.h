@@ -4,6 +4,13 @@
 #include "Wall.h"
 #include <vector>
 
+enum WallSide {
+	TOP = 0,
+	BOTTOM = 1,
+	LEFT = 2,
+	RIGHT = 3
+};
+
 class Arena {
 public:
 	Arena();

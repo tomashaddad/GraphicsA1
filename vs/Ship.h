@@ -6,6 +6,7 @@
 #include "Point.h"
 #include "Window.h"
 #include "Exhaust.h"
+#include "BulletStream.h"
 
 #include <queue>
 
@@ -33,6 +34,12 @@ public:
 
 	void setAcceleration(Vector vec);
 
+	void shootBullet(float dt);
+	void drawBullets(float dt);
+	BulletStream& getBulletStream();
+
+	void updateBulletTimer(float dt);
+
 private:
 	void traceVertices(float width, float height, float tail);
 
@@ -54,7 +61,11 @@ private:
 	float radius_;
 	float warning_radius_;
 
+	float bullet_timer_;
+	float fire_rate_;
+
 	Exhaust exhaust_;
+	BulletStream bulletStream_;
 };
 
 #endif // I3D_SHIP_H

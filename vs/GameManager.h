@@ -44,6 +44,9 @@ public:
 	// On reshape, update the radius of the asteroid field
 	void updateAsteroidFieldRadius();
 
+	// Handles bullet->asteroid and bullet->wall collisions
+	void checkBulletCollisions();
+
 	// Clears all asteroids, resets the ship position
 	void resetGame();
 

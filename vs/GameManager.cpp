@@ -12,7 +12,7 @@
 #include <string>
 
 GameManager::GameManager()
-	: ship_(Ship(SHIP_WIDTH, SHIP_HEIGHT, SHIP_RADIUS, SHIP_WARNING_RADIUS)),
+	: ship_(Ship(SHIP_WIDTH, SHIP_HEIGHT, SHIP_COLLISION_RADIUS, SHIP_WARNING_RADIUS)),
 	  dt_(0),
 	  last_time_(0),
 	  playing(false)
@@ -38,6 +38,8 @@ void GameManager::onDisplay() {
 	if (playing) {
 		ship_.drawSpaceShip();
 		ship_.drawExhaust();
+		ship_.updateBulletTimer(dt_); // TODO: Ask if this is the best way to determine fire rate
+		ship_.drawBullets(dt_);
 
 		// Asteroids are only shot at the ship if there are no asteroids
 		// currently in the arena
@@ -106,14 +108,19 @@ void GameManager::onMouseClick(int button, int state, int x, int y) {
 	switch (button) {
 	case GLUT_LEFT_BUTTON:
 		if (state == GLUT_DOWN) {
-			mouse_.setDragging(true);
-			glutPostRedisplay();
-		}
-		else {
-			mouse_.setDragging(false);
+			mouse_.setHoldingLeftClick(true);
+		} else {
+			mouse_.setHoldingLeftClick(false);
 		}
 		break;
+	case GLUT_RIGHT_BUTTON:
+		if (state == GLUT_DOWN) {
+			mouse_.setHoldingRightClick(true);
+		} else {
+			mouse_.setHoldingRightClick(false);
+		}
 	}
+	glutPostRedisplay();
 }
 
 void GameManager::onMouseClickDrag(int x, int y)
@@ -126,6 +133,7 @@ void GameManager::onMouseClickDrag(int x, int y)
 
 
 void GameManager::calculateTimeDelta() {
+	// gives delta time in seconds
 	float cur_time = glutGet(GLUT_ELAPSED_TIME) / 1000.0;
 	dt_ = cur_time - last_time_;
 	last_time_ = cur_time;
@@ -169,8 +177,13 @@ void GameManager::handleKeyboardInput() {
 
 void GameManager::handleMouseInput() {
 	// allows ship to be moved by click-drag
-	if (mouse_.isDragging()) {
+	if (mouse_.isHoldingLeftClick()) {
 		ship_.setPosition(mouse_.getMouseCoords());
+	}
+
+	if (mouse_.isHoldingRightClick()) {
+		// pass dt_ to determine if shooting a bullet is allowed
+		ship_.shootBullet(dt_);
 	}
 }
 
@@ -200,6 +213,8 @@ void GameManager::updateAsteroidFieldRadius() {
 								 win_.ymax_ - win_.ymin_);
 }
 
+
+
 void GameManager::checkAsteroidCollisions() {
 	Vector s_pos = ship_.getPosition();
 	for (Asteroid& asteroid : asteroid_field_.getAsteroids()) {
@@ -211,6 +226,21 @@ void GameManager::checkAsteroidCollisions() {
 							asteroid.getCollisionRadius())) {
 			resetGame();
 		}
+	}
+}
+
+void GameManager::checkBulletCollisions() {
+	int counter = 0;
+	for (Bullet& bullet : ship_.getBulletStream().getBullets()) {
+		for (Wall& wall : arena_.getWalls()) {
+			Point p1 = wall.p1;
+			Point p2 = wall.p2;
+			Vector b_position = bullet.getPosition();
+			if (Collision::lineWithPoint(p1.x, p1.y, p2.x, p2.y, b_position.x, b_position.y)) {
+				bullet.markForDeletion();
+			}
+		}
+		++counter;
 	}
 }
 

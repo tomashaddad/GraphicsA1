@@ -22,6 +22,8 @@
     <ClCompile Include="Exhaust.cpp" />
     <ClCompile Include="ExhaustParticle.cpp" />
     <ClCompile Include="Utility.cpp" />
+    <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="BulletStream.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Defines.h" />
@@ -43,6 +45,8 @@
     <ClInclude Include="Exhaust.h" />
     <ClInclude Include="ExhaustParticle.h" />
     <ClInclude Include="Utility.h" />
+    <ClInclude Include="Bullet.h" />
+    <ClInclude Include="BulletStream.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

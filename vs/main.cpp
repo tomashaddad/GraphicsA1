@@ -83,5 +83,6 @@ void idle_callback() {
 	game->checkWallCollisions();
 	game->updateAsteroidFieldRadius();
 	game->checkAsteroidCollisions();
+	game->checkBulletCollisions();
 	glutPostRedisplay();
 }

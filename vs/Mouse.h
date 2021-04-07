@@ -11,12 +11,16 @@ public:
 	Point getMouseCoords();
 	void setMouseCoords(double x, double y);
 
-	bool isDragging();
-	void setDragging(bool state);
+	bool isHoldingLeftClick();
+	void setHoldingLeftClick(bool state);
+
+	bool isHoldingRightClick();
+	void setHoldingRightClick(bool state);
 
 private:
 	Point mouse_coords_;
-	bool dragging_;
+	bool left_clicking_;
+	bool right_clicking_;
 };
 
 #endif // I3D_MOUSE_H
