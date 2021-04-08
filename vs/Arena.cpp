@@ -2,22 +2,25 @@
 #include "GlutHeaders.h"
 
 Arena::Arena() {
-	addWall(-MAX_ARENA_X, -MAX_ARENA_Y, -MAX_ARENA_X, MAX_ARENA_Y); // left wall
-	addWall(-MAX_ARENA_X, MAX_ARENA_Y, MAX_ARENA_X, MAX_ARENA_Y); // top wall
-	addWall(MAX_ARENA_X, MAX_ARENA_Y, MAX_ARENA_X, -MAX_ARENA_Y); // right wall
-	addWall(MAX_ARENA_X, -MAX_ARENA_Y, -MAX_ARENA_X, -MAX_ARENA_Y); // bottom wall
-}
+	walls_[0] = Wall(-MAX_ARENA_X, MAX_ARENA_Y, MAX_ARENA_X, MAX_ARENA_Y);
+	walls_[0].setSide(WallSide::TOP);
 
-void Arena::addWall(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2) {
-	walls.push_back(Wall(x1, y1, x2, y2));
+	walls_[1] = Wall(MAX_ARENA_X, -MAX_ARENA_Y, -MAX_ARENA_X, -MAX_ARENA_Y);
+	walls_[1].setSide(WallSide::BOTTOM);
+
+	walls_[2] = Wall(-MAX_ARENA_X, -MAX_ARENA_Y, -MAX_ARENA_X, MAX_ARENA_Y);
+	walls_[2].setSide(WallSide::LEFT);
+
+	walls_[3] = Wall(MAX_ARENA_X, MAX_ARENA_Y, MAX_ARENA_X, -MAX_ARENA_Y);
+	walls_[3].setSide(WallSide::RIGHT);
 }
 
 void Arena::drawArena() {
-	for (Wall& wall : walls) {
+	for (Wall& wall : walls_) {
 		wall.drawWall();
 	}
 }
 
-std::vector<Wall>& Arena::getWalls() {
-	return walls;
+std::array<Wall, 4>& Arena::getWalls() {
+	return walls_;
 }

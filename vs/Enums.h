@@ -13,4 +13,11 @@ enum class Colour {
 	WHITE
 };
 
+enum class WallSide {
+	TOP,
+	BOTTOM,
+	LEFT,
+	RIGHT
+};
+
 #endif  // I3D_STATE_H

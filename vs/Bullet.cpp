@@ -19,8 +19,7 @@ void Bullet::draw() {
 	glEnd();
 }
 
-Vector Bullet::getPosition()
-{
+Vector Bullet::getPosition() {
 	return position_;
 }
 

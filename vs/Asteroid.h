@@ -13,6 +13,7 @@ public:
 	Asteroid(Vector position, Vector velocity, float base_size, float deviation,
 		int segments);
 	
+	bool checkCollision(Vector position, float radius = 0);
 	float getCollisionRadius();
 	Vector getPosition();
 	void update(float dt);

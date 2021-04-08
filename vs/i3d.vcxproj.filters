@@ -15,7 +15,6 @@
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Arena.cpp" />
-    <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Asteroid.cpp" />
     <ClCompile Include="AsteroidField.cpp" />
     <ClCompile Include="Text.cpp" />
@@ -39,7 +38,6 @@
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Arena.h" />
-    <ClInclude Include="Collision.h" />
     <ClInclude Include="AsteroidField.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="Exhaust.h" />

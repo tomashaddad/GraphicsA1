@@ -61,6 +61,12 @@ void Asteroid::drawAsteroid() {
 	glPopMatrix();
 }
 
+bool Asteroid::checkCollision(Vector position, float radius) {
+	float distance_between =
+		sqrtf(powf(position.x - position_.x, 2) + powf(position.y - position_.y, 2));
+	return distance_between <= radius + average_radius_;
+}
+
 float Asteroid::getCollisionRadius() {
 	return average_radius_;
 }

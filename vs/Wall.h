@@ -5,14 +5,18 @@
 #include "Defines.h"
 #include "Point.h"
 #include "Enums.h"
+#include "Vector.h"
 #include <utility>
 
 class Wall {
 public:
 	Wall() = default;
-	Wall(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2);
+	Wall(float x1, float y1, float x2, float y2);
 
-	void setCoordinates(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2);
+	// Radius doesn't need to be checked for points (i.e. bullets)
+	bool checkCollision(Vector position, float radius = 0);
+	void setSide(WallSide side);
+	void setCoordinates(float x1, float y1, float x2, float y2);
 	void drawWall();
 	void setColour(Colour colour);
 
@@ -20,7 +24,8 @@ public:
 	Point p2;
 
 private:
-	Colour colour;
+	Colour colour_;
+	WallSide side_;
 };
 
 #endif // I3D_WALL_H

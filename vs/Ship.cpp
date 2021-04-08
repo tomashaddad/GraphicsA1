@@ -138,6 +138,7 @@ void Ship::reset() {
 	position_ = starting_position_;
 	cur_angle_ = init_angle_;
 	exhaust_.clear();
+	bulletStream_.clear();
 }
 
 void Ship::setRotation(float rotation) {

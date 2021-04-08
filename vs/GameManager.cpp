@@ -1,7 +1,6 @@
 #include "GameManager.h"
 #include "Defines.h"
 #include "Enums.h"
-#include "Collision.h"
 #include "Vector.h"
 #include "Text.h"
 
@@ -188,21 +187,19 @@ void GameManager::handleMouseInput() {
 }
 
 void GameManager::checkWallCollisions() {
-	Vector pos = ship_.getPosition();
-	for (Wall& wall : arena_.getWalls()) {
-		Point p1 = wall.p1;
-		Point p2 = wall.p2;
-		float r_warning = ship_.getWarningRadius();
-		float r_collision = ship_.getCollisionRadius();
+	Vector ship_pos = ship_.getPosition();
+	float ship_warn_r = ship_.getWarningRadius();
+	float ship_coll_r = ship_.getCollisionRadius();
 
-		if (Collision::circleWithLine(p1.x, p1.y, p2.x, p2.y, pos.x, pos.y, r_warning)) {
+	for (auto i = 0; i < arena_.getWalls().size(); ++i) {}
+	for (Wall& wall : arena_.getWalls()) {
+		if (wall.checkCollision(ship_pos, ship_warn_r)) {
 			wall.setColour(Colour::RED);
-		}
-		else {
+		} else {
 			wall.setColour(Colour::WHITE);
 		}
 
-		if (Collision::circleWithLine(p1.x, p1.y, p2.x, p2.y, pos.x, pos.y, r_collision)) {
+		if (wall.checkCollision(ship_pos, ship_coll_r)) {
 			resetGame();
 		}
 	}
@@ -213,34 +210,39 @@ void GameManager::updateAsteroidFieldRadius() {
 								 win_.ymax_ - win_.ymin_);
 }
 
-
-
 void GameManager::checkAsteroidCollisions() {
-	Vector s_pos = ship_.getPosition();
+	Vector ship_pos = ship_.getPosition();
+	float ship_collision_r = ship_.getCollisionRadius();
+
 	for (Asteroid& asteroid : asteroid_field_.getAsteroids()) {
-		Vector a_pos = asteroid.getPosition();
-		if (Collision::circleWithCircle(
-							s_pos.x, s_pos.y,
-							ship_.getCollisionRadius(),
-							a_pos.x, a_pos.y,
-							asteroid.getCollisionRadius())) {
+		// Check if any asteroid has collided with the ship
+		if (asteroid.checkCollision(ship_pos, ship_collision_r)) {
 			resetGame();
 		}
 	}
 }
 
 void GameManager::checkBulletCollisions() {
-	int counter = 0;
+	std::array<Wall, 4>& walls = arena_.getWalls();
+	std::vector<Asteroid> asteroids = asteroid_field_.getAsteroids();
+
 	for (Bullet& bullet : ship_.getBulletStream().getBullets()) {
-		for (Wall& wall : arena_.getWalls()) {
-			Point p1 = wall.p1;
-			Point p2 = wall.p2;
-			Vector b_position = bullet.getPosition();
-			if (Collision::lineWithPoint(p1.x, p1.y, p2.x, p2.y, b_position.x, b_position.y)) {
+		bool marked = false;
+		Vector b_position = bullet.getPosition();
+		
+		for (auto i = 0; i < walls.size() && !marked; ++i) {
+			if (walls[i].checkCollision(b_position)) {
 				bullet.markForDeletion();
+				marked = true;
 			}
 		}
-		++counter;
+
+		for (auto i = 0; i < asteroids.size() && !marked; ++i) {
+			if (asteroids[i].checkCollision(b_position)) {
+				bullet.markForDeletion();
+				marked = true;
+			}
+		}
 	}
 }
 
