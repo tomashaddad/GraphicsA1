@@ -22,9 +22,9 @@ void Exhaust::addParticle(Vector position, Vector ship_acceleration) {
 	exhaust_.emplace_back(position);
 }
 
-void Exhaust::updateParticles() {
+void Exhaust::updateParticles(float dt) {
 	for (ExhaustParticle& particle : exhaust_) {
-		particle.update();
+		particle.update(dt);
 		if (particle.size() == 0) {
 			exhaust_.pop_front();
 		}

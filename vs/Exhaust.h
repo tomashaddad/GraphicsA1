@@ -9,7 +9,7 @@
 class Exhaust {
 public:
 	void addParticle(Vector position, Vector ship_acceleration);
-	void updateParticles();
+	void updateParticles(float dt);
 	void drawAll();
 	void clear();
 
