@@ -7,7 +7,7 @@
 class ExhaustParticle {
 public:
 	ExhaustParticle(Vector position);
-	void update();
+	void update(float dt);
 	void draw();
 	int size();
 

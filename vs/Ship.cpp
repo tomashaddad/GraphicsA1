@@ -87,7 +87,7 @@ void Ship::move(Movement movement, float dt) {
 	}
 
 	exhaust_.addParticle(position_, acceleration_);
-	exhaust_.updateParticles();
+	exhaust_.updateParticles(dt);
 }
 
 void Ship::drawExhaust() {
@@ -112,7 +112,7 @@ void Ship::update(float dt) {
 	velocity_ = velocity_ + (acceleration_ + drag) * dt;
 	position_ = position_ + velocity_ * dt;
 
-	exhaust_.updateParticles();
+	exhaust_.updateParticles(dt);
 }
 
 void Ship::setPosition(Point point) {
