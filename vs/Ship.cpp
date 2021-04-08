@@ -87,7 +87,7 @@ void Ship::move(Movement movement, float dt) {
 	}
 
 	exhaust_.addParticle(position_, acceleration_);
-	exhaust_.updateParticles(dt);
+	//exhaust_.update(dt); // TODO: Get rid of this?
 }
 
 void Ship::drawExhaust() {
@@ -96,10 +96,10 @@ void Ship::drawExhaust() {
 
 void Ship::rotate(Movement movement, float dt) {
 	if (movement == Movement::ROTATE_RIGHT) {
-		cur_angle_ -= 360 * dt;
+		cur_angle_ -= 720 * dt;
 	}
 	else if (movement == Movement::ROTATE_LEFT) {
-		cur_angle_ += 360 * dt;
+		cur_angle_ += 720 * dt;
 	}
 }
 
@@ -112,7 +112,11 @@ void Ship::update(float dt) {
 	velocity_ = velocity_ + (acceleration_ + drag) * dt;
 	position_ = position_ + velocity_ * dt;
 
-	exhaust_.updateParticles(dt);
+	if (bullet_timer_ < fire_rate_) {
+		bullet_timer_ += dt;
+	}
+
+	exhaust_.update(dt);
 }
 
 void Ship::setPosition(Point point) {
@@ -159,12 +163,5 @@ void Ship::shootBullet(float dt) {
 	if (bullet_timer_ >= fire_rate_) {
 		bulletStream_.addBullet(position_, cur_angle_);
 		bullet_timer_ = 0;
-	}
-}
-
-void Ship::updateBulletTimer(float dt) {
-	// only increment timer if time doesn't permit a new bullet to be shot
-	if (bullet_timer_ < fire_rate_) {
-		bullet_timer_ += dt;
 	}
 }

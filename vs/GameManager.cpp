@@ -37,7 +37,6 @@ void GameManager::onDisplay() {
 	if (playing) {
 		ship_.drawSpaceShip();
 		ship_.drawExhaust();
-		ship_.updateBulletTimer(dt_); // TODO: Ask if this is the best way to determine fire rate
 		ship_.drawBullets(dt_);
 
 		// Asteroids are only shot at the ship if there are no asteroids
@@ -54,7 +53,10 @@ void GameManager::onDisplay() {
 		for (Asteroid& asteroid : asteroid_field_.getAsteroids()) {
 			asteroid.drawAsteroid();
 		}
-	} else {
+
+		ship_.update(dt_);
+	}
+	else {
 		Text::renderText("Press 'B' to begin!",
 			win_.win_width_ / 2.0f, win_.win_height_ / 2.0f,
 			win_.win_width_, win_.win_height_);
@@ -168,7 +170,7 @@ void GameManager::handleKeyboardInput() {
 			ship_.rotate(Movement::ROTATE_RIGHT, dt_);
 		}
 
-		ship_.update(dt_);
+
 	}
 
 	glutPostRedisplay();

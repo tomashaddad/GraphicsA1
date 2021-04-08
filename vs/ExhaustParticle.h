@@ -6,6 +6,7 @@
 
 class ExhaustParticle {
 public:
+	ExhaustParticle() = default;
 	ExhaustParticle(Vector position);
 	void update(float dt);
 	void draw();

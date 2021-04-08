@@ -38,8 +38,6 @@ public:
 	void drawBullets(float dt);
 	BulletStream& getBulletStream();
 
-	void updateBulletTimer(float dt);
-
 private:
 	void traceVertices(float width, float height, float tail);
 
