@@ -14,7 +14,8 @@ GameManager::GameManager()
 	: ship_(Ship(SHIP_WIDTH, SHIP_HEIGHT, SHIP_COLLISION_RADIUS, SHIP_WARNING_RADIUS)),
 	  dt_(0),
 	  last_time_(0),
-	  playing(false)
+	  playing(false),
+	  game_over(false)
 {
 	// diagonal of arena
 	float slope = win_.arena_height_ / win_.arena_width_;
@@ -35,17 +36,25 @@ void GameManager::onDisplay() {
 	arena_.drawArena();
 
 	if (playing) {
-		ship_.drawSpaceShip();
-		ship_.drawExhaust();
-		ship_.drawBullets(dt_);
+		if (!game_over) {
+			ship_.drawSpaceShip();
+			ship_.drawExhaust();
+			ship_.drawBullets(dt_);
 
-		// Asteroids are only shot at the ship if there are no asteroids
-		// currently in the arena
-		if (asteroid_field_.isEmpty()) {
-			for (int i = 0; i < asteroid_field_.asteroidCount(); ++i) {
-				asteroid_field_.launchAsteroidAtShip(ship_.getPosition());
+			// Asteroids are only shot at the ship if there are no asteroids
+			// currently in the arena
+			if (asteroid_field_.isEmpty()) {
+				for (int i = 0; i < asteroid_field_.asteroidCount(); ++i) {
+					asteroid_field_.launchAsteroidAtShip(ship_.getPosition());
+				}
+				asteroid_field_.increaseAsteroidCountBy(1);
 			}
-			asteroid_field_.increaseAsteroidCountBy(1);
+			ship_.update(dt_);
+		}
+		else {
+			Text::renderText("Game over! Press any key to play again ...",
+				win_.win_width_ / 2.0f, win_.win_height_ / 2.0f,
+				win_.win_width_, win_.win_height_);
 		}
 
 		asteroid_field_.updateAsteroids(dt_);
@@ -53,8 +62,6 @@ void GameManager::onDisplay() {
 		for (Asteroid& asteroid : asteroid_field_.getAsteroids()) {
 			asteroid.drawAsteroid();
 		}
-
-		ship_.update(dt_);
 	}
 	else {
 		Text::renderText("Press 'B' to begin!",
@@ -106,22 +113,26 @@ void GameManager::onKeyUp(unsigned char key, int x, int y) {
 
 // "Click-and-Drag demo" by Glenn G. Chappell
 void GameManager::onMouseClick(int button, int state, int x, int y) {
-	switch (button) {
-	case GLUT_LEFT_BUTTON:
-		if (state == GLUT_DOWN) {
-			mouse_.setHoldingLeftClick(true);
-		} else {
-			mouse_.setHoldingLeftClick(false);
+	if (playing) {
+		switch (button) {
+		case GLUT_LEFT_BUTTON:
+			if (state == GLUT_DOWN) {
+				mouse_.setHoldingLeftClick(true);
+			}
+			else {
+				mouse_.setHoldingLeftClick(false);
+			}
+			break;
+		case GLUT_RIGHT_BUTTON:
+			if (state == GLUT_DOWN) {
+				mouse_.setHoldingRightClick(true);
+			}
+			else {
+				mouse_.setHoldingRightClick(false);
+			}
 		}
-		break;
-	case GLUT_RIGHT_BUTTON:
-		if (state == GLUT_DOWN) {
-			mouse_.setHoldingRightClick(true);
-		} else {
-			mouse_.setHoldingRightClick(false);
-		}
+		glutPostRedisplay();
 	}
-	glutPostRedisplay();
 }
 
 void GameManager::onMouseClickDrag(int x, int y)
@@ -170,7 +181,16 @@ void GameManager::handleKeyboardInput() {
 			ship_.rotate(Movement::ROTATE_RIGHT, dt_);
 		}
 
+		if (keyboard_.getKeyState(' ')) {
+			ship_.shootBullet(dt_);
+		}
+	}
 
+	if (game_over) {
+		if (keyboard_.anyKeyIsPressed()) {
+			std::cout << "Here!" << std::endl;
+			resetGame();
+		}
 	}
 
 	glutPostRedisplay();
@@ -178,31 +198,48 @@ void GameManager::handleKeyboardInput() {
 
 void GameManager::handleMouseInput() {
 	// allows ship to be moved by click-drag
-	if (mouse_.isHoldingLeftClick()) {
-		ship_.setPosition(mouse_.getMouseCoords());
+	if (playing) {
+		if (mouse_.isHoldingLeftClick()) {
+			ship_.setPosition(mouse_.getMouseCoords());
+		}
 	}
 
-	if (mouse_.isHoldingRightClick()) {
-		// pass dt_ to determine if shooting a bullet is allowed
-		ship_.shootBullet(dt_);
-	}
+	//if (mouse_.isHoldingRightClick()) {
+	//	// pass dt_ to determine if shooting a bullet is allowed
+	//	ship_.shootBullet(dt_);
+	//}
 }
 
 void GameManager::checkWallCollisions() {
-	Vector ship_pos = ship_.getPosition();
-	float ship_warn_r = ship_.getWarningRadius();
-	float ship_coll_r = ship_.getCollisionRadius();
+	if (playing) {
+		Vector ship_pos = ship_.getPosition();
+		float ship_warn_r = ship_.getWarningRadius();
+		float ship_coll_r = ship_.getCollisionRadius();
 
-	for (auto i = 0; i < arena_.getWalls().size(); ++i) {}
-	for (Wall& wall : arena_.getWalls()) {
-		if (wall.checkCollision(ship_pos, ship_warn_r)) {
-			wall.setColour(Colour::RED);
-		} else {
-			wall.setColour(Colour::WHITE);
+		for (auto i = 0; i < arena_.getWalls().size(); ++i) {
 		}
+		for (Wall& wall : arena_.getWalls()) {
+			if (wall.checkCollision(ship_pos, ship_warn_r)) {
+				wall.setColour(Colour::RED);
+			}
+			else {
+				wall.setColour(Colour::WHITE);
+			}
 
-		if (wall.checkCollision(ship_pos, ship_coll_r)) {
-			resetGame();
+			if (wall.checkCollision(ship_pos, ship_coll_r)) {
+				game_over = true;
+			}
+
+			for (Asteroid& asteroid : asteroid_field_.getAsteroids()) {
+				if (asteroid.isInArena() && wall.checkCollision(asteroid.getPosition(), asteroid.getCollisionRadius())) {
+					if (wall.getSide() == WallSide::BOTTOM || wall.getSide() == WallSide::TOP) {
+						asteroid.bounceInY();
+					}
+					else {
+						asteroid.bounceInX();
+					}
+				}
+			}
 		}
 	}
 }
@@ -213,36 +250,40 @@ void GameManager::updateAsteroidFieldRadius() {
 }
 
 void GameManager::checkAsteroidCollisions() {
-	Vector ship_pos = ship_.getPosition();
-	float ship_collision_r = ship_.getCollisionRadius();
+	if (playing) {
+		Vector ship_pos = ship_.getPosition();
+		float ship_collision_r = ship_.getCollisionRadius();
 
-	for (Asteroid& asteroid : asteroid_field_.getAsteroids()) {
-		// Check if any asteroid has collided with the ship
-		if (asteroid.checkCollision(ship_pos, ship_collision_r)) {
-			resetGame();
+		for (Asteroid& asteroid : asteroid_field_.getAsteroids()) {
+			// Check if any asteroid has collided with the ship
+			if (asteroid.checkCollision(ship_pos, ship_collision_r)) {
+				game_over = true;
+			}
 		}
 	}
 }
 
 void GameManager::checkBulletCollisions() {
-	std::array<Wall, 4>& walls = arena_.getWalls();
-	std::vector<Asteroid> asteroids = asteroid_field_.getAsteroids();
+	if (playing) {
+		std::array<Wall, 4>& walls = arena_.getWalls();
+		std::vector<Asteroid> asteroids = asteroid_field_.getAsteroids();
 
-	for (Bullet& bullet : ship_.getBulletStream().getBullets()) {
-		bool marked = false;
-		Vector b_position = bullet.getPosition();
-		
-		for (auto i = 0; i < walls.size() && !marked; ++i) {
-			if (walls[i].checkCollision(b_position)) {
-				bullet.markForDeletion();
-				marked = true;
+		for (Bullet& bullet : ship_.getBulletStream().getBullets()) {
+			bool marked = false;
+			Vector b_position = bullet.getPosition();
+
+			for (auto i = 0; i < walls.size() && !marked; ++i) {
+				if (walls[i].checkCollision(b_position)) {
+					bullet.markForDeletion();
+					marked = true;
+				}
 			}
-		}
 
-		for (auto i = 0; i < asteroids.size() && !marked; ++i) {
-			if (asteroids[i].checkCollision(b_position)) {
-				bullet.markForDeletion();
-				marked = true;
+			for (auto i = 0; i < asteroids.size() && !marked; ++i) {
+				if (asteroids[i].checkCollision(b_position)) {
+					bullet.markForDeletion();
+					marked = true;
+				}
 			}
 		}
 	}
@@ -251,5 +292,5 @@ void GameManager::checkBulletCollisions() {
 void GameManager::resetGame() {
 	ship_.reset();
 	asteroid_field_.reset();
-	playing = false;
+	game_over = false;
 }

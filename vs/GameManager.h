@@ -61,6 +61,7 @@ private:
 	float dt_;
 
 	bool playing;
+	bool game_over;
 };
 
 #endif // I3D_GLUTMANAGER_H

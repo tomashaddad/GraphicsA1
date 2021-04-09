@@ -10,16 +10,20 @@
 
 class Asteroid {
 public:
-	Asteroid(Vector position, Vector velocity, float base_size, float deviation,
-		int segments);
+	Asteroid(Vector position, Vector velocity, float deviation, int segments);
 	
 	bool checkCollision(Vector position, float radius = 0);
 	float getCollisionRadius();
 	Vector getPosition();
 	void update(float dt);
 	void drawAsteroid();
+	bool isInArena();
+
+	void bounceInX();
+	void bounceInY();
 
 private:
+	bool checkIfInArena();
 	std::vector<Point> points_;
 
 	Vector position_;
@@ -28,9 +32,12 @@ private:
 	float rotation_speed_;
 	int rotation_dir_;
 
-	float average_radius_;
+	float size_scalar_;
+	float radius_;
 	float radius_deviation_;
 	int segments_;
+
+	bool in_arena_;
 };
 
 #endif // I3D_ASTEROID_H

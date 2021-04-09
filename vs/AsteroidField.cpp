@@ -36,8 +36,7 @@ void AsteroidField::launchAsteroidAtShip(Vector ship_position) {
 	float scalar = getRandomFloatBetween(ASTEROID_MIN_SPEED, ASTEROID_MAX_SPEED);
 	velocity = velocity * scalar;
 
-	asteroids_.emplace_back(position, velocity, ASTEROID_BASE_SIZE,
-		ASTEROID_RADIUS_DEVIATION, 30);
+	asteroids_.emplace_back(position, velocity, ASTEROID_RADIUS_DEVIATION, 30);
 }
 
 std::vector<Asteroid>& AsteroidField::getAsteroids() {
@@ -68,7 +67,7 @@ void AsteroidField::updateAsteroids(float dt) {
 		Vector a_pos = asteroids_[i].getPosition();
 		float dist_from_center = sqrtf(a_pos.x * a_pos.x + a_pos.y * a_pos.y);
 
-		if (dist_from_center > radius_) {
+		if (dist_from_center > radius_ + 5) {
 			using std::swap;
 			swap(asteroids_[i], asteroids_.back());
 			asteroids_.pop_back();

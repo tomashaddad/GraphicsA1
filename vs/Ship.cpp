@@ -96,10 +96,10 @@ void Ship::drawExhaust() {
 
 void Ship::rotate(Movement movement, float dt) {
 	if (movement == Movement::ROTATE_RIGHT) {
-		cur_angle_ -= 720 * dt;
+		cur_angle_ -= SHIP_TURN_RATE * dt;
 	}
 	else if (movement == Movement::ROTATE_LEFT) {
-		cur_angle_ += 720 * dt;
+		cur_angle_ += SHIP_TURN_RATE * dt;
 	}
 }
 

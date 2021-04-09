@@ -64,3 +64,7 @@ bool Wall::checkCollision(Vector position, float radius) {
 
 	return collision;
 }
+
+WallSide Wall::getSide() {
+	return side_;
+}

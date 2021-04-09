@@ -20,6 +20,8 @@ public:
 	void drawWall();
 	void setColour(Colour colour);
 
+	WallSide getSide();
+
 	Point p1;
 	Point p2;
 
