@@ -37,6 +37,7 @@ private:
 	float radius_deviation_;
 	int segments_;
 
+	int health_;
 	bool in_arena_;
 };
 

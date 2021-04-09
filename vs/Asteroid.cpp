@@ -32,8 +32,6 @@ Asteroid::Asteroid(Vector position, Vector velocity, float deviation, int segmen
 		points_.push_back(Point{ x, y });
 	}
 
-	std::cout << "Created asteroid with radius " << radius << std::endl;
-
 	rotation_speed_ =
 		Utility::getRandomFloatBetween(ASTEROID_MIN_ROTATION_SPEED,
 									   ASTEROID_MAX_ROTATION_SPEED);
