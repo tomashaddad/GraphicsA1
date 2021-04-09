@@ -67,7 +67,14 @@ void AsteroidField::updateAsteroids(float dt) {
 		Vector a_pos = asteroids_[i].getPosition();
 		float dist_from_center = sqrtf(a_pos.x * a_pos.x + a_pos.y * a_pos.y);
 
+		// TODO: Delete this since it is unneeded once asteroids bounce
 		if (dist_from_center > radius_ + 5) {
+			using std::swap;
+			swap(asteroids_[i], asteroids_.back());
+			asteroids_.pop_back();
+		}
+
+		if (asteroids_[i].markedForDeletion()) {
 			using std::swap;
 			swap(asteroids_[i], asteroids_.back());
 			asteroids_.pop_back();

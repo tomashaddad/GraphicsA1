@@ -41,6 +41,9 @@ public:
 	// Handles ship->asteroid collisions
 	void checkAsteroidCollisions();
 
+	// Updates asteroid state
+	void updateAsteroids();
+
 	// On reshape, update the radius of the asteroid field
 	void updateAsteroidFieldRadius();
 

@@ -5,13 +5,13 @@
 
 // Arena parameters
 #define MAX_ARENA_X (PLANE_LIM - 5)
-#define MAX_ARENA_Y (PLANE_LIM - 15)
+#define MAX_ARENA_Y (PLANE_LIM - 20)
 
 // Ship parameters
 #define SHIP_FILL_RGB 1, 0, 0
 #define SHIP_LINE_RGB 1, 1, 1
 #define SHIP_SCALING 0.4
-#define SHIP_TURN_RATE 360 // degrees per second
+#define SHIP_TURN_RATE 720 // degrees per second
 #define SHIP_WIDTH PLANE_LIM * SHIP_SCALING * 0.2
 #define SHIP_HEIGHT PLANE_LIM * SHIP_SCALING * 0.15
 
@@ -23,11 +23,11 @@
 
 // Bullet parameters
 #define BULLET_SPEED 100
-#define FIRE_RATE 0.25 // seconds per bullet
+#define FIRE_RATE 0.1 // seconds per bullet
 
 #define SHIP_STARTING_VELOCITY 0.0
 #define SHIP_STARTING_ACCEELERATION 0.0
-#define SHIP_ACCELERATION 50
+#define SHIP_ACCELERATION 80
 #define SHIP_WARNING_RADIUS 15
 #define SHIP_COLLISION_RADIUS 2.5
 
@@ -39,6 +39,8 @@
 #define ASTEROID_BASE_SIZE 1
 #define ASTEROID_MIN_SIZE 5
 #define ASTEROID_MAX_SIZE 15
+#define ASTEROID_MIN_HEALTH 1
+#define ASTEROID_MAX_HEALTH 3
 #define ASTEROID_RADIUS_DEVIATION 0.2 // Make sure MIN_SIZE - DEVIATION > 0!
 
 #endif // I3D_DEFINES_H

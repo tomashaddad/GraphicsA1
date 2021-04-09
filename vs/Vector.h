@@ -27,6 +27,7 @@ public:
 	Vector operator+(const Vector& rhs);
 	float operator*(const Vector& rhs);
 	bool operator>(const Vector& rhs);
+	bool operator!=(const Vector& rhs);
 
 	friend std::ostream& operator<<(std::ostream& ostream, Vector& vector);
 

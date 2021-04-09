@@ -62,6 +62,11 @@ bool Vector::operator>(const Vector& rhs) {
 	return this->getMagnitude() > rhs.getMagnitude();
 }
 
+bool Vector::operator!=(const Vector& rhs)
+{
+	return x != rhs.x && y != rhs.y;
+}
+
 void Vector::normalise() {
 	float magnitude = sqrtf(powf(x, 2) + powf(y, 2));
 	x /= magnitude;

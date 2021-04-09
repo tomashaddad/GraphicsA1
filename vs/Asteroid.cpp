@@ -16,8 +16,10 @@ Asteroid::Asteroid(Vector position, Vector velocity, float deviation, int segmen
 	  velocity_(velocity),
 	  angle_(0),
 	  rotation_dir_(1),
-	  in_arena_(false)
+	  in_arena_(false),
+	  to_delete_(false)
 {
+	// Creates jagged edges
 	float x, y, theta;
 	float radius;
 	for (int i = 0; i < segments_; ++i) {
@@ -32,13 +34,20 @@ Asteroid::Asteroid(Vector position, Vector velocity, float deviation, int segmen
 		points_.push_back(Point{ x, y });
 	}
 
+	// Selects random rotation speed from range given in Define.h
 	rotation_speed_ =
 		Utility::getRandomFloatBetween(ASTEROID_MIN_ROTATION_SPEED,
 									   ASTEROID_MAX_ROTATION_SPEED);
 
+	// The Asteroid starts as a "unit" asteroid and is enlarged by some scalar
 	size_scalar_ = Utility::getRandomFloatBetween(ASTEROID_MIN_SIZE, ASTEROID_MAX_SIZE);
 	radius_ *= size_scalar_;
 
+	// The health of an Asteroid is mapped to a number between 
+	// ASTEROID_MIN_HEALTH and ASTEROID_MAX_HEALTH
+	health_ = round(mapHealth(radius_, ASTEROID_MIN_SIZE, ASTEROID_MAX_SIZE));
+
+	// Returns either 1 or -1 to determine asteroid rotation direction
 	std::random_device engine;
 	std::discrete_distribution<int> int_dist{ 1, 2 };
 	rotation_dir_ = int_dist(engine) % 2 == 0 ? 1 : -1;
@@ -50,6 +59,10 @@ void Asteroid::update(float dt) {
 
 	if (!in_arena_) {
 		in_arena_ = checkIfInArena();
+	}
+
+	if (health_ <= 0) {
+		to_delete_ = true;
 	}
 }
 
@@ -72,16 +85,20 @@ void Asteroid::drawAsteroid() {
 
 bool Asteroid::checkCollision(Vector position, float radius) {
 	float distance_between =
-		sqrtf(powf(position.x - position_.x, 2) + powf(position.y - position_.y, 2));
-	return distance_between <= radius + radius_;
+		fabs(powf(position.x - position_.x, 2) + powf(position.y - position_.y, 2));
+	return distance_between <= (radius + radius_)*(radius + radius_);
 }
 
 float Asteroid::getCollisionRadius() {
 	return radius_;
 }
 
-Vector Asteroid::getPosition() {
+Vector& Asteroid::getPosition() {
 	return position_;
+}
+
+Vector& Asteroid::getVelocity() {
+	return velocity_;
 }
 
 bool Asteroid::isInArena() {
@@ -93,7 +110,6 @@ bool Asteroid::checkIfInArena() {
 		&& position_.x + radius_ < MAX_ARENA_X
 		&& position_.y - radius_ > -MAX_ARENA_Y
 		&& position_.y + radius_ < MAX_ARENA_Y) {
-		std::cout << "in arena!" << std::endl;
 		return true;
 	}
 	return false;
@@ -105,4 +121,34 @@ void Asteroid::bounceInX() {
 
 void Asteroid::bounceInY() {
 	velocity_.y = -velocity_.y;
+}
+
+// Maps a range of Asteroid sizes to a health range of [1, 5]
+float Asteroid::mapHealth(float radius, float min_size, float max_size) {
+	float old_range = max_size - min_size;
+	float new_range = ASTEROID_MAX_HEALTH - ASTEROID_MIN_HEALTH;
+	return (((radius - min_size) * new_range) / old_range) + ASTEROID_MIN_HEALTH;
+}
+
+void Asteroid::decrementHealthBy(int num) {
+	health_ -= num;
+}
+
+bool Asteroid::markedForDeletion() {
+	return to_delete_;
+}
+
+void Asteroid::handleAsteroidCollision(Vector other_position, Vector other_velocity) {
+	std::cout << "BEFORE:" << std::endl;
+	std::cout << velocity_ << std::endl;
+	Vector position_difference = position_ - other_position;
+	float magnitude = position_difference.getMagnitude();
+	float squared_mag = magnitude * magnitude;
+
+	float dot_product = (velocity_ - other_velocity) * (position_ - other_position);
+	velocity_ = velocity_ - (position_difference * (dot_product / squared_mag));
+
+
+	std::cout << "AFTER:" << std::endl;
+	std::cout << velocity_ << std::endl;
 }
