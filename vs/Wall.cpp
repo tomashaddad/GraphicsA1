@@ -39,25 +39,25 @@ void Wall::setColour(Colour colour) {
 	this->colour_ = colour;
 }
 
-bool Wall::checkCollision(Vector position, float radius) {
+bool Wall::checkCollision(Vector position, float a_xmax, float a_ymax, float radius) {
 	bool collision = false;
 	if (side_ == WallSide::TOP) {
-		if (position.y + radius > MAX_ARENA_Y) {
+		if (position.y + radius > a_ymax) {
 			collision = true;
 		}
 	}
 	else if (side_ == WallSide::BOTTOM) {
-		if (position.y - radius < -MAX_ARENA_Y) {
+		if (position.y - radius < -a_ymax) {
 			collision = true;
 		}
 	}
 	else if (side_ == WallSide::LEFT) {
-		if (position.x - radius < -MAX_ARENA_X) {
+		if (position.x - radius < -a_xmax) {
 			collision = true;
 		}
 	}
 	else if (side_ == WallSide::RIGHT) {
-		if (position.x + radius > MAX_ARENA_X) {
+		if (position.x + radius > a_xmax) {
 			collision = true;
 		}
 	}

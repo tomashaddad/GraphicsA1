@@ -17,7 +17,7 @@ public:
 	int asteroidCount();
 	bool isEmpty();
 
-	void updateAsteroids(float dt);
+	void updateAsteroids(float dt, float a_width, float a_height);
 
 	void reset();
 

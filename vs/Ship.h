@@ -12,8 +12,7 @@
 
 class Ship {
 public:
-	Ship(float width, float height, float radius, float warning_radius);
-
+	Ship();
 	void drawSpaceShip();
 
 	void setStartingPosition(float x, float y);

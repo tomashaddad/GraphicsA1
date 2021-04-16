@@ -15,22 +15,24 @@ public:
 	bool checkCollision(Vector position, float radius = 0);
 	float getCollisionRadius();
 	Vector& getPosition();
+	void setPosition(Vector v);
 	Vector& getVelocity();
-	void update(float dt);
+	void setVelocity(Vector v);
+	void update(float dt, float a_width, float a_height);
 	void drawAsteroid();
 	bool isInArena();
 
-	void bounceInX();
-	void bounceInY();
+	void bounceInX(float dt);
+	void bounceInY(float dt);
 
 	void decrementHealthBy(int num);
 
 	bool markedForDeletion();
 
-	void handleAsteroidCollision(Vector other_position, Vector other_velocity);
+	float getSize();
 
 private:
-	bool checkIfInArena();
+	bool checkIfInArena(float ax, float ay);
 	float mapHealth(float radius, float min_size, float max_size);
 
 	std::vector<Point> points_;

@@ -1,5 +1,6 @@
 #include "Arena.h"
 #include "GlutHeaders.h"
+#include "WorldDefines.h"
 
 Arena::Arena() {
 	walls_[0] = Wall(-MAX_ARENA_X, MAX_ARENA_Y, MAX_ARENA_X, MAX_ARENA_Y);

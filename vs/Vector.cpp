@@ -73,6 +73,10 @@ void Vector::normalise() {
 	y /= magnitude;
 }
 
+float Vector::getDistanceFrom(Vector v) {
+	return sqrtf((x - v.x) * (x - v.x) + (y - v.y) * (y - v.y));
+}
+
 std::ostream& operator<<(std::ostream& ostream, Vector& vector)
 {
 	ostream << "Magnitude: " << vector.getMagnitude() << ", Angle: " <<

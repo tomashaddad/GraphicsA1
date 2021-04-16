@@ -1,15 +1,15 @@
 #include "BulletStream.h"
 #include <cmath>
-#include "Defines.h"
+#include "BulletDefines.h"
 #include <iostream>
 
-void BulletStream::addBullet(Vector ship_position, float angle) {
+void BulletStream::addBullet(Vector ship_position, float angle, float ship_width) {
 	// unit vector in direction of current ship angle
 	Vector bullet_velocity(angle);
 
 	// Multiplying the unit vector by half the ship's width gives tip of ship
 	Vector copy = bullet_velocity;
-	copy = copy * SHIP_WIDTH * 0.5;
+	copy = copy * ship_width * 0.5;
 
 	bullet_velocity = bullet_velocity * BULLET_SPEED;
 
@@ -22,8 +22,7 @@ void BulletStream::updateBullets(float dt) {
 		bullets_[i].update(dt);
 
 		if (bullets_[i].markedForDeletion()) {
-			using std::swap;
-			swap(bullets_[i], bullets_.back());
+			std::swap(bullets_[i], bullets_.back());
 			bullets_.pop_back();
 		}
 	}

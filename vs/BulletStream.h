@@ -8,7 +8,7 @@
 
 class BulletStream {
 public:
-	void addBullet(Vector ship_position, float angle);
+	void addBullet(Vector ship_position, float angle, float ship_width);
 	void updateBullets(float dt);
 	void drawAll();
 	std::vector<Bullet>& getBullets();

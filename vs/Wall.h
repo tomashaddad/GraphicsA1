@@ -2,7 +2,6 @@
 #define I3D_WALL_H
 
 #include "GlutHeaders.h"
-#include "Defines.h"
 #include "Point.h"
 #include "Enums.h"
 #include "Vector.h"
@@ -14,7 +13,7 @@ public:
 	Wall(float x1, float y1, float x2, float y2);
 
 	// Radius doesn't need to be checked for points (i.e. bullets)
-	bool checkCollision(Vector position, float radius = 0);
+	bool checkCollision(Vector position, float a_xmax, float a_ymax, float radius = 0);
 	void setSide(WallSide side);
 	void setCoordinates(float x1, float y1, float x2, float y2);
 	void drawWall();

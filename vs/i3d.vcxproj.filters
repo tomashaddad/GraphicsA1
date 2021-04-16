@@ -4,6 +4,9 @@
     <Filter Include="src">
       <UniqueIdentifier>{e9b2b8c8-28b3-4eff-986f-98a1b2cd3417}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Defines">
+      <UniqueIdentifier>{755b3cc3-54cd-4d11-9b97-2ef8c91bce53}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameManager.cpp" />
@@ -25,7 +28,6 @@
     <ClCompile Include="BulletStream.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Defines.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GlutHeaders.h" />
     <ClInclude Include="Asteroid.h" />
@@ -45,6 +47,21 @@
     <ClInclude Include="Utility.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="BulletStream.h" />
+    <ClInclude Include="ShipDefines.h">
+      <Filter>Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="AsteroidDefines.h">
+      <Filter>Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldDefines.h">
+      <Filter>Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletDefines.h">
+      <Filter>Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="ExhaustDefines.h">
+      <Filter>Defines</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

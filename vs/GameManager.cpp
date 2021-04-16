@@ -1,5 +1,4 @@
 #include "GameManager.h"
-#include "Defines.h"
 #include "Enums.h"
 #include "Vector.h"
 #include "Text.h"
@@ -11,8 +10,7 @@
 #include <string>
 
 GameManager::GameManager()
-	: ship_(Ship(SHIP_WIDTH, SHIP_HEIGHT, SHIP_COLLISION_RADIUS, SHIP_WARNING_RADIUS)),
-	  dt_(0),
+	: dt_(0),
 	  last_time_(0),
 	  playing(false),
 	  game_over(false)
@@ -208,24 +206,27 @@ void GameManager::checkWallCollisions() {
 		for (auto i = 0; i < arena_.getWalls().size(); ++i) {
 		}
 		for (Wall& wall : arena_.getWalls()) {
-			if (wall.checkCollision(ship_pos, ship_warn_r)) {
+			if (wall.checkCollision(ship_pos, win_.arena_width_, win_.arena_height_, ship_warn_r)) {
 				wall.setColour(Colour::RED);
 			}
 			else {
 				wall.setColour(Colour::WHITE);
 			}
 
-			if (wall.checkCollision(ship_pos, ship_coll_r)) {
+			if (wall.checkCollision(ship_pos, win_.arena_width_, win_.arena_height_, ship_coll_r)) {
 				game_over = true;
 			}
 
 			for (Asteroid& asteroid : asteroid_field_.getAsteroids()) {
-				if (asteroid.isInArena() && wall.checkCollision(asteroid.getPosition(), asteroid.getCollisionRadius())) {
+				if (asteroid.isInArena()
+					&& wall.checkCollision(asteroid.getPosition(),
+										   win_.arena_width_, win_.arena_height_,
+										   asteroid.getCollisionRadius())) {
 					if (wall.getSide() == WallSide::BOTTOM || wall.getSide() == WallSide::TOP) {
-						asteroid.bounceInY();
+						asteroid.bounceInY(dt_);
 					}
 					else {
-						asteroid.bounceInX();
+						asteroid.bounceInX(dt_);
 					}
 				}
 			}
@@ -244,7 +245,7 @@ void GameManager::updateAsteroids() {
 				asteroid_field_.increaseAsteroidCountBy(1);
 			}
 		}
-		asteroid_field_.updateAsteroids(dt_);
+		asteroid_field_.updateAsteroids(dt_, win_.arena_width_, win_.arena_height_);
 	}
 }
 
@@ -264,41 +265,46 @@ void GameManager::checkAsteroidCollisions() {
 				game_over = true;
 			}
 
-			// TODO: REVISIT THIS 
-			//for (Asteroid& a2 : asteroid_field_.getAsteroids()) {
-			//	if (a1.getPosition() != a2.getPosition()) {
-			//		if (a1.checkCollision(a2.getPosition(), a2.getCollisionRadius())) {
-			//			Vector& a1p = a1.getPosition();
-			//			Vector& a2p = a2.getPosition();
-			//			Vector& a1v = a1.getVelocity();
-			//			Vector& a2v = a2.getVelocity();
+			for (Asteroid& a2 : asteroid_field_.getAsteroids()) {
+				if (a1.getPosition() != a2.getPosition() && a1.isInArena() && a2.isInArena()) {
+					if (a1.checkCollision(a2.getPosition(), a2.getCollisionRadius())) {
 
-			//			float distance = sqrtf((a1p.x - a2p.x) * (a1p.x - a2p.x) + (a1p.y - a2p.y) * (a1p.y - a2p.y));
-			//			float overlap = 0.5f * (distance - a1.getCollisionRadius() - a2.getCollisionRadius());
+						float distance_between = a1.getPosition().getDistanceFrom(a2.getPosition());
+						distance_between = distance_between - a1.getCollisionRadius() - a2.getCollisionRadius();
 
-			//			a1p.x -= overlap * (a1p.x - a2p.x) / distance;
-			//			a1p.y -= overlap * (a1p.y - a2p.y) / distance;
+						Vector& a1p = a1.getPosition();
+						Vector& a2p = a2.getPosition();
+						Vector& a1v = a1.getVelocity();
+						Vector& a2v = a2.getVelocity();
 
-			//			a2p.x += overlap * (a1p.x - a2p.x) / distance;
-			//			a2p.y += overlap * (a1p.y - a2p.y) / distance;
+						Vector un = a1p - a2p;
+						un.normalise();
+						Vector ut = Vector(-un.y, un.x);
 
-			//			float kx = a1v.x - a2v.x;
-			//			float ky = a2v.y - a2v.y;
+						Vector new_a1_position = a1.getPosition() - (un * 0.5 * distance_between);
+						Vector new_a2_position = a2.getPosition() + (un * 0.5 * distance_between);
 
-			//			float nx = (a2p.x - a1p.x) / distance;
-			//			float ny = (a2p.y - a1p.y) / distance;
+						a1.setPosition(new_a1_position);
+						a2.setPosition(new_a2_position);
 
-			//			float p = (nx * kx + ny * ky);
-			//			a1v.x = a1v.x - p * nx;
-			//			a1v.y = a1v.y - p * ny;
+						float v1n = un * a1v;
+						float v1t = ut * a1v;
+						float v2n = un * a2v;
+						float v2t = ut * a2v;
 
-			//			a2v.x = a2v.x + p * nx;
-			//			a2v.y = a2v.y + p * ny;
+						float a1m = a1.getSize();
+						float a2m = a2.getSize();
 
-			//			//a1.handleAsteroidCollision(a1p, vel2);
-			//			//a2.handleAsteroidCollision(a2p, vel1);
-			//		}
-			//	}
+						float new_v1n = (v1n * (a1m - a2m) + (2 * a2m) * v2n) / (a1m + a2m);
+						float new_v2n = (v2n * (a2m - a1m) + (2 * a1m) * v1n) / (a1m + a2m);
+
+						Vector new_a1_v = un * new_v1n + ut * v1t;
+						Vector new_a2_v = un * new_v2n + ut * v2t;
+
+						a1.setVelocity(new_a1_v);
+						a2.setVelocity(new_a2_v);
+					}
+				}
 			}
 		}
 	}
@@ -314,7 +320,7 @@ void GameManager::checkBulletCollisions() {
 			Vector b_position = bullet.getPosition();
 
 			for (auto i = 0; i < walls.size() && !marked; ++i) {
-				if (walls[i].checkCollision(b_position)) {
+				if (walls[i].checkCollision(b_position, win_.arena_width_, win_.arena_height_)) {
 					bullet.markForDeletion();
 					marked = true;
 				}

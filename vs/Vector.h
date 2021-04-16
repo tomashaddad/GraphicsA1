@@ -18,6 +18,8 @@ public:
 	float getAngle();
 	float getMagnitude() const;
 
+	float getDistanceFrom(Vector v);
+
 	void normalise();
 
 	Vector operator=(const Vector& rhs);

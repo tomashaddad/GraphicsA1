@@ -1,14 +1,16 @@
 #include "GlutHeaders.h"
 #include "Ship.h"
-#include "Defines.h"
+
+#include "ShipDefines.h"
+
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-Ship::Ship(float width, float height, float radius, float warning_radius)
-	: width_(width),
-	  height_(height),
-	  radius_(radius),
-	  warning_radius_(warning_radius),
+Ship::Ship()
+	: width_(SHIP_WIDTH),
+	  height_(SHIP_HEIGHT),
+	  radius_(SHIP_COLLISION_RADIUS),
+	  warning_radius_(SHIP_WARNING_RADIUS),
 	  cur_angle_(0),
 	  init_angle_(0),
 	  bullet_timer_(0),
@@ -44,27 +46,6 @@ void Ship::drawSpaceShip() {
 		glColor3f(SHIP_FILL_RGB);
 		traceVertices(half_width, half_height, tail);
 	glPopMatrix();
-
-	//float x, y, theta;
-	//glBegin(GL_LINE_LOOP);
-	//glColor3f(1, 1, 1);
-	//for (int i = 0; i < 30; ++i) {
-	//	theta = i / (float)30 * 2 * M_PI;
-	//	x = radius_ * cosf(theta) + position_.x;
-	//	y = radius_ * sinf(theta) + position_.y;
-	//	glVertex2f(x, y);
-	//}
-	//glEnd();
-
-	//glBegin(GL_LINE_LOOP);
-	//glColor3f(1, 1, 1);
-	//for (int i = 0; i < 30; ++i) {
-	//	theta = i / (float)30 * 2 * M_PI;
-	//	x = warning_radius_ * cosf(theta) + position_.x;
-	//	y = warning_radius_ * sinf(theta) + position_.y;
-	//	glVertex2f(x, y);
-	//}
-	//glEnd();
 }
 
 void Ship::traceVertices(float width, float height, float tail) {
@@ -161,7 +142,7 @@ void Ship::drawBullets(float dt) {
 void Ship::shootBullet(float dt) {
 	// only shoot a bullet if we have elapsed the fire rate, then reset timer
 	if (bullet_timer_ >= fire_rate_) {
-		bulletStream_.addBullet(position_, cur_angle_);
+		bulletStream_.addBullet(position_, cur_angle_, SHIP_WIDTH);
 		bullet_timer_ = 0;
 	}
 }

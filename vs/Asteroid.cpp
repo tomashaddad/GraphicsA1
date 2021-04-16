@@ -3,7 +3,7 @@
 #include "Asteroid.h"
 #include "GlutHeaders.h"
 #include "Point.h"
-#include "Defines.h"
+#include "AsteroidDefines.h"
 #include "Utility.h"
 
 #include <random>
@@ -53,12 +53,12 @@ Asteroid::Asteroid(Vector position, Vector velocity, float deviation, int segmen
 	rotation_dir_ = int_dist(engine) % 2 == 0 ? 1 : -1;
 }
 
-void Asteroid::update(float dt) {
+void Asteroid::update(float dt, float arena_x, float arena_y) {
 	position_ = position_ + velocity_ * dt;
 	angle_ += 180 * dt;
 
 	if (!in_arena_) {
-		in_arena_ = checkIfInArena();
+		in_arena_ = checkIfInArena(arena_x, arena_y);
 	}
 
 	if (health_ <= 0) {
@@ -105,21 +105,27 @@ bool Asteroid::isInArena() {
 	return in_arena_;
 }
 
-bool Asteroid::checkIfInArena() {
-	if (position_.x - radius_ > -MAX_ARENA_X
-		&& position_.x + radius_ < MAX_ARENA_X
-		&& position_.y - radius_ > -MAX_ARENA_Y
-		&& position_.y + radius_ < MAX_ARENA_Y) {
+bool Asteroid::checkIfInArena(float ax, float ay) {
+	if (position_.x - radius_ > -ax
+		&& position_.x + radius_ < ax
+		&& position_.y - radius_ > -ay
+		&& position_.y + radius_ < ay) {
 		return true;
 	}
 	return false;
 }
 
-void Asteroid::bounceInX() {
+void Asteroid::bounceInX(float dt) {
+	// move the asteroid slightly away from the wall before changing
+	// the velocity so they don't get stuck on the wall
+	position_.x = position_.x < 0 ? position_.x + 0.01 : position_.x - 0.01;
 	velocity_.x = -velocity_.x;
 }
 
-void Asteroid::bounceInY() {
+void Asteroid::bounceInY(float dt) {
+	// move the asteroid slightly away from the wall before changing
+	// the velocity so they don't get stuck on the wall
+	position_.y = position_.y > 0 ? position_.y - 0.01 : position_.y + 0.01;
 	velocity_.y = -velocity_.y;
 }
 
@@ -138,17 +144,15 @@ bool Asteroid::markedForDeletion() {
 	return to_delete_;
 }
 
-void Asteroid::handleAsteroidCollision(Vector other_position, Vector other_velocity) {
-	std::cout << "BEFORE:" << std::endl;
-	std::cout << velocity_ << std::endl;
-	Vector position_difference = position_ - other_position;
-	float magnitude = position_difference.getMagnitude();
-	float squared_mag = magnitude * magnitude;
-
-	float dot_product = (velocity_ - other_velocity) * (position_ - other_position);
-	velocity_ = velocity_ - (position_difference * (dot_product / squared_mag));
+float Asteroid::getSize() {
+	return size_scalar_;
+}
 
 
-	std::cout << "AFTER:" << std::endl;
-	std::cout << velocity_ << std::endl;
+void Asteroid::setVelocity(Vector v) {
+	velocity_ = v;
+}
+
+void Asteroid::setPosition(Vector v) {
+	position_ = v;
 }

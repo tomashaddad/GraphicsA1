@@ -4,7 +4,7 @@
 #include "AsteroidField.h"
 #include "Asteroid.h"
 #include "GlutHeaders.h"
-#include "Defines.h"
+#include "AsteroidDefines.h"
 #include "Utility.h"
 #include "Point.h"
 
@@ -25,15 +25,13 @@ void AsteroidField::updateRadius(float window_width, float window_height) {
 }
 
 void AsteroidField::launchAsteroidAtShip(Vector ship_position) {
-	using namespace Utility;
-
-	float theta = getRandomFloatBetween(0, 360) * (float)M_PI / 180.0f;
+	float theta = Utility::getRandomFloatBetween(0, 360)* (float)M_PI / 180.0f;
 
 	Vector position{ radius_ * cosf(theta), radius_ * sinf(theta) };
 
 	Vector velocity = ship_position - position;
 	velocity.normalise();
-	float scalar = getRandomFloatBetween(ASTEROID_MIN_SPEED, ASTEROID_MAX_SPEED);
+	float scalar = Utility::getRandomFloatBetween(ASTEROID_MIN_SPEED, ASTEROID_MAX_SPEED);
 	velocity = velocity * scalar;
 
 	asteroids_.emplace_back(position, velocity, ASTEROID_RADIUS_DEVIATION, 30);
@@ -60,23 +58,15 @@ bool AsteroidField::isEmpty() {
 	return asteroids_.size() == 0;
 }
 
-void AsteroidField::updateAsteroids(float dt) {
+void AsteroidField::updateAsteroids(float dt, float a_width, float a_height) {
 	for (auto i = 0; i < asteroids_.size(); ++i) {
-		asteroids_[i].update(dt);
+		asteroids_[i].update(dt, a_width, a_height);
 
 		Vector a_pos = asteroids_[i].getPosition();
 		float dist_from_center = sqrtf(a_pos.x * a_pos.x + a_pos.y * a_pos.y);
 
-		// TODO: Delete this since it is unneeded once asteroids bounce
-		if (dist_from_center > radius_ + 5) {
-			using std::swap;
-			swap(asteroids_[i], asteroids_.back());
-			asteroids_.pop_back();
-		}
-
-		if (asteroids_[i].markedForDeletion()) {
-			using std::swap;
-			swap(asteroids_[i], asteroids_.back());
+		if (dist_from_center > radius_ + 5 || asteroids_[i].markedForDeletion()) {
+			std::swap(asteroids_[i], asteroids_.back());
 			asteroids_.pop_back();
 		}
 	}

@@ -1,5 +1,5 @@
 #include "ExhaustParticle.h"
-#include "Defines.h"
+#include "ExhaustDefines.h"
 #include "Utility.h"
 
 

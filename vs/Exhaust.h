@@ -4,7 +4,7 @@
 #include "ExhaustParticle.h"
 #include "GlutHeaders.h"
 #include "Vector.h"
-#include "Defines.h"
+#include "ExhaustDefines.h"
 #include <vector>
 
 class Exhaust {
