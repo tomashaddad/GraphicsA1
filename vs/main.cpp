@@ -40,6 +40,8 @@ int main(int argc, char** argv)
 	glutDisplayFunc(display_callback);
 	glutIdleFunc(idle_callback);
 
+	glutFullScreen();
+
 	glutIgnoreKeyRepeat(GLUT_KEY_REPEAT_OFF);
 	game->startGameLoop();
 
@@ -48,32 +50,27 @@ int main(int argc, char** argv)
 
 void reshape_callback(int w, int h) {
 	game->onReshape(w, h);
-	glutPostRedisplay();
+	game->updateAsteroidFieldRadius();
 }
 
 void keyboard_down_callback(unsigned char key, int x, int y) {
 	game->onKeyDown(key, x, y);
-	glutPostRedisplay();
 }
 
 void keyboard_up_callback(unsigned char key, int x, int y) {
 	game->onKeyUp(key, x, y);
-	glutPostRedisplay();
 }
 
 void mouseclick_callback(int button, int state, int x, int y) {
 	game->onMouseClick(button, state, x, y);
-	glutPostRedisplay();
 }
 
 void mousedrag_callback(int x, int y) {
 	game->onMouseClickDrag(x, y);
-	glutPostRedisplay();
 }
 
 void display_callback() {
 	game->onDisplay();
-	glutPostRedisplay();
 }
 
 void idle_callback() {
@@ -82,7 +79,6 @@ void idle_callback() {
 	game->handleMouseInput();
 	game->checkWallCollisions();
 	game->updateAsteroids();
-	game->updateAsteroidFieldRadius();
 	game->checkAsteroidCollisions();
 	game->checkBulletCollisions();
 	glutPostRedisplay();

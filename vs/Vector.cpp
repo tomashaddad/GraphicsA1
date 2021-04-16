@@ -1,6 +1,6 @@
-#define _USE_MATH_DEFINES
-#include <cmath>
 #include "Vector.h"
+#include <corecrt_math_defines.h>
+#include <cmath>
 
 
 Vector::Vector() : x(0), y(0) {}
@@ -8,13 +8,13 @@ Vector::Vector() : x(0), y(0) {}
 Vector::Vector(double x, double y) : x(x), y(y) { }
 
 Vector::Vector(double angle_degrees) {
-	const float angle_radians = angle_degrees * M_PI / 180;
-	this->x = cosf(angle_radians);
-	this->y = sinf(angle_radians);
+	const double angle_radians = angle_degrees * M_PI / 180;
+	this->x = cos(angle_radians);
+	this->y = sin(angle_radians);
 }
 
 double Vector::getAngle() const {
-	return (atan2(y, x) * 180.0) / M_PI;
+	return atan2(y, x) * 180.0 / M_PI;
 }
 
 Vector& Vector::operator=(const Vector& rhs)
@@ -24,7 +24,7 @@ Vector& Vector::operator=(const Vector& rhs)
 	return *this;
 }
 
-Vector Vector::operator*(float scalar) const {
+Vector Vector::operator*(double scalar) const {
 	return Vector(x * scalar, y * scalar);
 }
 

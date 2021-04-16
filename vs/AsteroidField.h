@@ -9,14 +9,14 @@ public:
 	AsteroidField();
 	AsteroidField(double window_width, double window_height);
 
-	void launchAsteroidAtShip(Vector ship_pos);
+	void launchAsteroidsAtShip(Vector ship_pos);
 	void updateRadius(double window_width, double window_height);
 
 	void increaseAsteroidCountBy(int counter);
 	int asteroidCount() const;
 	bool isEmpty() const;
 
-	void updateAsteroids(double dt, double a_width, double a_height);
+	void update(double dt, double arena_xmax, double arena_ymax);
 
 	void reset();
 

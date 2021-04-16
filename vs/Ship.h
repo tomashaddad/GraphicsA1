@@ -30,8 +30,8 @@ public:
 
 	void setAcceleration(Vector vec);
 
-	void shootBullet(float dt);
-	void drawBullets(float dt);
+	void shootBullet(double dt);
+	void drawBullets(double dt);
 	BulletStream& getBulletStream();
 
 private:

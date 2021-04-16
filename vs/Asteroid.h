@@ -10,12 +10,13 @@ public:
 	Asteroid(Vector position, Vector velocity, double deviation, int segments);
 	
 	bool checkCollision(Vector position, double radius = 0) const;
-	double getCollisionRadius() const;
+	void resolveCollisionWith(Asteroid& other);
+	double getRadius() const;
 	Vector& getPosition();
 	void setPosition(Vector v);
 	Vector& getVelocity();
 	void setVelocity(Vector v);
-	void update(double dt, double arena_xmax, double arena_ymax);
+	void update(double dt, double arena_xmax, double arena_ymax, double field_radius);
 	void drawAsteroid() const;
 	bool isInArena() const;
 
@@ -40,7 +41,7 @@ private:
 	double rotation_speed_;
 	int rotation_dir_;
 
-	double size_scalar_;
+	double size_;
 	double radius_;
 	double radius_deviation_;
 	int segments_;

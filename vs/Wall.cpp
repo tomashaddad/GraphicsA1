@@ -19,8 +19,7 @@ void Wall::setCoordinates(double x1, double y1, double x2, double y2) {
 	p2.y = y2;
 }
 
-void Wall::drawWall() {
-
+void Wall::drawWall() const {
 	if (colour_ == Colour::red) {
 		glLineWidth(3.0);
 		glColor3f(1, 0, 0);
@@ -31,8 +30,8 @@ void Wall::drawWall() {
 	}
 
 		glBegin(GL_LINES);
-		glVertex2f(p1.x, p1.y);
-		glVertex2f(p2.x, p2.y);
+		glVertex2d(p1.x, p1.y);
+		glVertex2d(p2.x, p2.y);
 	glEnd();
 }
 
@@ -40,7 +39,8 @@ void Wall::setColour(Colour colour) {
 	this->colour_ = colour;
 }
 
-bool Wall::checkCollision(Vector position, double a_xmax, double a_ymax, double radius) {
+bool Wall::checkCollision(const Vector position, const double a_xmax,
+	const double a_ymax, const double radius) {
 	bool collision = false;
 	if (side_ == WallSide::top) {
 		if (position.y + radius > a_ymax) {

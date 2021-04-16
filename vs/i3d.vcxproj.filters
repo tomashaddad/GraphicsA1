@@ -25,6 +25,9 @@
     <Filter Include="Ship">
       <UniqueIdentifier>{0268605b-4404-43ee-a38c-adabc3f10fb8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="BlackHole">
+      <UniqueIdentifier>{a28fc590-ab4f-4e65-98db-9c90cb945ea6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameManager.cpp" />
@@ -73,6 +76,9 @@
     </ClCompile>
     <ClCompile Include="Text.cpp">
       <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="BlackHole.cpp">
+      <Filter>BlackHole</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -145,6 +151,9 @@
     </ClInclude>
     <ClInclude Include="GlutHeaders.h">
       <Filter>Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="BlackHole.h">
+      <Filter>BlackHole</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

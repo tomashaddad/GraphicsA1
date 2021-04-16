@@ -131,12 +131,12 @@ BulletStream& Ship::getBulletStream() {
 	return bulletStream_;
 }
 
-void Ship::drawBullets(const float dt) {
+void Ship::drawBullets(const double dt) {
 	bulletStream_.updateBullets(dt);
 	bulletStream_.drawAll();
 }
 
-void Ship::shootBullet(const float dt) {
+void Ship::shootBullet(const double dt) {
 	// only shoot a bullet if we have elapsed the fire rate, then reset timer
 	if (bullet_timer_ >= fire_rate_) {
 		bulletStream_.addBullet(position_, cur_angle_, SHIP_WIDTH);

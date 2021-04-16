@@ -14,7 +14,7 @@ public:
 	bool checkCollision(Vector position, double a_xmax, double a_ymax, double radius = 0);
 	void setSide(WallSide side);
 	void setCoordinates(double x1, double y1, double x2, double y2);
-	void drawWall();
+	void drawWall() const;
 	void setColour(Colour colour);
 
 	WallSide getSide();

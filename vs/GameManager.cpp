@@ -20,7 +20,7 @@ GameManager::GameManager()
 	ship_.setRotation(180.0 * (atan(slope) / M_PI));
 
 	// 1/3 in from the bottom left
-	ship_.setStartingPosition(-0.3 * win_.arena_width_, -0.3 * win_.arena_height_);
+	ship_.setStartingPosition(-0.5 * win_.arena_width_, -0.5 * win_.arena_height_);
 }
 
 void GameManager::startGameLoop() {
@@ -137,7 +137,7 @@ void GameManager::onMouseClickDrag(const int x, const int y)
 
 void GameManager::calculateTimeDelta() {
 	// gives delta time in seconds
-	double cur_time = glutGet(GLUT_ELAPSED_TIME) / 1000.0;
+	const double cur_time = glutGet(GLUT_ELAPSED_TIME) / 1000.0;
 	dt_ = cur_time - last_time_;
 	last_time_ = cur_time;
 }
@@ -206,29 +206,31 @@ void GameManager::checkWallCollisions() {
 		const double ship_warn_r = ship_.getWarningRadius();
 		const double ship_coll_r = ship_.getCollisionRadius();
 
-		for (auto i = 0; i < arena_.getWalls().size(); ++i) {
-		}
 		for (Wall& wall : arena_.getWalls()) {
-			if (wall.checkCollision(ship_pos, win_.arena_width_, win_.arena_height_, ship_warn_r)) {
+			// Checking if the ship's warning radius has crossed the arena wall
+			if (wall.checkCollision(ship_pos, win_.arena_width_,
+				win_.arena_height_, ship_warn_r)) {
 				wall.setColour(Colour::red);
-			}
-			else {
+			} else {
 				wall.setColour(Colour::white);
 			}
 
-			if (wall.checkCollision(ship_pos, win_.arena_width_, win_.arena_height_, ship_coll_r)) {
+			// Checking if the ship's collision radius has hit the arena wall
+			if (wall.checkCollision(ship_pos, win_.arena_width_,
+				win_.arena_height_, ship_coll_r)) {
 				game_over = true;
 			}
 
+			// Bouncing asteroids on walls
 			for (Asteroid& asteroid : asteroid_field_.getAsteroids()) {
 				if (asteroid.isInArena()
 					&& wall.checkCollision(asteroid.getPosition(),
 										   win_.arena_width_, win_.arena_height_,
-										   asteroid.getCollisionRadius())) {
-					if (wall.getSide() == WallSide::bottom || wall.getSide() == WallSide::top) {
+										   asteroid.getRadius())) {
+					if (wall.getSide() == WallSide::bottom ||
+						wall.getSide() == WallSide::top) {
 						asteroid.bounceInY(dt_);
-					}
-					else {
+					} else {
 						asteroid.bounceInX(dt_);
 					}
 				}
@@ -242,13 +244,11 @@ void GameManager::updateAsteroids() {
 		// Separate check to keep rendering Asteroids on death
 		if (!game_over) {
 			if (asteroid_field_.isEmpty()) {
-				for (int i = 0; i < asteroid_field_.asteroidCount(); ++i) {
-					asteroid_field_.launchAsteroidAtShip(ship_.getPosition());
-				}
+				asteroid_field_.launchAsteroidsAtShip(ship_.getPosition());
 				asteroid_field_.increaseAsteroidCountBy(1);
 			}
 		}
-		asteroid_field_.updateAsteroids(dt_, win_.arena_width_, win_.arena_height_);
+		asteroid_field_.update(dt_, win_.arena_width_, win_.arena_height_);
 	}
 }
 
@@ -270,42 +270,8 @@ void GameManager::checkAsteroidCollisions() {
 
 			for (Asteroid& a2 : asteroid_field_.getAsteroids()) {
 				if (a1.getPosition() != a2.getPosition()) {
-					if (a1.checkCollision(a2.getPosition(), a2.getCollisionRadius())) {
-
-						double distance_between = a1.getPosition().getDistanceFrom(a2.getPosition());
-						distance_between = distance_between - a1.getCollisionRadius() - a2.getCollisionRadius();
-
-						Vector& a1p = a1.getPosition();
-						Vector& a2p = a2.getPosition();
-						Vector& a1v = a1.getVelocity();
-						Vector& a2v = a2.getVelocity();
-
-						Vector un = a1p - a2p;
-						un.normalise();
-						Vector ut = Vector(-un.y, un.x);
-
-						Vector new_a1_position = a1.getPosition() - (un * 0.5 * distance_between);
-						Vector new_a2_position = a2.getPosition() + (un * 0.5 * distance_between);
-
-						a1.setPosition(new_a1_position);
-						a2.setPosition(new_a2_position);
-
-						double v1n = un * a1v;
-						double v1t = ut * a1v;
-						double v2n = un * a2v;
-						double v2t = ut * a2v;
-
-						double a1m = a1.getSize();
-						double a2m = a2.getSize();
-
-						double new_v1n = (v1n * (a1m - a2m) + (2 * a2m) * v2n) / (a1m + a2m);
-						double new_v2n = (v2n * (a2m - a1m) + (2 * a1m) * v1n) / (a1m + a2m);
-
-						Vector new_a1_v = un * new_v1n + ut * v1t;
-						Vector new_a2_v = un * new_v2n + ut * v2t;
-
-						a1.setVelocity(new_a1_v);
-						a2.setVelocity(new_a2_v);
+					if (a1.checkCollision(a2.getPosition(), a2.getRadius())) {
+						a1.resolveCollisionWith(a2);
 					}
 				}
 			}

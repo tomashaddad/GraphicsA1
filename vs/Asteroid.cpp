@@ -1,5 +1,3 @@
-#define _USE_MATH_DEFINES
-#include <cmath>
 #include "Asteroid.h"
 #include "GlutHeaders.h"
 #include "Point.h"
@@ -7,6 +5,8 @@
 #include "Utility.h"
 
 #include <random>
+#include <corecrt_math_defines.h>
+#include <cmath>
 
 Asteroid::Asteroid(Vector position, Vector velocity, double deviation, int segments)
 	: position_(position),
@@ -41,8 +41,8 @@ Asteroid::Asteroid(Vector position, Vector velocity, double deviation, int segme
 		                               ASTEROID_MAX_ROTATION_SPEED);
 
 	// The Asteroid starts as a "unit" asteroid and is enlarged by some scalar
-	size_scalar_ = Utility::getRandomDoubleBetween(ASTEROID_MIN_SIZE, ASTEROID_MAX_SIZE);
-	radius_ *= size_scalar_;
+	size_ = Utility::getRandomDoubleBetween(ASTEROID_MIN_SIZE, ASTEROID_MAX_SIZE);
+	radius_ *= size_;
 
 	// The health of an Asteroid is mapped to a number between 
 	// ASTEROID_MIN_HEALTH and ASTEROID_MAX_HEALTH
@@ -54,18 +54,23 @@ Asteroid::Asteroid(Vector position, Vector velocity, double deviation, int segme
 	rotation_dir_ = int_dist(engine) % 2 == 0 ? 1 : -1;
 }
 
-void Asteroid::update(const double dt, const double arena_xmax, const double arena_ymax)
+void Asteroid::update(const double dt, const double arena_xmax,
+	const double arena_ymax, const double field_radius)
 {
 	position_ = position_ + velocity_ * dt;
 	angle_ += 180 * dt;
 
-	if (!in_arena_)
-	{
+	if (!in_arena_) {
 		in_arena_ = checkIfInArena(arena_xmax, arena_ymax);
 	}
 
-	if (health_ <= 0)
-	{
+	if (health_ <= 0) {
+		to_delete_ = true;
+	}
+
+	double dist_from_center = sqrt(position_.x* position_.x + position_.y * position_.y);
+
+	if (dist_from_center > field_radius + 5) {
 		to_delete_ = true;
 	}
 }
@@ -96,7 +101,45 @@ bool Asteroid::checkCollision(const Vector position, const double radius) const
 	return distance_between <= (radius + radius_) * (radius + radius_);
 }
 
-double Asteroid::getCollisionRadius() const
+void Asteroid::resolveCollisionWith(Asteroid& other) {
+	// unit normal vector
+	Vector un = this->position_ - other.getPosition();
+	un.normalise();
+	
+	// unit tangent vector
+	const auto ut = Vector(-un.y, un.x);
+
+	// resolve static collision (move away from each other slightly)
+	double distance = this->position_.getDistanceFrom(other.getPosition());
+	distance -= this->radius_ + other.getRadius();
+	const Vector new_a1_position = this->position_ - un * 0.5 * distance;
+	const Vector new_a2_position = other.getPosition() + un * 0.5 * distance;
+	position_ = new_a1_position;
+	other.setPosition(new_a2_position);
+
+	// project velocities onto unit normal and unit tangent vectors
+	const double v1n = un * this->velocity_;
+	const double v1t = ut * this->velocity_;
+	const double v2n = un * other.getVelocity();
+	const double v2t = ut * other.getVelocity();
+
+	// use the radius of the asteroids as their "mass"
+	const double a1m = this->size_;
+	const double a2m = other.getSize();
+
+	// compute new scalar normal velocities
+	const double new_v1n = (v1n * (a1m - a2m) + 2 * a2m * v2n) / (a1m + a2m);
+	const double new_v2n = (v2n * (a2m - a1m) + 2 * a1m * v1n) / (a1m + a2m);
+
+	// convert scalar normal velocities into vectors
+	const Vector new_a1_v = un * new_v1n + ut * v1t;
+	const Vector new_a2_v = un * new_v2n + ut * v2t;
+
+	velocity_ = new_a1_v;
+	other.setVelocity(new_a2_v);
+}
+
+double Asteroid::getRadius() const
 {
 	return radius_;
 }
@@ -164,7 +207,7 @@ bool Asteroid::markedForDeletion() const
 
 double Asteroid::getSize() const
 {
-	return size_scalar_;
+	return size_;
 }
 
 
