@@ -7,46 +7,79 @@
     <Filter Include="Defines">
       <UniqueIdentifier>{755b3cc3-54cd-4d11-9b97-2ef8c91bce53}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Asteroids">
+      <UniqueIdentifier>{2c957ba9-7348-4829-b9e3-ce1559ab1bcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="World">
+      <UniqueIdentifier>{5248a449-04aa-410a-9d87-7fbd8ac270be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bullets">
+      <UniqueIdentifier>{5a42fa42-8294-4c21-80df-86bd8a0f2057}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hardware">
+      <UniqueIdentifier>{4a6a170c-c0a5-41fc-bd93-c59587d9b9b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{0da5bce9-e76c-4494-a2dc-f24f9fe7ba42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Exhaust">
+      <UniqueIdentifier>{fced7366-0345-4ae4-abe2-59edcd251df0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ship">
+      <UniqueIdentifier>{0268605b-4404-43ee-a38c-adabc3f10fb8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Ship.cpp" />
-    <ClCompile Include="Vector.cpp" />
-    <ClCompile Include="Wall.cpp" />
-    <ClCompile Include="Mouse.cpp" />
-    <ClCompile Include="Window.cpp" />
-    <ClCompile Include="Keyboard.cpp" />
-    <ClCompile Include="Arena.cpp" />
-    <ClCompile Include="Asteroid.cpp" />
-    <ClCompile Include="AsteroidField.cpp" />
-    <ClCompile Include="Text.cpp" />
-    <ClCompile Include="Exhaust.cpp" />
-    <ClCompile Include="ExhaustParticle.cpp" />
-    <ClCompile Include="Utility.cpp" />
-    <ClCompile Include="Bullet.cpp" />
-    <ClCompile Include="BulletStream.cpp" />
+    <ClCompile Include="Asteroid.cpp">
+      <Filter>Asteroids</Filter>
+    </ClCompile>
+    <ClCompile Include="AsteroidField.cpp">
+      <Filter>Asteroids</Filter>
+    </ClCompile>
+    <ClCompile Include="Arena.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Bullets</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletStream.cpp">
+      <Filter>Bullets</Filter>
+    </ClCompile>
+    <ClCompile Include="Keyboard.cpp">
+      <Filter>Hardware</Filter>
+    </ClCompile>
+    <ClCompile Include="Mouse.cpp">
+      <Filter>Hardware</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Wall.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="Exhaust.cpp">
+      <Filter>Exhaust</Filter>
+    </ClCompile>
+    <ClCompile Include="ExhaustParticle.cpp">
+      <Filter>Exhaust</Filter>
+    </ClCompile>
+    <ClCompile Include="Ship.cpp">
+      <Filter>Ship</Filter>
+    </ClCompile>
+    <ClCompile Include="Text.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameManager.h" />
-    <ClInclude Include="GlutHeaders.h" />
-    <ClInclude Include="Asteroid.h" />
-    <ClInclude Include="Ship.h" />
-    <ClInclude Include="Vector.h" />
-    <ClInclude Include="Enums.h" />
-    <ClInclude Include="Wall.h" />
-    <ClInclude Include="Point.h" />
-    <ClInclude Include="Window.h" />
-    <ClInclude Include="Mouse.h" />
-    <ClInclude Include="Keyboard.h" />
-    <ClInclude Include="Arena.h" />
-    <ClInclude Include="AsteroidField.h" />
-    <ClInclude Include="Text.h" />
-    <ClInclude Include="Exhaust.h" />
-    <ClInclude Include="ExhaustParticle.h" />
-    <ClInclude Include="Utility.h" />
-    <ClInclude Include="Bullet.h" />
-    <ClInclude Include="BulletStream.h" />
     <ClInclude Include="ShipDefines.h">
       <Filter>Defines</Filter>
     </ClInclude>
@@ -60,6 +93,60 @@
       <Filter>Defines</Filter>
     </ClInclude>
     <ClInclude Include="ExhaustDefines.h">
+      <Filter>Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="Asteroid.h">
+      <Filter>Asteroids</Filter>
+    </ClInclude>
+    <ClInclude Include="AsteroidField.h">
+      <Filter>Asteroids</Filter>
+    </ClInclude>
+    <ClInclude Include="Arena.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>Bullets</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletStream.h">
+      <Filter>Bullets</Filter>
+    </ClInclude>
+    <ClInclude Include="Keyboard.h">
+      <Filter>Hardware</Filter>
+    </ClInclude>
+    <ClInclude Include="Mouse.h">
+      <Filter>Hardware</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Point.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Wall.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="Exhaust.h">
+      <Filter>Exhaust</Filter>
+    </ClInclude>
+    <ClInclude Include="ExhaustParticle.h">
+      <Filter>Exhaust</Filter>
+    </ClInclude>
+    <ClInclude Include="Ship.h">
+      <Filter>Ship</Filter>
+    </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Enums.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="GlutHeaders.h">
       <Filter>Defines</Filter>
     </ClInclude>
   </ItemGroup>
