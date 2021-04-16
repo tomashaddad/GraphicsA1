@@ -2,7 +2,7 @@
 #define I3D_UTILITY_H
 
 namespace Utility {
-	float getRandomFloatBetween(float a, float b);
+	double getRandomDoubleBetween(double a, double b);
 }
 
 #endif // I3D_UTILITY_H

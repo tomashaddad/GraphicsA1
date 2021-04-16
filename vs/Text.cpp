@@ -3,9 +3,9 @@
 
 #include <string>
 
-void Text::renderText(std::string text, int xpos, int ypos, int win_width, int win_height) {
+void Text::renderText(std::string text, double xpos, double ypos, double win_width, double win_height) {
 
-	int width = glutBitmapLength(GLUT_BITMAP_TIMES_ROMAN_24, 
+	const double width = glutBitmapLength(GLUT_BITMAP_TIMES_ROMAN_24,
 		(const unsigned char*)text.c_str());
 
 	glMatrixMode(GL_PROJECTION);
@@ -16,7 +16,7 @@ void Text::renderText(std::string text, int xpos, int ypos, int win_width, int w
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 	glLoadIdentity();
-	glRasterPos2i(xpos - width / 2.0f, ypos);
+	glRasterPos2f(xpos - width / 2.0f, ypos);
 
 	for (char& c : text) {
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c);

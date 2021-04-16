@@ -1,10 +1,7 @@
 #include "Exhaust.h"
 #include "Vector.h"
 #include "Utility.h"
-#include "GlutHeaders.h"
-#include <iostream>
-
-#include <cmath>
+#include "ExhaustDefines.h"
 
 Exhaust::Exhaust()
 	: drop_rate_(EXHAUST_DROP_RATE),
@@ -20,16 +17,16 @@ void Exhaust::addParticle(Vector position, Vector ship_acceleration) {
 		position.x = position.x + 5 * ship_acceleration.x;
 		position.y = position.y + 5 * ship_acceleration.y;
 
-		float spread = 1.87;
+		double spread = 1.87;
 
-		position.x += Utility::getRandomFloatBetween(-spread, spread);
-		position.y += Utility::getRandomFloatBetween(-spread, spread);
+		position.x += Utility::getRandomDoubleBetween(-spread, spread);
+		position.y += Utility::getRandomDoubleBetween(-spread, spread);
 		exhaust_.emplace_back(position);
 		exhaust_timer_ = 0;
 	}
 }
 
-void Exhaust::update(float dt) {
+void Exhaust::update(double dt) {
 	for (auto i = 0; i < exhaust_.size(); ++i) {
 		exhaust_[i].update(dt);
 		

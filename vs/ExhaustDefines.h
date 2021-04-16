@@ -1,9 +1,9 @@
 #ifndef I3D_EXHAUSTDEFINES_H
 #define I3D_EXHAUSTDEFINES_H
 
-#define MAX_EXHAUST_PARTICLES 200
-#define EXHAUST_DECAY_SPEED 10
-#define EXHAUST_STARTING_SIZE 10
-#define EXHAUST_DROP_RATE 0.005 // seconds per particle dropped
+constexpr auto MAX_EXHAUST_PARTICLES = 200;
+constexpr auto EXHAUST_DECAY_SPEED = 10;
+constexpr auto EXHAUST_STARTING_SIZE = 10;
+constexpr auto EXHAUST_DROP_RATE = 0.005; // seconds per particle dropped
 
 #endif // I3D_EXHAUSTDEFINES_H

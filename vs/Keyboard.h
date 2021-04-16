@@ -1,7 +1,6 @@
 #ifndef I3D_KEYBOARD_H
 #define I3D_KEYBOARD_H
 
-#include "GlutHeaders.h"
 #include <array>
 
 class Keyboard {
@@ -11,7 +10,7 @@ public:
 	bool getKeyState(unsigned char key);
 	bool anyKeyIsPressed();
 private:
-	std::array<bool, 256> key_states;
+	std::array<bool, 256> key_states_;
 };
 
-#endif I3D_KEYBOARD_H
+#endif  // I3D_KEYBOARD_H

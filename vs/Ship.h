@@ -4,32 +4,29 @@
 #include "Vector.h"
 #include "Enums.h"
 #include "Point.h"
-#include "Window.h"
 #include "Exhaust.h"
 #include "BulletStream.h"
-
-#include <queue>
 
 class Ship {
 public:
 	Ship();
 	void drawSpaceShip();
 
-	void setStartingPosition(float x, float y);
+	void setStartingPosition(double x, double y);
 
-	void move(Movement movement, float dt);
-	void rotate(Movement movement, float dt);
+	void move(Movement movement, double dt);
+	void rotate(Movement movement, double dt);
 	void setPosition(Point point);
-	void update(float dt);
+	void update(double dt);
 	void reset();
 
 	void drawExhaust();
 
-	Vector getPosition();
-	void setRotation(float rotation);
+	Vector getPosition() const;
+	void setRotation(double rotation);
 
-	float getCollisionRadius();
-	float getWarningRadius();
+	double getCollisionRadius() const;
+	double getWarningRadius() const;
 
 	void setAcceleration(Vector vec);
 
@@ -38,10 +35,10 @@ public:
 	BulletStream& getBulletStream();
 
 private:
-	void traceVertices(float width, float height, float tail);
+	void traceVertices(double width, double height, double tail) const;
 
-	float width_;
-	float height_;
+	double width_;
+	double height_;
 
 	Vector starting_position_;
 	Vector starting_dir_;
@@ -52,14 +49,14 @@ private:
 	
 	Vector acceleration_;
 
-	float cur_angle_;
-	float init_angle_;
+	double cur_angle_;
+	double init_angle_;
 
-	float radius_;
-	float warning_radius_;
+	double radius_;
+	double warning_radius_;
 
-	float bullet_timer_;
-	float fire_rate_;
+	double bullet_timer_;
+	double fire_rate_;
 
 	Exhaust exhaust_;
 	BulletStream bulletStream_;

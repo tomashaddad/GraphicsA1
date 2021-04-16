@@ -2,8 +2,6 @@
 #define I3D_ARENA_H
 
 #include "Wall.h"
-#include "Enums.h"
-#include "Window.h"
 #include <array>
 
 class Arena {

@@ -5,7 +5,7 @@ Mouse::Mouse()
 	  left_clicking_(false),
 	  right_clicking_(false){}
 
-Point Mouse::getMouseCoords() {
+Point Mouse::getMouseCoords() const {
 	return mouse_coords_;
 }
 
@@ -14,18 +14,18 @@ void Mouse::setMouseCoords(double x, double y) {
 	mouse_coords_.y = y;
 }
 
-bool Mouse::isHoldingLeftClick() {
+bool Mouse::isHoldingLeftClick() const {
 	return left_clicking_;
 }
 
-void Mouse::setHoldingLeftClick(bool state) {
+void Mouse::setHoldingLeftClick(const bool state) {
 	left_clicking_ = state;
 }
 
-bool Mouse::isHoldingRightClick() {
+bool Mouse::isHoldingRightClick() const {
 	return right_clicking_;
 }
 
-void Mouse::setHoldingRightClick(bool state) {
+void Mouse::setHoldingRightClick(const bool state) {
 	right_clicking_ = state;
 }

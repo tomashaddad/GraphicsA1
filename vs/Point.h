@@ -3,7 +3,7 @@
 
 class Point {
 public:
-	float x, y;
+	double x, y;
 };
 
 #endif // I3D_POINT_H

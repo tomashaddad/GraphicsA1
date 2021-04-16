@@ -3,21 +3,20 @@
 
 #include <vector>
 #include "Asteroid.h"
-#include "GlutHeaders.h"
 
 class AsteroidField {
 public:
 	AsteroidField();
-	AsteroidField(float window_width, float window_height);
+	AsteroidField(double window_width, double window_height);
 
 	void launchAsteroidAtShip(Vector ship_pos);
-	void updateRadius(float window_width, float window_height);
+	void updateRadius(double window_width, double window_height);
 
 	void increaseAsteroidCountBy(int counter);
-	int asteroidCount();
-	bool isEmpty();
+	int asteroidCount() const;
+	bool isEmpty() const;
 
-	void updateAsteroids(float dt, float a_width, float a_height);
+	void updateAsteroids(double dt, double a_width, double a_height);
 
 	void reset();
 
@@ -25,7 +24,7 @@ public:
 
 private:
 	int asteroid_count_;
-	float radius_;
+	double radius_;
 	std::vector<Asteroid> asteroids_;
 };
 

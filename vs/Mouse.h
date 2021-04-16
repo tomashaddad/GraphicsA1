@@ -1,20 +1,19 @@
 #ifndef I3D_MOUSE_H
 #define I3D_MOUSE_H
 
-#include "GlutHeaders.h"
 #include "Point.h"
 
 class Mouse {
 public:
 	Mouse();
 
-	Point getMouseCoords();
+	Point getMouseCoords() const;
 	void setMouseCoords(double x, double y);
 
-	bool isHoldingLeftClick();
+	bool isHoldingLeftClick() const;
 	void setHoldingLeftClick(bool state);
 
-	bool isHoldingRightClick();
+	bool isHoldingRightClick() const;
 	void setHoldingRightClick(bool state);
 
 private:

@@ -1,17 +1,18 @@
 #include "Wall.h"
 #include "Enums.h"
 #include "Vector.h"
+#include "GlutHeaders.h"
 
-Wall::Wall(float x1, float y1, float x2, float y2)
+Wall::Wall(double x1, double y1, double x2, double y2)
 	: p1{ x1, y1 },
 	  p2{ x2, y2 },
-	  colour_(Colour::WHITE) { }
+	  colour_(Colour::white) { }
 
 void Wall::setSide(WallSide side) {
 	side_ = side;
 }
 
-void Wall::setCoordinates(float x1, float y1, float x2, float y2) {
+void Wall::setCoordinates(double x1, double y1, double x2, double y2) {
 	p1.x = x1;
 	p1.y = y1;
 	p2.x = x2;
@@ -20,7 +21,7 @@ void Wall::setCoordinates(float x1, float y1, float x2, float y2) {
 
 void Wall::drawWall() {
 
-	if (colour_ == Colour::RED) {
+	if (colour_ == Colour::red) {
 		glLineWidth(3.0);
 		glColor3f(1, 0, 0);
 	}
@@ -39,24 +40,24 @@ void Wall::setColour(Colour colour) {
 	this->colour_ = colour;
 }
 
-bool Wall::checkCollision(Vector position, float a_xmax, float a_ymax, float radius) {
+bool Wall::checkCollision(Vector position, double a_xmax, double a_ymax, double radius) {
 	bool collision = false;
-	if (side_ == WallSide::TOP) {
+	if (side_ == WallSide::top) {
 		if (position.y + radius > a_ymax) {
 			collision = true;
 		}
 	}
-	else if (side_ == WallSide::BOTTOM) {
+	else if (side_ == WallSide::bottom) {
 		if (position.y - radius < -a_ymax) {
 			collision = true;
 		}
 	}
-	else if (side_ == WallSide::LEFT) {
+	else if (side_ == WallSide::left) {
 		if (position.x - radius < -a_xmax) {
 			collision = true;
 		}
 	}
-	else if (side_ == WallSide::RIGHT) {
+	else if (side_ == WallSide::right) {
 		if (position.x + radius > a_xmax) {
 			collision = true;
 		}

@@ -7,19 +7,19 @@ Bullet::Bullet(Vector position, Vector velocity)
 	  velocity_(velocity),
 	  to_delete_(false) {}
 
-void Bullet::update(float dt) {
+void Bullet::update(double dt) {
 	position_ = position_ + velocity_ * dt;
 }
 
-void Bullet::draw() {
+void Bullet::draw() const {
 	glPointSize(5);
 	glBegin(GL_POINTS);
 		glColor3f(1, 1, 1);
-		glVertex2f(position_.x, position_.y);
+		glVertex2d(position_.x, position_.y);
 	glEnd();
 }
 
-Vector Bullet::getPosition() {
+Vector Bullet::getPosition() const {
 	return position_;
 }
 
@@ -27,6 +27,6 @@ void Bullet::markForDeletion() {
 	to_delete_ = true;
 }
 
-bool Bullet::markedForDeletion() {
+bool Bullet::markedForDeletion() const {
 	return to_delete_;
 }

@@ -1,86 +1,69 @@
-#include "Vector.h"
+#define _USE_MATH_DEFINES
 #include <cmath>
+#include "Vector.h"
+
 
 Vector::Vector() : x(0), y(0) {}
 
-Vector::Vector(float x, float y) : x(x), y(y) { }
+Vector::Vector(double x, double y) : x(x), y(y) { }
 
-Vector::Vector(float angle_degrees) {
-	float angle_radians = angle_degrees * M_PI / 180;
+Vector::Vector(double angle_degrees) {
+	const float angle_radians = angle_degrees * M_PI / 180;
 	this->x = cosf(angle_radians);
 	this->y = sinf(angle_radians);
 }
 
-// https://matthew-brett.github.io/teaching/rotation_2d.html
-void Vector::rotate(float angle_degrees) {
-	float angle_radians = angle_degrees * M_PI / 180.0;
-	float old_x = x;
-	float old_y = y;
-
-	x = old_x * cosf(angle_radians) - old_y * sinf(angle_radians);
-	y = old_x * sinf(angle_radians) + old_y * cosf(angle_radians);
-
-	// turn back into a unit vector due to math error
-	normalise();
+double Vector::getAngle() const {
+	return (atan2(y, x) * 180.0) / M_PI;
 }
 
-float Vector::getAngle() {
-	return (atan2f(y, x) * 180.0) / M_PI;
-}
-
-Vector Vector::operator=(const Vector& rhs)
+Vector& Vector::operator=(const Vector& rhs)
 {
-	return Vector(x = rhs.x, y = rhs.y);
+	x = rhs.x;
+	y = rhs.y;
+	return *this;
 }
 
-Vector Vector::operator*(float scalar) {
+Vector Vector::operator*(float scalar) const {
 	return Vector(x * scalar, y * scalar);
 }
 
-Vector Vector::operator-() {
+Vector Vector::operator-() const {
 	return Vector(-x, -y);
 }
 
-Vector Vector::operator-(const Vector& rhs) {
+Vector Vector::operator-(const Vector& rhs) const {
 	return Vector(x - rhs.x, y - rhs.y);
 }
 
-Vector Vector::operator+(const Vector& rhs)
+Vector Vector::operator+(const Vector& rhs) const
 {
 	return Vector(x + rhs.x, y + rhs.y);
 }
 
-float Vector::operator*(const Vector& rhs) {
+double Vector::operator*(const Vector& rhs) const {
 	return x * rhs.x + y * rhs.y;
 }
 
-float Vector::getMagnitude() const {
+double Vector::getMagnitude() const {
 	return sqrtf(x * x + y * y);
 }
 
-bool Vector::operator>(const Vector& rhs) {
+bool Vector::operator>(const Vector& rhs) const {
 	return this->getMagnitude() > rhs.getMagnitude();
 }
 
-bool Vector::operator!=(const Vector& rhs)
+bool Vector::operator!=(const Vector& rhs) const
 {
 	return x != rhs.x && y != rhs.y;
 }
 
 void Vector::normalise() {
-	float magnitude = sqrtf(powf(x, 2) + powf(y, 2));
+	const double magnitude = sqrt(x*x + y*y);
 	x /= magnitude;
 	y /= magnitude;
 }
 
-float Vector::getDistanceFrom(Vector v) {
-	return sqrtf((x - v.x) * (x - v.x) + (y - v.y) * (y - v.y));
-}
-
-std::ostream& operator<<(std::ostream& ostream, Vector& vector)
-{
-	ostream << "Magnitude: " << vector.getMagnitude() << ", Angle: " <<
-		vector.getAngle() << ", (x, y) = (" << vector.x << ", " << vector.y << ")";
-
-	return ostream;
+double Vector::getDistanceFrom(Vector v) const {
+	return sqrt((x - v.x) * (x - v.x) + (y - v.y) * (y - v.y));
 }

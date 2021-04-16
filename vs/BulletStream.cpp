@@ -1,9 +1,7 @@
 #include "BulletStream.h"
-#include <cmath>
 #include "BulletDefines.h"
-#include <iostream>
 
-void BulletStream::addBullet(Vector ship_position, float angle, float ship_width) {
+void BulletStream::addBullet(Vector ship_position, double angle, double ship_width) {
 	// unit vector in direction of current ship angle
 	Vector bullet_velocity(angle);
 
@@ -17,7 +15,7 @@ void BulletStream::addBullet(Vector ship_position, float angle, float ship_width
 	bullets_.emplace_back(position, bullet_velocity);
 }
 
-void BulletStream::updateBullets(float dt) {
+void BulletStream::updateBullets(double dt) {
 	for (auto i = 0; i < bullets_.size(); ++i) {
 		bullets_[i].update(dt);
 

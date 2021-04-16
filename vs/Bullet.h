@@ -9,11 +9,11 @@ class Bullet {
 public:
 	Bullet(Vector position, Vector velocity);
 
-	void update(float dt);
-	void draw();
-	Vector getPosition();
+	void update(double dt);
+	void draw() const;
+	Vector getPosition() const;
 	void markForDeletion();
-	bool markedForDeletion();
+	bool markedForDeletion() const;
 
 private:
 	Vector position_;

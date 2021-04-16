@@ -1,7 +1,6 @@
 #ifndef I3D_EXHAUSTPARTICLE_H
 #define I3D_EXHAUSTPARTICLE_H
 
-#include "GlutHeaders.h"
 #include "Vector.h"
 
 class ExhaustParticle {

@@ -2,22 +2,22 @@
 #define I3D_STATE_H
 
 enum class Movement {
-	MOVE_FORWARD,
-	MOVE_BACKWARD,
-	ROTATE_LEFT,
-	ROTATE_RIGHT
+	move_forward,
+	move_backward,
+	rotate_left,
+	rotate_right
 };
 
 enum class Colour {
-	RED,
-	WHITE
+	red,
+	white
 };
 
 enum class WallSide {
-	TOP,
-	BOTTOM,
-	LEFT,
-	RIGHT
+	top,
+	bottom,
+	left,
+	right
 };
 
 #endif  // I3D_STATE_H

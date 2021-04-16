@@ -1,10 +1,7 @@
 #include "GlutHeaders.h"
 #include "Ship.h"
-
 #include "ShipDefines.h"
 
-#define _USE_MATH_DEFINES
-#include <math.h>
 
 Ship::Ship()
 	: width_(SHIP_WIDTH),
@@ -16,7 +13,7 @@ Ship::Ship()
 	  bullet_timer_(0),
 	  fire_rate_(FIRE_RATE) {}
 
-void Ship::setStartingPosition(float x, float y) {
+void Ship::setStartingPosition(double x, double y) {
 	position_.x = x;
 	position_.y = y;
 	starting_position_ = position_;
@@ -24,16 +21,16 @@ void Ship::setStartingPosition(float x, float y) {
 }
 
 void Ship::drawSpaceShip() {
-	float half_width = width_ / (GLfloat)2.0;
-	float half_height = height_ / (GLfloat)2.0;
-	float tail = position_.x - (GLfloat)1/3 * width_;
+	double half_width = width_ / 2.0;
+	double half_height = height_ / 2.0;
+	double tail = position_.x - 0.25 * width_;
 
 	// Isolate ship
 	glPushMatrix();
 		// Handle rotations
-		glTranslatef(position_.x, position_.y, 0);
+		glTranslated(position_.x, position_.y, 0);
 		glRotatef(cur_angle_, 0, 0, 1);
-		glTranslatef(-position_.x, -position_.y, 0);
+		glTranslated(-position_.x, -position_.y, 0);
 
 		// Draw outline
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -48,48 +45,48 @@ void Ship::drawSpaceShip() {
 	glPopMatrix();
 }
 
-void Ship::traceVertices(float width, float height, float tail) {
+void Ship::traceVertices(const double width, const double height,
+	double tail) const {
 	glBegin(GL_TRIANGLE_STRIP);
-		glVertex2f(position_.x - width, position_.y + height);
-		glVertex2f(tail, position_.y);
-		glVertex2f(position_.x + width, position_.y);
-		glVertex2f(position_.x - width, position_.y - height);
+		glVertex2d(position_.x - width, position_.y + height);
+		glVertex2d(tail, position_.y);
+		glVertex2d(position_.x + width, position_.y);
+		glVertex2d(position_.x - width, position_.y - height);
 	glEnd();
 }
 
 // TODO: ASK IF THIS IS CORRECT LOGIC?
 
-void Ship::move(Movement movement, float dt) {
-	if (movement == Movement::MOVE_FORWARD) {
-		acceleration_ = Vector((float)cur_angle_) * (float)SHIP_ACCELERATION;
+void Ship::move(const Movement movement, double dt) {
+	if (movement == Movement::move_forward) {
+		acceleration_ = Vector(cur_angle_) * SHIP_ACCELERATION;
 	}
-	else if (movement == Movement::MOVE_BACKWARD) {
-		acceleration_ = -Vector((float)cur_angle_) * (float)SHIP_ACCELERATION;
+	else if (movement == Movement::move_backward) {
+		acceleration_ = -Vector(cur_angle_) * SHIP_ACCELERATION;
 	}
 
 	exhaust_.addParticle(position_, acceleration_);
-	//exhaust_.update(dt); // TODO: Get rid of this?
 }
 
 void Ship::drawExhaust() {
 	exhaust_.drawAll();
 }
 
-void Ship::rotate(Movement movement, float dt) {
-	if (movement == Movement::ROTATE_RIGHT) {
+void Ship::rotate(const Movement movement, const double dt) {
+	if (movement == Movement::rotate_right) {
 		cur_angle_ -= SHIP_TURN_RATE * dt;
 	}
-	else if (movement == Movement::ROTATE_LEFT) {
+	else if (movement == Movement::rotate_left) {
 		cur_angle_ += SHIP_TURN_RATE * dt;
 	}
 }
 
-void Ship::setAcceleration(Vector vec) {
+void Ship::setAcceleration(const Vector vec) {
 	acceleration_ = vec;
 }
 
-void Ship::update(float dt) {
-	Vector drag = -velocity_ * 0.5;
+void Ship::update(const double dt) {
+	const Vector drag = -velocity_ * 0.5;
 	velocity_ = velocity_ + (acceleration_ + drag) * dt;
 	position_ = position_ + velocity_ * dt;
 
@@ -100,20 +97,20 @@ void Ship::update(float dt) {
 	exhaust_.update(dt);
 }
 
-void Ship::setPosition(Point point) {
+void Ship::setPosition(const Point point) {
 	position_.x = point.x;
 	position_.y = point.y;
 }
 
-Vector Ship::getPosition() {
+Vector Ship::getPosition() const {
 	return position_;
 }
 
-float Ship::getCollisionRadius() {
+double Ship::getCollisionRadius() const  {
 	return radius_;
 }
 
-float Ship::getWarningRadius() {
+double Ship::getWarningRadius() const {
 	return warning_radius_;
 }
 
@@ -126,7 +123,7 @@ void Ship::reset() {
 	bulletStream_.clear();
 }
 
-void Ship::setRotation(float rotation) {
+void Ship::setRotation(const double rotation) {
 	cur_angle_ = rotation;
 }
 
@@ -134,12 +131,12 @@ BulletStream& Ship::getBulletStream() {
 	return bulletStream_;
 }
 
-void Ship::drawBullets(float dt) {
+void Ship::drawBullets(const float dt) {
 	bulletStream_.updateBullets(dt);
 	bulletStream_.drawAll();
 }
 
-void Ship::shootBullet(float dt) {
+void Ship::shootBullet(const float dt) {
 	// only shoot a bullet if we have elapsed the fire rate, then reset timer
 	if (bullet_timer_ >= fire_rate_) {
 		bulletStream_.addBullet(position_, cur_angle_, SHIP_WIDTH);

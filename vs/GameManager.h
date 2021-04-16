@@ -1,20 +1,17 @@
 #ifndef I3D_GLUTMANAGER_H
 #define I3D_GLUTMANAGER_H
 
-#include "GlutHeaders.h"
 #include "Ship.h"
-#include "Asteroid.h"
 #include "Arena.h"
 #include "Mouse.h"
 #include "Keyboard.h"
 #include "Window.h"
 #include "AsteroidField.h"
-#include <memory>
 
 class GameManager {
 public:
 	GameManager();
-	void startGameLoop();
+	static void startGameLoop();
 	void onReshape(int w, int h);
 
 	// Sets the keystate in the Keyboard object to True for the pressed key
@@ -60,8 +57,8 @@ private:
 	Ship ship_;
 	Arena arena_;
 	AsteroidField asteroid_field_;
-	float last_time_;
-	float dt_;
+	double last_time_;
+	double dt_;
 
 	bool playing;
 	bool game_over;

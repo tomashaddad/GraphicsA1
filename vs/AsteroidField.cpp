@@ -1,37 +1,33 @@
-#define _USE_MATH_DEFINES
+#include <corecrt_math_defines.h>
 #include <cmath>
 
 #include "AsteroidField.h"
 #include "Asteroid.h"
-#include "GlutHeaders.h"
 #include "AsteroidDefines.h"
 #include "Utility.h"
-#include "Point.h"
 
 #include <vector>
-#include <random>
-#include <iostream>
 
 AsteroidField::AsteroidField()
 	: asteroid_count_(1),
 	  radius_(0) {}
 
-AsteroidField::AsteroidField(float window_width, float window_height) {
+AsteroidField::AsteroidField(double window_width, double window_height) {
 	updateRadius(window_width, window_height);
 }
 
-void AsteroidField::updateRadius(float window_width, float window_height) {
-	radius_ = 0.5 * hypotf(window_width, window_height);
+void AsteroidField::updateRadius(double window_width, double window_height) {
+	radius_ = 0.5 * hypot(window_width, window_height);
 }
 
 void AsteroidField::launchAsteroidAtShip(Vector ship_position) {
-	float theta = Utility::getRandomFloatBetween(0, 360)* (float)M_PI / 180.0f;
+	double theta = Utility::getRandomDoubleBetween(0, 360) * M_PI / 180.0;
 
-	Vector position{ radius_ * cosf(theta), radius_ * sinf(theta) };
+	Vector position{ radius_ * cos(theta), radius_ * sin(theta) };
 
 	Vector velocity = ship_position - position;
 	velocity.normalise();
-	float scalar = Utility::getRandomFloatBetween(ASTEROID_MIN_SPEED, ASTEROID_MAX_SPEED);
+	double scalar = Utility::getRandomDoubleBetween(ASTEROID_MIN_SPEED, ASTEROID_MAX_SPEED);
 	velocity = velocity * scalar;
 
 	asteroids_.emplace_back(position, velocity, ASTEROID_RADIUS_DEVIATION, 30);
@@ -50,20 +46,20 @@ void AsteroidField::increaseAsteroidCountBy(int counter) {
 	asteroid_count_ += counter;
 }
 
-int AsteroidField::asteroidCount() {
+int AsteroidField::asteroidCount() const {
 	return asteroid_count_;
 }
 
-bool AsteroidField::isEmpty() {
-	return asteroids_.size() == 0;
+bool AsteroidField::isEmpty() const {
+	return asteroids_.empty();
 }
 
-void AsteroidField::updateAsteroids(float dt, float a_width, float a_height) {
+void AsteroidField::updateAsteroids(double dt, double a_width, double a_height) {
 	for (auto i = 0; i < asteroids_.size(); ++i) {
 		asteroids_[i].update(dt, a_width, a_height);
 
 		Vector a_pos = asteroids_[i].getPosition();
-		float dist_from_center = sqrtf(a_pos.x * a_pos.x + a_pos.y * a_pos.y);
+		double dist_from_center = sqrt(a_pos.x * a_pos.x + a_pos.y * a_pos.y);
 
 		if (dist_from_center > radius_ + 5 || asteroids_[i].markedForDeletion()) {
 			std::swap(asteroids_[i], asteroids_.back());

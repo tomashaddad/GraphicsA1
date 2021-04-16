@@ -1,13 +1,13 @@
 #include "GameManager.h"
+#include "GlutHeaders.h"
 #include "Enums.h"
 #include "Vector.h"
 #include "Text.h"
 
-#define _USE_MATH_DEFINES
-#include <math.h>
-#include <utility>
+#include <corecrt_math_defines.h>
+#include <cmath>
+
 #include <iostream>
-#include <string>
 
 GameManager::GameManager()
 	: dt_(0),
@@ -16,8 +16,8 @@ GameManager::GameManager()
 	  game_over(false)
 {
 	// diagonal of arena
-	float slope = win_.arena_height_ / win_.arena_width_;
-	ship_.setRotation(180.0 * (atanf(slope) / M_PI));
+	const double slope = win_.arena_height_ / win_.arena_width_;
+	ship_.setRotation(180.0 * (atan(slope) / M_PI));
 
 	// 1/3 in from the bottom left
 	ship_.setStartingPosition(-0.3 * win_.arena_width_, -0.3 * win_.arena_height_);
@@ -42,7 +42,7 @@ void GameManager::onDisplay() {
 		}
 		else {
 			Text::renderText("Game over! Press any key to play again ...",
-				win_.win_width_ / 2.0f, win_.win_height_ / 2.0f,
+				win_.win_width_ / 2.0, win_.win_height_ / 2.0,
 				win_.win_width_, win_.win_height_);
 		}
 
@@ -52,7 +52,7 @@ void GameManager::onDisplay() {
 	}
 	else {
 		Text::renderText("Press 'B' to begin!",
-			win_.win_width_ / 2.0f, win_.win_height_ / 2.0f,
+			win_.win_width_ / 2.0, win_.win_height_ / 2.0,
 			win_.win_width_, win_.win_height_);
 	}
 
@@ -63,11 +63,11 @@ void GameManager::onDisplay() {
 	glutSwapBuffers();
 }
 
-void GameManager::onReshape(int w, int h) {
+void GameManager::onReshape(const int w, const int h) {
 	win_.win_width_ = w;
 	win_.win_height_ = h;
 
-	GLfloat aspect_ratio = (GLfloat)w / (GLfloat)h;
+	const double aspect_ratio = static_cast<double>(w) / static_cast<double>(h);
 
 	if (w > h) {
 		win_.xmin_ = win_.plane_lim_ * -aspect_ratio;
@@ -90,15 +90,14 @@ void GameManager::onReshape(int w, int h) {
 	glViewport(0, 0, w, h);
 }
 
-void GameManager::onKeyDown(unsigned char key, int x, int y) {
+void GameManager::onKeyDown(const unsigned char key, int x, int y) {
 	keyboard_.setKeyState(key, true);
 }
 
-void GameManager::onKeyUp(unsigned char key, int x, int y) {
+void GameManager::onKeyUp(const unsigned char key, int x, int y) {
 	keyboard_.setKeyState(key, false);
 }
 
-// "Click-and-Drag demo" by Glenn G. Chappell
 void GameManager::onMouseClick(int button, int state, int x, int y) {
 	if (playing) {
 		switch (button) {
@@ -117,15 +116,20 @@ void GameManager::onMouseClick(int button, int state, int x, int y) {
 			else {
 				mouse_.setHoldingRightClick(false);
 			}
+			break;
+		default:
+			break;
 		}
 		glutPostRedisplay();
 	}
 }
 
-void GameManager::onMouseClickDrag(int x, int y)
+void GameManager::onMouseClickDrag(const int x, const int y)
 {
-	float xmouse = win_.xmin_ + (float(x) / win_.win_width_) * (win_.xmax_ - win_.xmin_);
-	float ymouse = win_.ymax_ + (float(y) / win_.win_height_) * (win_.ymin_ - win_.ymax_);
+	const double xmouse =
+		win_.xmin_ + static_cast<double>(x) / win_.win_width_ * (win_.xmax_ - win_.xmin_);
+	const double ymouse =
+		win_.ymax_ + static_cast<double>(y) / win_.win_height_ * (win_.ymin_ - win_.ymax_);
 	
 	mouse_.setMouseCoords(xmouse, ymouse);
 }
@@ -133,7 +137,7 @@ void GameManager::onMouseClickDrag(int x, int y)
 
 void GameManager::calculateTimeDelta() {
 	// gives delta time in seconds
-	float cur_time = glutGet(GLUT_ELAPSED_TIME) / 1000.0;
+	double cur_time = glutGet(GLUT_ELAPSED_TIME) / 1000.0;
 	dt_ = cur_time - last_time_;
 	last_time_ = cur_time;
 }
@@ -151,10 +155,10 @@ void GameManager::handleKeyboardInput() {
 	if (playing) {
 		// forward/backward (+ acceleration case)
 		if (keyboard_.getKeyState('w')) {
-			ship_.move(Movement::MOVE_FORWARD, dt_);
+			ship_.move(Movement::move_forward, dt_);
 		}
 		else if (keyboard_.getKeyState('s')) {
-			ship_.move(Movement::MOVE_BACKWARD, dt_);
+			ship_.move(Movement::move_backward, dt_);
 		}
 		else {
 			ship_.setAcceleration(Vector{ 0,0 });
@@ -162,10 +166,10 @@ void GameManager::handleKeyboardInput() {
 
 		// rotation
 		if (keyboard_.getKeyState('a')) {
-			ship_.rotate(Movement::ROTATE_LEFT, dt_);
+			ship_.rotate(Movement::rotate_left, dt_);
 		}
 		else if (keyboard_.getKeyState('d')) {
-			ship_.rotate(Movement::ROTATE_RIGHT, dt_);
+			ship_.rotate(Movement::rotate_right, dt_);
 		}
 
 		if (keyboard_.getKeyState(' ')) {
@@ -175,7 +179,6 @@ void GameManager::handleKeyboardInput() {
 
 	if (game_over) {
 		if (keyboard_.anyKeyIsPressed()) {
-			std::cout << "Here!" << std::endl;
 			resetGame();
 		}
 	}
@@ -199,18 +202,18 @@ void GameManager::handleMouseInput() {
 
 void GameManager::checkWallCollisions() {
 	if (playing) {
-		Vector ship_pos = ship_.getPosition();
-		float ship_warn_r = ship_.getWarningRadius();
-		float ship_coll_r = ship_.getCollisionRadius();
+		const Vector ship_pos = ship_.getPosition();
+		const double ship_warn_r = ship_.getWarningRadius();
+		const double ship_coll_r = ship_.getCollisionRadius();
 
 		for (auto i = 0; i < arena_.getWalls().size(); ++i) {
 		}
 		for (Wall& wall : arena_.getWalls()) {
 			if (wall.checkCollision(ship_pos, win_.arena_width_, win_.arena_height_, ship_warn_r)) {
-				wall.setColour(Colour::RED);
+				wall.setColour(Colour::red);
 			}
 			else {
-				wall.setColour(Colour::WHITE);
+				wall.setColour(Colour::white);
 			}
 
 			if (wall.checkCollision(ship_pos, win_.arena_width_, win_.arena_height_, ship_coll_r)) {
@@ -222,7 +225,7 @@ void GameManager::checkWallCollisions() {
 					&& wall.checkCollision(asteroid.getPosition(),
 										   win_.arena_width_, win_.arena_height_,
 										   asteroid.getCollisionRadius())) {
-					if (wall.getSide() == WallSide::BOTTOM || wall.getSide() == WallSide::TOP) {
+					if (wall.getSide() == WallSide::bottom || wall.getSide() == WallSide::top) {
 						asteroid.bounceInY(dt_);
 					}
 					else {
@@ -257,7 +260,7 @@ void GameManager::updateAsteroidFieldRadius() {
 void GameManager::checkAsteroidCollisions() {
 	if (playing) {
 		Vector ship_pos = ship_.getPosition();
-		float ship_collision_r = ship_.getCollisionRadius();
+		double ship_collision_r = ship_.getCollisionRadius();
 
 		for (Asteroid& a1 : asteroid_field_.getAsteroids()) {
 			// Check if any asteroid has collided with the ship
@@ -266,10 +269,10 @@ void GameManager::checkAsteroidCollisions() {
 			}
 
 			for (Asteroid& a2 : asteroid_field_.getAsteroids()) {
-				if (a1.getPosition() != a2.getPosition() && a1.isInArena() && a2.isInArena()) {
+				if (a1.getPosition() != a2.getPosition()) {
 					if (a1.checkCollision(a2.getPosition(), a2.getCollisionRadius())) {
 
-						float distance_between = a1.getPosition().getDistanceFrom(a2.getPosition());
+						double distance_between = a1.getPosition().getDistanceFrom(a2.getPosition());
 						distance_between = distance_between - a1.getCollisionRadius() - a2.getCollisionRadius();
 
 						Vector& a1p = a1.getPosition();
@@ -287,16 +290,16 @@ void GameManager::checkAsteroidCollisions() {
 						a1.setPosition(new_a1_position);
 						a2.setPosition(new_a2_position);
 
-						float v1n = un * a1v;
-						float v1t = ut * a1v;
-						float v2n = un * a2v;
-						float v2t = ut * a2v;
+						double v1n = un * a1v;
+						double v1t = ut * a1v;
+						double v2n = un * a2v;
+						double v2t = ut * a2v;
 
-						float a1m = a1.getSize();
-						float a2m = a2.getSize();
+						double a1m = a1.getSize();
+						double a2m = a2.getSize();
 
-						float new_v1n = (v1n * (a1m - a2m) + (2 * a2m) * v2n) / (a1m + a2m);
-						float new_v2n = (v2n * (a2m - a1m) + (2 * a1m) * v1n) / (a1m + a2m);
+						double new_v1n = (v1n * (a1m - a2m) + (2 * a2m) * v2n) / (a1m + a2m);
+						double new_v2n = (v2n * (a2m - a1m) + (2 * a1m) * v1n) / (a1m + a2m);
 
 						Vector new_a1_v = un * new_v1n + ut * v1t;
 						Vector new_a2_v = un * new_v2n + ut * v2t;

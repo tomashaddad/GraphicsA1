@@ -2,10 +2,9 @@
 #define I3D_TEXT_H
 
 #include <string>
-#include "Window.h"
 
 namespace Text {
-	void renderText(std::string text, int xpos, int ypos, int win_width, int win_height);
+	void renderText(std::string text, double xpos, double ypos, double win_width, double win_height);
 };
 
 #endif // I3D_TEXT_H

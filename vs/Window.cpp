@@ -1,6 +1,5 @@
 #include "Window.h"
 #include "WorldDefines.h"
-#include "GlutHeaders.h"
 
 Window::Window()
 	: plane_lim_(PLANE_LIM),
