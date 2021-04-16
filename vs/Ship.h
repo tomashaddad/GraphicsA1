@@ -6,11 +6,12 @@
 #include "Point.h"
 #include "Exhaust.h"
 #include "BulletStream.h"
+#include "BlackHole.h"
 
 class Ship {
 public:
-	Ship();
-	void drawSpaceShip();
+	Ship(BlackHole& black_hole);
+	void drawShip();
 
 	void setStartingPosition(double x, double y);
 
@@ -59,7 +60,8 @@ private:
 	double fire_rate_;
 
 	Exhaust exhaust_;
-	BulletStream bulletStream_;
+	BulletStream bullet_stream_;
+	BlackHole& black_hole_;
 };
 
 #endif // I3D_SHIP_H

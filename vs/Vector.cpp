@@ -46,7 +46,7 @@ double Vector::operator*(const Vector& rhs) const {
 }
 
 double Vector::getMagnitude() const {
-	return sqrtf(x * x + y * y);
+	return sqrt(x * x + y * y);
 }
 
 bool Vector::operator>(const Vector& rhs) const {

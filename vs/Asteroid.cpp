@@ -3,12 +3,14 @@
 #include "Point.h"
 #include "AsteroidDefines.h"
 #include "Utility.h"
+#include "BlackHole.h"
 
 #include <random>
 #include <corecrt_math_defines.h>
 #include <cmath>
 
-Asteroid::Asteroid(Vector position, Vector velocity, double deviation, int segments)
+Asteroid::Asteroid(Vector position, Vector velocity, double deviation,
+	int segments, BlackHole black_hole)
 	: position_(position),
 	  velocity_(velocity),
 	  angle_(0),
@@ -17,7 +19,8 @@ Asteroid::Asteroid(Vector position, Vector velocity, double deviation, int segme
 	  radius_deviation_(deviation),
 	  segments_(segments),
 	  in_arena_(false),
-	  to_delete_(false)
+	  to_delete_(false),
+	  black_hole_(black_hole)
 {
 	// Creates jagged edges
 	double x, y, theta;
@@ -55,8 +58,9 @@ Asteroid::Asteroid(Vector position, Vector velocity, double deviation, int segme
 }
 
 void Asteroid::update(const double dt, const double arena_xmax,
-	const double arena_ymax, const double field_radius)
-{
+	const double arena_ymax, const double field_radius) {
+	const Vector bh_pull = black_hole_.pull(position_, radius_);
+	velocity_ = velocity_ + (bh_pull) * dt;
 	position_ = position_ + velocity_ * dt;
 	angle_ += 180 * dt;
 
@@ -68,7 +72,8 @@ void Asteroid::update(const double dt, const double arena_xmax,
 		to_delete_ = true;
 	}
 
-	double dist_from_center = sqrt(position_.x* position_.x + position_.y * position_.y);
+	const double dist_from_center =
+		sqrt(position_.x * position_.x + position_.y * position_.y);
 
 	if (dist_from_center > field_radius + 5) {
 		to_delete_ = true;
@@ -78,19 +83,19 @@ void Asteroid::update(const double dt, const double arena_xmax,
 void Asteroid::drawAsteroid() const
 {
 	glPushMatrix();
-	glTranslated(position_.x, position_.y, 0);
+		glTranslated(position_.x, position_.y, 0);
 
-	glRotated(angle_ * rotation_dir_, 0, 0, 1);
-	glScaled(radius_, radius_, 0.0);
-	glTranslated(-position_.x, -position_.y, 0);
+		glRotated(angle_ * rotation_dir_, 0, 0, 1);
+		glScaled(radius_, radius_, 0.0);
+		glTranslated(-position_.x, -position_.y, 0);
 
-	glBegin(GL_LINE_LOOP);
-	glColor3f(1, 1, 1);
-	for (const Point& point : points_)
-	{
-		glVertex2d(position_.x + point.x, position_.y + point.y);
-	}
-	glEnd();
+		glBegin(GL_LINE_LOOP);
+			glColor3f(1, 1, 1);
+			for (const Point& point : points_)
+			{
+				glVertex2d(position_.x + point.x, position_.y + point.y);
+			}
+		glEnd();
 	glPopMatrix();
 }
 

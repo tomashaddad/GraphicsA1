@@ -3,15 +3,16 @@
 #include "ShipDefines.h"
 
 
-Ship::Ship()
+Ship::Ship(BlackHole& black_hole)
 	: width_(SHIP_WIDTH),
 	  height_(SHIP_HEIGHT),
-	  radius_(SHIP_COLLISION_RADIUS),
-	  warning_radius_(SHIP_WARNING_RADIUS),
 	  cur_angle_(0),
 	  init_angle_(0),
+	  radius_(SHIP_COLLISION_RADIUS),
+	  warning_radius_(SHIP_WARNING_RADIUS),
 	  bullet_timer_(0),
-	  fire_rate_(FIRE_RATE) {}
+	  fire_rate_(FIRE_RATE),
+	  black_hole_(black_hole) {}
 
 void Ship::setStartingPosition(double x, double y) {
 	position_.x = x;
@@ -20,7 +21,7 @@ void Ship::setStartingPosition(double x, double y) {
 	init_angle_ = cur_angle_;
 }
 
-void Ship::drawSpaceShip() {
+void Ship::drawShip() {
 	double half_width = width_ / 2.0;
 	double half_height = height_ / 2.0;
 	double tail = position_.x - 0.25 * width_;
@@ -87,7 +88,8 @@ void Ship::setAcceleration(const Vector vec) {
 
 void Ship::update(const double dt) {
 	const Vector drag = -velocity_ * 0.5;
-	velocity_ = velocity_ + (acceleration_ + drag) * dt;
+	const Vector bh_pull = black_hole_.pull(position_, width_);
+	velocity_ = velocity_ + (acceleration_ + drag + bh_pull) * dt;
 	position_ = position_ + velocity_ * dt;
 
 	if (bullet_timer_ < fire_rate_) {
@@ -120,7 +122,8 @@ void Ship::reset() {
 	position_ = starting_position_;
 	cur_angle_ = init_angle_;
 	exhaust_.clear();
-	bulletStream_.clear();
+	bullet_stream_.clear();
+	bullet_timer_ = 0;
 }
 
 void Ship::setRotation(const double rotation) {
@@ -128,18 +131,18 @@ void Ship::setRotation(const double rotation) {
 }
 
 BulletStream& Ship::getBulletStream() {
-	return bulletStream_;
+	return bullet_stream_;
 }
 
 void Ship::drawBullets(const double dt) {
-	bulletStream_.updateBullets(dt);
-	bulletStream_.drawAll();
+	bullet_stream_.updateBullets(dt);
+	bullet_stream_.drawAll();
 }
 
 void Ship::shootBullet(const double dt) {
 	// only shoot a bullet if we have elapsed the fire rate, then reset timer
 	if (bullet_timer_ >= fire_rate_) {
-		bulletStream_.addBullet(position_, cur_angle_, SHIP_WIDTH);
+		bullet_stream_.addBullet(position_, cur_angle_, SHIP_WIDTH);
 		bullet_timer_ = 0;
 	}
 }

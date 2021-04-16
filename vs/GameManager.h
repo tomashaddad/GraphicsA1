@@ -1,5 +1,5 @@
-#ifndef I3D_GLUTMANAGER_H
-#define I3D_GLUTMANAGER_H
+#ifndef I3D_GAMEMANAGER_H
+#define I3D_GAMEMANAGER_H
 
 #include "Ship.h"
 #include "Arena.h"
@@ -7,6 +7,7 @@
 #include "Keyboard.h"
 #include "Window.h"
 #include "AsteroidField.h"
+#include "BlackHole.h"
 
 class GameManager {
 public:
@@ -20,7 +21,6 @@ public:
 	// Sets the keystate in the Keyboard object to False for the pressed key
 	void onKeyUp(unsigned char key, int x, int y);
 
-	// 
 	void onMouseClick(int button, int state, int x, int y);
 	void onMouseClickDrag(int x, int y);
 	void onDisplay();
@@ -54,14 +54,16 @@ private:
 	Window win_;
 	Keyboard keyboard_;
 	Mouse mouse_;
+
+	BlackHole black_hole_;
 	Ship ship_;
 	Arena arena_;
 	AsteroidField asteroid_field_;
-	double last_time_;
+	
 	double dt_;
-
+	double last_time_;
 	bool playing;
 	bool game_over;
 };
 
-#endif // I3D_GLUTMANAGER_H
+#endif // I3D_GAMEMANAGER_H

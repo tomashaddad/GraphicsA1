@@ -181,6 +181,7 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="BulletDefines.h" />
     <ClInclude Include="BulletStream.h" />
+    <ClInclude Include="BlackHoleDefines.h" />
     <ClInclude Include="Exhaust.h" />
     <ClInclude Include="ExhaustDefines.h" />
     <ClInclude Include="ExhaustParticle.h" />

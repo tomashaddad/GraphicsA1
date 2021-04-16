@@ -155,6 +155,9 @@
     <ClInclude Include="BlackHole.h">
       <Filter>BlackHole</Filter>
     </ClInclude>
+    <ClInclude Include="BlackHoleDefines.h">
+      <Filter>Defines</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

@@ -4,10 +4,12 @@
 #include <vector>
 #include "Point.h"
 #include "Vector.h"
+#include "BlackHole.h"
 
 class Asteroid {
 public:
-	Asteroid(Vector position, Vector velocity, double deviation, int segments);
+	Asteroid(Vector position, Vector velocity, double deviation, int segments,
+		BlackHole black_hole);
 	
 	bool checkCollision(Vector position, double radius = 0) const;
 	void resolveCollisionWith(Asteroid& other);
@@ -49,6 +51,8 @@ private:
 	int health_;
 	bool in_arena_;
 	bool to_delete_;
+
+	BlackHole black_hole_;
 };
 
 #endif // I3D_ASTEROID_H

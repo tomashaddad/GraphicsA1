@@ -10,7 +10,9 @@
 #include <iostream>
 
 GameManager::GameManager()
-	: dt_(0),
+	: ship_(black_hole_),
+	  asteroid_field_(black_hole_),
+	  dt_(0),
 	  last_time_(0),
 	  playing(false),
 	  game_over(false)
@@ -19,7 +21,6 @@ GameManager::GameManager()
 	const double slope = win_.arena_height_ / win_.arena_width_;
 	ship_.setRotation(180.0 * (atan(slope) / M_PI));
 
-	// 1/3 in from the bottom left
 	ship_.setStartingPosition(-0.5 * win_.arena_width_, -0.5 * win_.arena_height_);
 }
 
@@ -35,10 +36,13 @@ void GameManager::onDisplay() {
 
 	if (playing) {
 		if (!game_over) {
-			ship_.drawSpaceShip();
+			ship_.drawShip();
 			ship_.drawExhaust();
 			ship_.drawBullets(dt_);
 			ship_.update(dt_);
+
+			black_hole_.draw();
+			black_hole_.update(dt_);
 		}
 		else {
 			Text::renderText("Game over! Press any key to play again ...",
@@ -243,7 +247,7 @@ void GameManager::updateAsteroids() {
 	if (playing) {
 		// Separate check to keep rendering Asteroids on death
 		if (!game_over) {
-			if (asteroid_field_.isEmpty()) {
+			if (asteroid_field_.isEmpty() || asteroid_field_.levellingUp()) {
 				asteroid_field_.launchAsteroidsAtShip(ship_.getPosition());
 				asteroid_field_.increaseAsteroidCountBy(1);
 			}
@@ -258,25 +262,25 @@ void GameManager::updateAsteroidFieldRadius() {
 }
 
 void GameManager::checkAsteroidCollisions() {
-	if (playing) {
-		Vector ship_pos = ship_.getPosition();
-		double ship_collision_r = ship_.getCollisionRadius();
+	//if (playing) {
+	//	Vector ship_pos = ship_.getPosition();
+	//	double ship_collision_r = ship_.getCollisionRadius();
 
-		for (Asteroid& a1 : asteroid_field_.getAsteroids()) {
-			// Check if any asteroid has collided with the ship
-			if (a1.checkCollision(ship_pos, ship_collision_r)) {
-				game_over = true;
-			}
+	//	for (Asteroid& a1 : asteroid_field_.getAsteroids()) {
+	//		// Check if any asteroid has collided with the ship
+	//		if (a1.checkCollision(ship_pos, ship_collision_r)) {
+	//			game_over = true;
+	//		}
 
-			for (Asteroid& a2 : asteroid_field_.getAsteroids()) {
-				if (a1.getPosition() != a2.getPosition()) {
-					if (a1.checkCollision(a2.getPosition(), a2.getRadius())) {
-						a1.resolveCollisionWith(a2);
-					}
-				}
-			}
-		}
-	}
+	//		for (Asteroid& a2 : asteroid_field_.getAsteroids()) {
+	//			if (a1.getPosition() != a2.getPosition()) {
+	//				if (a1.checkCollision(a2.getPosition(), a2.getRadius())) {
+	//					a1.resolveCollisionWith(a2);
+	//				}
+	//			}
+	//		}
+	//	}
+	//}
 }
 
 void GameManager::checkBulletCollisions() {
@@ -285,8 +289,8 @@ void GameManager::checkBulletCollisions() {
 		std::vector<Asteroid>& asteroids = asteroid_field_.getAsteroids();
 
 		for (Bullet& bullet : ship_.getBulletStream().getBullets()) {
-			bool marked = false;
-			Vector b_position = bullet.getPosition();
+			bool marked = false; // if bullet is marked to delete, skip loops
+			const Vector b_position = bullet.getPosition();
 
 			for (auto i = 0; i < walls.size() && !marked; ++i) {
 				if (walls[i].checkCollision(b_position, win_.arena_width_, win_.arena_height_)) {
@@ -309,5 +313,7 @@ void GameManager::checkBulletCollisions() {
 void GameManager::resetGame() {
 	ship_.reset();
 	asteroid_field_.reset();
+	black_hole_.reset();
+
 	game_over = false;
 }
