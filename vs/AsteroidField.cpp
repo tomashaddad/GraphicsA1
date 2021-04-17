@@ -47,11 +47,15 @@ std::vector<Asteroid>& AsteroidField::getAsteroids() {
 void AsteroidField::reset() {
 	asteroids_.clear();
 	asteroid_count_ = 1;
-	timer_ = 0;
+	resetTimer();
 }
 
 void AsteroidField::increaseAsteroidCountBy(int counter) {
 	asteroid_count_ += counter;
+}
+
+void AsteroidField::resetTimer() {
+	timer_ = 0;
 }
 
 int AsteroidField::asteroidCount() const {
@@ -83,6 +87,6 @@ void AsteroidField::update(double dt, double arena_xmax, double arena_ymax) {
 	
 	if (timer_ >= time_between_levels_) {
 		levelling_up_ = true;
-		timer_ = 0;
+		resetTimer();
 	}
 }

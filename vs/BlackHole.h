@@ -12,7 +12,8 @@ public:
 	Vector pull(Vector other_position, double dt) const;
 
 	void reset();
-	// Will never spawn a black hole in the quadrant of the ship
+	
+	// Will never spawn a black hole in the lower left quadrant
 	void randomisePosition(double arena_width, double arena_height);
 
 	void setPosition(Vector position);

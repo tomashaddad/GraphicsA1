@@ -17,8 +17,7 @@ double Vector::getAngle() const {
 	return atan2(y, x) * 180.0 / M_PI;
 }
 
-Vector& Vector::operator=(const Vector& rhs)
-{
+Vector& Vector::operator=(const Vector& rhs) {
 	x = rhs.x;
 	y = rhs.y;
 	return *this;

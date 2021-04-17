@@ -16,9 +16,9 @@ void Bullet::update(double dt) {
 }
 
 void Bullet::draw() const {
-	glPointSize(5);
+	glPointSize(BULLET_SIZE);
 	glBegin(GL_POINTS);
-		glColor3f(1, 1, 1);
+		glColor3f(BULLET_R, BULLET_G, BULLET_B);
 		glVertex2d(position_.x, position_.y);
 	glEnd();
 }

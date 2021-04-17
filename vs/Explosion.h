@@ -8,11 +8,20 @@
 class Explosion {
 public:
 	Explosion();
+
+	// Populates the explosion vector with new explosion particles at the
+	// position the asteroid died
 	void populate(Vector position);
+
+	// Updates all explosion particles and deletes them if they have reduced
+	// to a size of 0
 	void update(double dt);
+
+	// Draws all explosion particles
 	void drawAll();
+	
 	bool isEmpty() const;
-	void clear();
+	void reset();
 
 	std::vector<ExplosionParticle>& getExplosions();
 

@@ -51,6 +51,6 @@ bool Explosion::isEmpty() const {
 	return explosions_.empty();
 }
 
-void Explosion::clear() {
+void Explosion::reset() {
 	explosions_.clear();
 }

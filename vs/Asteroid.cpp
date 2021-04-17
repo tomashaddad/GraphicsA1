@@ -51,12 +51,14 @@ Asteroid::Asteroid(Vector position, Vector velocity, double deviation,
 
 	// Returns either 1 or -1 to determine asteroid rotation direction
 	std::random_device engine;
-	std::discrete_distribution<int> int_dist{1, 2};
+	const std::discrete_distribution<int> int_dist{1, 2};
 	rotation_dir_ = int_dist(engine) % 2 == 0 ? 1 : -1;
 }
 
 void Asteroid::update(const double dt, const double arena_xmax,
 	const double arena_ymax, const double field_radius) {
+	// Update the Asteroid's position based on its current velocity and the
+	// position of the black hole
 	const Vector bh_pull = black_hole_.pull(position_, dt);
 	velocity_ = velocity_ + bh_pull * ASTEROID_BH_MULT;
 	position_ = position_ + velocity_ * dt;
@@ -66,13 +68,14 @@ void Asteroid::update(const double dt, const double arena_xmax,
 		in_arena_ = checkIfInArena(arena_xmax, arena_ymax);
 	}
 
+	// Mark for deletion if the asteroid's health has fallen to 0
 	if (health_ <= 0) {
 		to_delete_ = true;
 	}
 
+	// Mark for deletion if it has left the arena
 	const double dist_from_center =
 		sqrt(position_.x * position_.x + position_.y * position_.y);
-
 	if (dist_from_center > field_radius + 5) {
 		to_delete_ = true;
 	}
@@ -86,8 +89,8 @@ void Asteroid::draw() const {
 		glScaled(radius_, radius_, 0.0);
 		glTranslated(-position_.x, -position_.y, 0);
 
-		glBegin(GL_LINE_LOOP);
-			glColor3f(1, 1, 1);
+		glBegin(GL_TRIANGLE_FAN);
+			glColor3f(ASTEROID_R, ASTEROID_G, ASTEROID_B);
 			for (const Point& point : points_) {
 				glVertex2d(position_.x + point.x, position_.y + point.y);
 			}
@@ -159,21 +162,18 @@ bool Asteroid::checkIfInArena(double ax, double ay) const {
 	return false;
 }
 
+// move the asteroid slightly away from the walls before changing the velocity
+// so they don't get stuck on the wall
 void Asteroid::bounceInX(double dt) {
-	// move the asteroid slightly away from the wall before changing
-	// the velocity so they don't get stuck on the wall
 	position_.x = position_.x < 0 ? position_.x + 0.01 : position_.x - 0.01;
 	velocity_.x = -velocity_.x;
 }
 
 void Asteroid::bounceInY(double dt) {
-	// move the asteroid slightly away from the wall before changing
-	// the velocity so they don't get stuck on the wall
 	position_.y = position_.y > 0 ? position_.y - 0.01 : position_.y + 0.01;
 	velocity_.y = -velocity_.y;
 }
 
-// Maps a range of Asteroid sizes to a health range of [1, 5]
 double Asteroid::mapHealth(double radius, double min_size, double max_size) {
 	const double old_range = max_size - min_size;
 	const double new_range = ASTEROID_MAX_HEALTH - ASTEROID_MIN_HEALTH;

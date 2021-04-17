@@ -12,27 +12,25 @@ class Ship {
 public:
 	Ship(BlackHole& black_hole);
 	void drawShip();
-
-	void setStartingPosition(double x, double y);
-
+	void drawExhaust();
+	
 	void move(Movement movement, double dt);
 	void rotate(Movement movement, double dt);
-	void setPosition(Point point);
-	void update(double dt);
-	void reset();
-
-	void drawExhaust();
-
-	Vector getPosition() const;
-	void setRotation(double rotation);
-
-	double getCollisionRadius() const;
-	double getWarningRadius() const;
-
-	void setAcceleration(Vector vec);
 
 	void shootBullet(double dt);
 	void drawBullets(double dt);
+
+	void update(double dt);
+	void reset();
+
+	// Getters and setters
+	void setStartingPosition(double x, double y);
+	Vector getPosition() const;
+	void setPosition(Point point);
+	void setRotation(double rotation);
+	double getCollisionRadius() const;
+	double getWarningRadius() const;
+	void setAcceleration(Vector vec);
 	BulletStream& getBulletStream();
 
 private:

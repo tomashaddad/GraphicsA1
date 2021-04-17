@@ -9,18 +9,19 @@ class AsteroidField {
 public:
 	AsteroidField(BlackHole& blackHole);
 
+	// Launches a number of asteroids at the ship based on the wave number
 	void launchAsteroidsAtShip(Vector ship_position);
+	
 	void updateRadius(double window_width, double window_height);
-
+	void update(double dt, double arena_xmax, double arena_ymax);
 	void increaseAsteroidCountBy(int counter);
+	void resetTimer();
+	void reset();
+
+	// Getters and setters
 	int asteroidCount() const;
 	bool isEmpty() const;
 	bool levellingUp() const;
-
-	void update(double dt, double arena_xmax, double arena_ymax);
-
-	void reset();
-
 	std::vector<Asteroid>& getAsteroids();
 
 private:

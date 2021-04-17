@@ -1,6 +1,9 @@
 #ifndef I3D_STATE_H
 #define I3D_STATE_H
 
+// Apparently convention is to have lowercase enums to not get confused with
+// hash defines!
+
 enum class Movement {
 	move_forward,
 	move_backward,

@@ -29,7 +29,7 @@ void Wall::drawWall() const {
 		glColor3f(1, 1, 1);
 	}
 
-		glBegin(GL_LINES);
+	glBegin(GL_LINES);
 		glVertex2d(p1.x, p1.y);
 		glVertex2d(p2.x, p2.y);
 	glEnd();

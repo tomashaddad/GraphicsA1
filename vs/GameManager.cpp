@@ -144,6 +144,7 @@ void GameManager::onMouseClick(int button, int state, int x, int y) {
 	}
 }
 
+// Converts between window and world coordinates for moving the ship with mouse
 void GameManager::onMouseClickDrag(const int x, const int y)
 {
 	const double xmouse =
@@ -213,12 +214,12 @@ void GameManager::handleMouseInput() {
 		ship_.shootBullet(dt_);
 	}
 	
-	// allows ship to be moved by click-drag
-	if (playing_) {
-		if (mouse_.isHoldingRightClick()) {
-			ship_.setPosition(mouse_.getMouseCoords());
-		}
-	}
+	// allows ship to be moved by click-drag if you need to, Tony!
+	//if (playing_) {
+	//	if (mouse_.isHoldingRightClick()) {
+	//		ship_.setPosition(mouse_.getMouseCoords());
+	//	}
+	//}
 }
 
 void GameManager::checkWallCollisions() {
@@ -228,7 +229,8 @@ void GameManager::checkWallCollisions() {
 		const double ship_coll_r = ship_.getCollisionRadius();
 
 		for (Wall& wall : arena_.getWalls()) {
-			// Checking if the ship's warning radius has crossed the arena wall
+			// SHIP->WALL COLLISION ///////////////
+			// Warning
 			if (wall.checkCollision(ship_pos, win_.arena_width_,
 				win_.arena_height_, ship_warn_r)) {
 				wall.setColour(Colour::red);
@@ -236,13 +238,13 @@ void GameManager::checkWallCollisions() {
 				wall.setColour(Colour::white);
 			}
 
-			// Checking if the ship's collision radius has hit the arena wall
+			// Collision
 			if (wall.checkCollision(ship_pos, win_.arena_width_,
 				win_.arena_height_, ship_coll_r)) {
 				game_over_ = true;
 			}
-
-			// Bouncing asteroids on walls
+			
+			// ASTEROID->WALL COLLISION ///////////////
 			for (Asteroid& asteroid : asteroid_field_.getAsteroids()) {
 				if (asteroid.isInArena()
 					&& wall.checkCollision(asteroid.getPosition(),
@@ -265,6 +267,10 @@ void GameManager::updateAsteroids() {
 		// Separate check to keep rendering Asteroids on death
 		if (!game_over_) {
 			if (asteroid_field_.isEmpty() || asteroid_field_.levellingUp()) {
+				// Reset timer to prevent two waves spawning back to back
+				if (asteroid_field_.isEmpty()) {
+					asteroid_field_.resetTimer();
+				}
 				asteroid_field_.launchAsteroidsAtShip(ship_.getPosition());
 				asteroid_field_.increaseAsteroidCountBy(1);
 			}
@@ -287,10 +293,13 @@ void GameManager::checkAsteroidCollisions() {
 			const Vector a1_pos = a1.getPosition();
 			const double a1_radius = a1.getRadius();
 
+			
+			// SHIP->ASTEROID COLLISION ///////////////
 			if (Utility::checkCollision(a1_pos, ship_pos, a1_radius, ship_collision_r)) {
 				game_over_ = true;
 			}
-			
+
+			// ASTEROID->ASTEROID COLLISION ///////////////
 			for (Asteroid& a2 : asteroid_field_.getAsteroids()) {
 				const Vector a2_pos = a2.getPosition();
 				const double a2_radius = a2.getRadius();
@@ -313,6 +322,7 @@ void GameManager::checkBulletCollisions() {
 			bool marked = false; // if bullet is marked to delete, skip loops
 			const Vector b_position = bullet->getPosition();
 
+			// BULLET->WALL COLLISION ///////////////
 			for (auto i = 0; i < walls.size() && !marked; ++i) {
 				if (walls[i].checkCollision(b_position, win_.arena_width_, win_.arena_height_)) {
 					bullet->markForDeletion();
@@ -320,6 +330,7 @@ void GameManager::checkBulletCollisions() {
 				}
 			}
 
+			// BULLET->ASTEROID COLLISION ///////////////
 			for (auto i = 0; i < asteroids.size() && !marked; ++i) {
 				if (Utility::checkCollision(asteroids[i].getPosition(), b_position, asteroids[i].getRadius()))
 				{
@@ -338,11 +349,13 @@ void GameManager::checkBulletCollisions() {
 
 void GameManager::checkBlackHoleCollisions() {
 	if (playing_) {
+		// SHIP->HOLE COLLISION ///////////////
 		if (Utility::checkCollision(ship_.getPosition(), black_hole_.getPosition(),
 			ship_.getCollisionRadius(), black_hole_.getRadius())) {
 			game_over_ = true;
 		}
 
+		// ASTEROID->HOLE COLLISION ///////////////
 		for (Asteroid& asteroid : asteroid_field_.getAsteroids()) {
 			if (Utility::checkCollision(asteroid.getPosition(), black_hole_.getPosition(),
 				asteroid.getRadius(), black_hole_.getRadius())) {
@@ -351,6 +364,7 @@ void GameManager::checkBlackHoleCollisions() {
 			}
 		}
 
+		// BULLET->HOLE COLLISION ///////////////
 		for (std::unique_ptr<Bullet>& bullet : ship_.getBulletStream().getBullets()) {
 			if (Utility::checkCollision(black_hole_.getPosition(), bullet->getPosition(),
 				black_hole_.getRadius())) {
@@ -364,7 +378,7 @@ void GameManager::resetGame() {
 	arena_.reset();
 	ship_.reset();
 	asteroid_field_.reset();
-	explosions_.clear();
+	explosions_.reset();
 	black_hole_.reset();
 	black_hole_.randomisePosition(win_.arena_width_, win_.arena_height_);
 	game_over_ = false;

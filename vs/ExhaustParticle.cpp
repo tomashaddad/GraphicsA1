@@ -38,6 +38,6 @@ void ExhaustParticle::draw() const {
 	} else {
 		glColor3f(1.0, 0.0, 0.0);
 	}
-	glVertex2f(position_.x, position_.y);
+	glVertex2d(position_.x, position_.y);
 	glEnd();
 }

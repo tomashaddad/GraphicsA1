@@ -9,18 +9,20 @@ Exhaust::Exhaust()
 
 void Exhaust::addParticle(Vector position, Vector ship_acceleration) {
 	// Enforces max number of particles and time between dropping each
+	const int offset = 5;
 	if (exhaust_.size() < max_size_ && exhaust_timer_ >= drop_rate_) {
 		ship_acceleration.normalise();
 
 		ship_acceleration = -ship_acceleration;
 
-		position.x = position.x + 5 * ship_acceleration.x;
-		position.y = position.y + 5 * ship_acceleration.y;
+		position.x = position.x + offset * ship_acceleration.x;
+		position.y = position.y + offset * ship_acceleration.y;
 
-		double spread = 1.87;
-
-		position.x += Utility::getRandomDoubleBetween(-spread, spread);
-		position.y += Utility::getRandomDoubleBetween(-spread, spread);
+		position.x +=
+			Utility::getRandomDoubleBetween(-EXHAUST_SPREAD, EXHAUST_SPREAD);
+		position.y +=
+			Utility::getRandomDoubleBetween(-EXHAUST_SPREAD, EXHAUST_SPREAD);
+		
 		exhaust_.emplace_back(position);
 		exhaust_timer_ = 0;
 	}
