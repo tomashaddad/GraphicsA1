@@ -162,6 +162,8 @@
     <ClCompile Include="BulletStream.cpp" />
     <ClCompile Include="Exhaust.cpp" />
     <ClCompile Include="ExhaustParticle.cpp" />
+    <ClCompile Include="Explosion.cpp" />
+    <ClCompile Include="ExplosionParticle.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="main.cpp" />
@@ -175,16 +177,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Arena.h" />
-    <ClInclude Include="AsteroidDefines.h" />
+    <ClInclude Include="AsteroidConstants.h" />
     <ClInclude Include="AsteroidField.h" />
     <ClInclude Include="BlackHole.h" />
     <ClInclude Include="Bullet.h" />
-    <ClInclude Include="BulletDefines.h" />
+    <ClInclude Include="BulletConstants.h" />
     <ClInclude Include="BulletStream.h" />
-    <ClInclude Include="BlackHoleDefines.h" />
+    <ClInclude Include="BlackHoleConstants.h" />
     <ClInclude Include="Exhaust.h" />
-    <ClInclude Include="ExhaustDefines.h" />
+    <ClInclude Include="ExhaustConstants.h" />
     <ClInclude Include="ExhaustParticle.h" />
+    <ClInclude Include="Explosion.h" />
+    <ClInclude Include="ExplosionConstants.h" />
+    <ClInclude Include="ExplosionParticle.h" />
     <ClInclude Include="GlutHeaders.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Asteroid.h" />
@@ -192,14 +197,14 @@
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Enums.h" />
-    <ClInclude Include="ShipDefines.h" />
+    <ClInclude Include="ShipConstants.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="Utility.h" />
     <ClInclude Include="Vector.h" />
     <ClInclude Include="Ship.h" />
     <ClInclude Include="Wall.h" />
     <ClInclude Include="Window.h" />
-    <ClInclude Include="WorldDefines.h" />
+    <ClInclude Include="WorldConstants.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

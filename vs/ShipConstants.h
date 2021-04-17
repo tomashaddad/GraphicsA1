@@ -1,5 +1,5 @@
-#ifndef I3D_SHIPDEFINES_H
-#define I3D_SHIPDEFINES_H
+#ifndef I3D_SHIPCONSTANTS_H
+#define I3D_SHIPCONSTANTS_H
 
 // Ship parameters
 #define  SHIP_FILL_RGB 1, 0, 0
@@ -17,4 +17,6 @@ constexpr double SHIP_WARNING_RADIUS = 15;
 constexpr double SHIP_COLLISION_RADIUS = 1;
 constexpr double FIRE_RATE = 0.2; // seconds per bullet
 
-#endif // I3D_SHIPDEFINES_H
+constexpr double SHIP_BH_MULT = 1; // makes ship more susceptible to black hole
+
+#endif // I3D_SHIPCONSTANTS_H

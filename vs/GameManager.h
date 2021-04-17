@@ -8,6 +8,7 @@
 #include "Window.h"
 #include "AsteroidField.h"
 #include "BlackHole.h"
+#include "Explosion.h"
 
 class GameManager {
 public:
@@ -47,6 +48,8 @@ public:
 	// Handles bullet->asteroid and bullet->wall collisions
 	void checkBulletCollisions();
 
+	void checkBlackHoleCollisions();
+	
 	// Clears all asteroids, resets the ship position
 	void resetGame();
 
@@ -59,11 +62,13 @@ private:
 	Ship ship_;
 	Arena arena_;
 	AsteroidField asteroid_field_;
+	Explosion explosions_;
 	
 	double dt_;
 	double last_time_;
-	bool playing;
-	bool game_over;
+	
+	bool playing_;
+	bool game_over_;
 };
 
 #endif // I3D_GAMEMANAGER_H

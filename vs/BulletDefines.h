@@ -1,6 +1,0 @@
-#ifndef I3D_BULLETDEFINES_H
-#define I3D_BULLETDEFINES_H
-
-constexpr auto BULLET_SPEED = 100;
-
-#endif // I3D_BULLETDEFINES_H

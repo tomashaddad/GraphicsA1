@@ -1,6 +1,6 @@
 #include "GlutHeaders.h"
 #include "Ship.h"
-#include "ShipDefines.h"
+#include "ShipConstants.h"
 
 
 Ship::Ship(BlackHole& black_hole)
@@ -12,7 +12,8 @@ Ship::Ship(BlackHole& black_hole)
 	  warning_radius_(SHIP_WARNING_RADIUS),
 	  bullet_timer_(0),
 	  fire_rate_(FIRE_RATE),
-	  black_hole_(black_hole) {}
+	  black_hole_(black_hole),
+	  bullet_stream_(black_hole) {}
 
 void Ship::setStartingPosition(double x, double y) {
 	position_.x = x;
@@ -56,8 +57,6 @@ void Ship::traceVertices(const double width, const double height,
 	glEnd();
 }
 
-// TODO: ASK IF THIS IS CORRECT LOGIC?
-
 void Ship::move(const Movement movement, double dt) {
 	if (movement == Movement::move_forward) {
 		acceleration_ = Vector(cur_angle_) * SHIP_ACCELERATION;
@@ -88,8 +87,9 @@ void Ship::setAcceleration(const Vector vec) {
 
 void Ship::update(const double dt) {
 	const Vector drag = -velocity_ * 0.5;
-	const Vector bh_pull = black_hole_.pull(position_, width_);
-	velocity_ = velocity_ + (acceleration_ + drag + bh_pull) * dt;
+	const Vector pull = black_hole_.pull(position_, dt);
+	velocity_ = velocity_ + (acceleration_ + drag) * dt;
+	velocity_ = velocity_ + pull * SHIP_BH_MULT;
 	position_ = position_ + velocity_ * dt;
 
 	if (bullet_timer_ < fire_rate_) {

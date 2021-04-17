@@ -10,23 +10,26 @@
     <Filter Include="World">
       <UniqueIdentifier>{5248a449-04aa-410a-9d87-7fbd8ac270be}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Bullets">
-      <UniqueIdentifier>{5a42fa42-8294-4c21-80df-86bd8a0f2057}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Hardware">
       <UniqueIdentifier>{4a6a170c-c0a5-41fc-bd93-c59587d9b9b8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Utility">
       <UniqueIdentifier>{0da5bce9-e76c-4494-a2dc-f24f9fe7ba42}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Exhaust">
-      <UniqueIdentifier>{fced7366-0345-4ae4-abe2-59edcd251df0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Ship">
       <UniqueIdentifier>{0268605b-4404-43ee-a38c-adabc3f10fb8}</UniqueIdentifier>
     </Filter>
     <Filter Include="BlackHole">
       <UniqueIdentifier>{a28fc590-ab4f-4e65-98db-9c90cb945ea6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ship\Bullets">
+      <UniqueIdentifier>{5a42fa42-8294-4c21-80df-86bd8a0f2057}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ship\Exhaust">
+      <UniqueIdentifier>{fced7366-0345-4ae4-abe2-59edcd251df0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asteroids\Explosion">
+      <UniqueIdentifier>{17b41991-1d47-42c2-9b2c-d5ca10739c7b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -45,10 +48,10 @@
       <Filter>World</Filter>
     </ClCompile>
     <ClCompile Include="Bullet.cpp">
-      <Filter>Bullets</Filter>
+      <Filter>Ship\Bullets</Filter>
     </ClCompile>
     <ClCompile Include="BulletStream.cpp">
-      <Filter>Bullets</Filter>
+      <Filter>Ship\Bullets</Filter>
     </ClCompile>
     <ClCompile Include="Keyboard.cpp">
       <Filter>Hardware</Filter>
@@ -66,10 +69,10 @@
       <Filter>World</Filter>
     </ClCompile>
     <ClCompile Include="Exhaust.cpp">
-      <Filter>Exhaust</Filter>
+      <Filter>Ship\Exhaust</Filter>
     </ClCompile>
     <ClCompile Include="ExhaustParticle.cpp">
-      <Filter>Exhaust</Filter>
+      <Filter>Ship\Exhaust</Filter>
     </ClCompile>
     <ClCompile Include="Ship.cpp">
       <Filter>Ship</Filter>
@@ -80,22 +83,28 @@
     <ClCompile Include="BlackHole.cpp">
       <Filter>BlackHole</Filter>
     </ClCompile>
+    <ClCompile Include="Explosion.cpp">
+      <Filter>Asteroids\Explosion</Filter>
+    </ClCompile>
+    <ClCompile Include="ExplosionParticle.cpp">
+      <Filter>Asteroids\Explosion</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameManager.h" />
-    <ClInclude Include="ShipDefines.h">
+    <ClInclude Include="ShipConstants.h">
       <Filter>Defines</Filter>
     </ClInclude>
-    <ClInclude Include="AsteroidDefines.h">
+    <ClInclude Include="AsteroidConstants.h">
       <Filter>Defines</Filter>
     </ClInclude>
-    <ClInclude Include="WorldDefines.h">
+    <ClInclude Include="WorldConstants.h">
       <Filter>Defines</Filter>
     </ClInclude>
-    <ClInclude Include="BulletDefines.h">
+    <ClInclude Include="BulletConstants.h">
       <Filter>Defines</Filter>
     </ClInclude>
-    <ClInclude Include="ExhaustDefines.h">
+    <ClInclude Include="ExhaustConstants.h">
       <Filter>Defines</Filter>
     </ClInclude>
     <ClInclude Include="Asteroid.h">
@@ -111,10 +120,10 @@
       <Filter>World</Filter>
     </ClInclude>
     <ClInclude Include="Bullet.h">
-      <Filter>Bullets</Filter>
+      <Filter>Ship\Bullets</Filter>
     </ClInclude>
     <ClInclude Include="BulletStream.h">
-      <Filter>Bullets</Filter>
+      <Filter>Ship\Bullets</Filter>
     </ClInclude>
     <ClInclude Include="Keyboard.h">
       <Filter>Hardware</Filter>
@@ -135,10 +144,10 @@
       <Filter>World</Filter>
     </ClInclude>
     <ClInclude Include="Exhaust.h">
-      <Filter>Exhaust</Filter>
+      <Filter>Ship\Exhaust</Filter>
     </ClInclude>
     <ClInclude Include="ExhaustParticle.h">
-      <Filter>Exhaust</Filter>
+      <Filter>Ship\Exhaust</Filter>
     </ClInclude>
     <ClInclude Include="Ship.h">
       <Filter>Ship</Filter>
@@ -155,8 +164,17 @@
     <ClInclude Include="BlackHole.h">
       <Filter>BlackHole</Filter>
     </ClInclude>
-    <ClInclude Include="BlackHoleDefines.h">
+    <ClInclude Include="BlackHoleConstants.h">
       <Filter>Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="Explosion.h">
+      <Filter>Asteroids\Explosion</Filter>
+    </ClInclude>
+    <ClInclude Include="ExplosionConstants.h">
+      <Filter>Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="ExplosionParticle.h">
+      <Filter>Asteroids\Explosion</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

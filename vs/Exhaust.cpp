@@ -1,11 +1,11 @@
 #include "Exhaust.h"
 #include "Vector.h"
 #include "Utility.h"
-#include "ExhaustDefines.h"
+#include "ExhaustConstants.h"
 
 Exhaust::Exhaust()
-	: drop_rate_(EXHAUST_DROP_RATE),
-	  max_size_(MAX_EXHAUST_PARTICLES) {}
+	:  max_size_(EXHAUST_MAX), 
+	   drop_rate_(EXHAUST_DROP_RATE) {}
 
 void Exhaust::addParticle(Vector position, Vector ship_acceleration) {
 	// Enforces max number of particles and time between dropping each
@@ -30,8 +30,7 @@ void Exhaust::update(double dt) {
 	for (auto i = 0; i < exhaust_.size(); ++i) {
 		exhaust_[i].update(dt);
 		
-		// Check for <1 so that glPointSize() is never given a negative number 
-		if (exhaust_[i].size() < 1) {
+		if (exhaust_[i].size() == 0) {
 			std::swap(exhaust_[i], exhaust_.back());
 			exhaust_.pop_back();
 		}

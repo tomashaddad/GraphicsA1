@@ -1,7 +1,7 @@
 #include "Asteroid.h"
 #include "GlutHeaders.h"
 #include "Point.h"
-#include "AsteroidDefines.h"
+#include "AsteroidConstants.h"
 #include "Utility.h"
 #include "BlackHole.h"
 
@@ -10,7 +10,7 @@
 #include <cmath>
 
 Asteroid::Asteroid(Vector position, Vector velocity, double deviation,
-	int segments, BlackHole black_hole)
+	int segments, BlackHole blackhole)
 	: position_(position),
 	  velocity_(velocity),
 	  angle_(0),
@@ -20,13 +20,11 @@ Asteroid::Asteroid(Vector position, Vector velocity, double deviation,
 	  segments_(segments),
 	  in_arena_(false),
 	  to_delete_(false),
-	  black_hole_(black_hole)
-{
+	  black_hole_(blackhole) {
 	// Creates jagged edges
 	double x, y, theta;
 	double radius;
-	for (int i = 0; i < segments_; ++i)
-	{
+	for (int i = 0; i < segments_; ++i) {
 		radius =
 			Utility::getRandomDoubleBetween(radius_ - radius_deviation_,
 			                               radius_ + radius_deviation_);
@@ -59,8 +57,8 @@ Asteroid::Asteroid(Vector position, Vector velocity, double deviation,
 
 void Asteroid::update(const double dt, const double arena_xmax,
 	const double arena_ymax, const double field_radius) {
-	const Vector bh_pull = black_hole_.pull(position_, radius_);
-	velocity_ = velocity_ + (bh_pull) * dt;
+	const Vector bh_pull = black_hole_.pull(position_, dt);
+	velocity_ = velocity_ + bh_pull * ASTEROID_BH_MULT;
 	position_ = position_ + velocity_ * dt;
 	angle_ += 180 * dt;
 
@@ -80,8 +78,7 @@ void Asteroid::update(const double dt, const double arena_xmax,
 	}
 }
 
-void Asteroid::drawAsteroid() const
-{
+void Asteroid::draw() const {
 	glPushMatrix();
 		glTranslated(position_.x, position_.y, 0);
 
@@ -91,19 +88,11 @@ void Asteroid::drawAsteroid() const
 
 		glBegin(GL_LINE_LOOP);
 			glColor3f(1, 1, 1);
-			for (const Point& point : points_)
-			{
+			for (const Point& point : points_) {
 				glVertex2d(position_.x + point.x, position_.y + point.y);
 			}
 		glEnd();
 	glPopMatrix();
-}
-
-bool Asteroid::checkCollision(const Vector position, const double radius) const
-{
-	const double distance_between =
-		abs(pow(position.x - position_.x, 2) + pow(position.y - position_.y, 2));
-	return distance_between <= (radius + radius_) * (radius + radius_);
 }
 
 void Asteroid::resolveCollisionWith(Asteroid& other) {
@@ -144,48 +133,40 @@ void Asteroid::resolveCollisionWith(Asteroid& other) {
 	other.setVelocity(new_a2_v);
 }
 
-double Asteroid::getRadius() const
-{
+double Asteroid::getRadius() const {
 	return radius_;
 }
 
-Vector& Asteroid::getPosition()
-{
+Vector& Asteroid::getPosition() {
 	return position_;
 }
 
-Vector& Asteroid::getVelocity()
-{
+Vector& Asteroid::getVelocity() {
 	return velocity_;
 }
 
-bool Asteroid::isInArena() const
-{
+bool Asteroid::isInArena() const {
 	return in_arena_;
 }
 
-bool Asteroid::checkIfInArena(double ax, double ay) const
-{
+bool Asteroid::checkIfInArena(double ax, double ay) const {
 	if (position_.x - radius_ > -ax
 		&& position_.x + radius_ < ax
 		&& position_.y - radius_ > -ay
-		&& position_.y + radius_ < ay)
-	{
+		&& position_.y + radius_ < ay) {
 		return true;
 	}
 	return false;
 }
 
-void Asteroid::bounceInX(double dt)
-{
+void Asteroid::bounceInX(double dt) {
 	// move the asteroid slightly away from the wall before changing
 	// the velocity so they don't get stuck on the wall
 	position_.x = position_.x < 0 ? position_.x + 0.01 : position_.x - 0.01;
 	velocity_.x = -velocity_.x;
 }
 
-void Asteroid::bounceInY(double dt)
-{
+void Asteroid::bounceInY(double dt) {
 	// move the asteroid slightly away from the wall before changing
 	// the velocity so they don't get stuck on the wall
 	position_.y = position_.y > 0 ? position_.y - 0.01 : position_.y + 0.01;
@@ -193,35 +174,38 @@ void Asteroid::bounceInY(double dt)
 }
 
 // Maps a range of Asteroid sizes to a health range of [1, 5]
-double Asteroid::mapHealth(double radius, double min_size, double max_size)
-{
+double Asteroid::mapHealth(double radius, double min_size, double max_size) {
 	const double old_range = max_size - min_size;
 	const double new_range = ASTEROID_MAX_HEALTH - ASTEROID_MIN_HEALTH;
 	return (radius - min_size) * new_range / old_range + ASTEROID_MIN_HEALTH;
 }
 
-void Asteroid::decrementHealthBy(int num)
-{
+void Asteroid::decrementHealthBy(int num) {
 	health_ -= num;
 }
 
-bool Asteroid::markedForDeletion() const
+void Asteroid::markForDeletion()
 {
+	to_delete_ = true;
+}
+
+bool Asteroid::markedForDeletion() const {
 	return to_delete_;
 }
 
-double Asteroid::getSize() const
-{
+double Asteroid::getSize() const {
 	return size_;
 }
 
 
-void Asteroid::setVelocity(Vector v)
-{
+void Asteroid::setVelocity(Vector v) {
 	velocity_ = v;
 }
 
-void Asteroid::setPosition(Vector v)
-{
+void Asteroid::setPosition(Vector v) {
 	position_ = v;
+}
+
+int Asteroid::health() const {
+	return health_;
 }

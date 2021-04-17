@@ -8,6 +8,7 @@ void Text::renderText(std::string text, double xpos, double ypos, double win_wid
 	const double width = glutBitmapLength(GLUT_BITMAP_TIMES_ROMAN_24,
 		(const unsigned char*)text.c_str());
 
+	glDisable(GL_DEPTH_TEST);
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
 	glLoadIdentity();

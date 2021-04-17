@@ -8,3 +8,9 @@ double Utility::getRandomDoubleBetween(double a, double b) {
 		std::uniform_real_distribution<double>{ a, b };
 	return real_dist(engine);
 }
+
+bool Utility::checkCollision(const Vector p1, const Vector p2, const double r1, const double r2) {
+	const double distance_between =
+		abs(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2));
+	return distance_between <= (r1 + r2) * (r1 + r2);
+}

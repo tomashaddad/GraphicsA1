@@ -3,18 +3,18 @@
 
 #include "AsteroidField.h"
 #include "Asteroid.h"
-#include "AsteroidDefines.h"
+#include "AsteroidConstants.h"
 #include "Utility.h"
 
 #include <vector>
 
-AsteroidField::AsteroidField(BlackHole& black_hole)
+AsteroidField::AsteroidField(BlackHole& blackhole)
 	: asteroid_count_(1),
 	  radius_(0),
 	  timer_(0),
 	  time_between_levels_(TIME_BETWEEN_WAVES),
 	  levelling_up_(false),
-	  black_hole_(black_hole) {}
+	  blackhole_(blackhole) {}
 
 void AsteroidField::updateRadius(const double window_width,
 	const double window_height) {
@@ -35,7 +35,7 @@ void AsteroidField::launchAsteroidsAtShip(Vector ship_position) {
 		velocity = velocity * scalar;
 
 		asteroids_.emplace_back(position, velocity,
-			ASTEROID_RADIUS_DEVIATION, ASTEROID_SEGMENTS, black_hole_);
+			ASTEROID_RADIUS_DEVIATION, ASTEROID_SEGMENTS, blackhole_);
 	}
 	levelling_up_ = false;
 }

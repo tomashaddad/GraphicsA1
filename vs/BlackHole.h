@@ -9,11 +9,15 @@ public:
 	void draw() const;
 	void update(double dt);
 	
-	Vector pull(Vector other_position, double other_mass) const;
+	Vector pull(Vector other_position, double dt) const;
 
 	void reset();
+	// Will never spawn a black hole in the quadrant of the ship
+	void randomisePosition(double arena_width, double arena_height);
 
+	void setPosition(Vector position);
 	Vector getPosition() const;
+	double getRadius() const;
 
 private:
 	double timer_;

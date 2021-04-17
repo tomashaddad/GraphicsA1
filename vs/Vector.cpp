@@ -58,10 +58,9 @@ bool Vector::operator!=(const Vector& rhs) const
 	return x != rhs.x && y != rhs.y;
 }
 
-void Vector::normalise() {
+Vector Vector::normalise() {
 	const double magnitude = sqrt(x*x + y*y);
-	x /= magnitude;
-	y /= magnitude;
+	return Vector(x /= magnitude, y /= magnitude);
 }
 
 double Vector::getDistanceFrom(Vector v) const {

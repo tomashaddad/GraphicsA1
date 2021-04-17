@@ -40,7 +40,7 @@ int main(int argc, char** argv)
 	glutDisplayFunc(display_callback);
 	glutIdleFunc(idle_callback);
 
-	glutFullScreen();
+	//glutFullScreen();
 
 	glutIgnoreKeyRepeat(GLUT_KEY_REPEAT_OFF);
 	game->startGameLoop();
@@ -81,5 +81,6 @@ void idle_callback() {
 	game->updateAsteroids();
 	game->checkAsteroidCollisions();
 	game->checkBulletCollisions();
+	game->checkBlackHoleCollisions();
 	glutPostRedisplay();
 }

@@ -5,13 +5,13 @@
 #include "Point.h"
 #include "Vector.h"
 #include "BlackHole.h"
+#include "Explosion.h"
 
 class Asteroid {
 public:
 	Asteroid(Vector position, Vector velocity, double deviation, int segments,
-		BlackHole black_hole);
+		BlackHole blackhole);
 	
-	bool checkCollision(Vector position, double radius = 0) const;
 	void resolveCollisionWith(Asteroid& other);
 	double getRadius() const;
 	Vector& getPosition();
@@ -19,7 +19,7 @@ public:
 	Vector& getVelocity();
 	void setVelocity(Vector v);
 	void update(double dt, double arena_xmax, double arena_ymax, double field_radius);
-	void drawAsteroid() const;
+	void draw() const;
 	bool isInArena() const;
 
 	void bounceInX(double dt);
@@ -27,9 +27,11 @@ public:
 
 	void decrementHealthBy(int num);
 
+	void markForDeletion();
 	bool markedForDeletion() const;
 
 	double getSize() const;
+	int health() const;
 
 private:
 	bool checkIfInArena(double ax, double ay) const;
@@ -39,6 +41,7 @@ private:
 
 	Vector position_;
 	Vector velocity_;
+	Vector acceleration_;
 	double angle_;
 	double rotation_speed_;
 	int rotation_dir_;
@@ -52,6 +55,7 @@ private:
 	bool in_arena_;
 	bool to_delete_;
 
+	Explosion explosion_;
 	BlackHole black_hole_;
 };
 

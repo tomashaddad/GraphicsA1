@@ -1,5 +1,5 @@
 #include "Window.h"
-#include "WorldDefines.h"
+#include "WorldConstants.h"
 
 Window::Window()
 	: plane_lim_(PLANE_LIM),

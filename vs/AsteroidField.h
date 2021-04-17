@@ -29,7 +29,7 @@ private:
 	double timer_;
 	double time_between_levels_;
 	bool levelling_up_;
-	BlackHole black_hole_;
+	BlackHole& blackhole_;
 	std::vector<Asteroid> asteroids_;
 };
 

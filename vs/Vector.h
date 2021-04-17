@@ -14,7 +14,7 @@ public:
 
 	double getDistanceFrom(Vector v) const;
 
-	void normalise();
+	Vector normalise();
 
 	Vector& operator=(const Vector& rhs);
 	Vector operator*(double scalar) const;
