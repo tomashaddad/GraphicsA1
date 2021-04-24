@@ -25,14 +25,14 @@ void Ship::setStartingPosition(double x, double y) {
 void Ship::drawShip() {
 	double half_width = width_ / 2.0;
 	double half_height = height_ / 2.0;
-	double tail = position_.x - 0.25 * width_;
+	double tail = -0.25 * width_;
 
 	// Isolate ship
 	glPushMatrix();
 		// Handle rotations
 		glTranslated(position_.x, position_.y, 0);
 		glRotatef(cur_angle_, 0, 0, 1);
-		glTranslated(-position_.x, -position_.y, 0);
+		//glTranslated(-position_.x, -position_.y, 0);
 
 		// Draw outline
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -50,10 +50,10 @@ void Ship::drawShip() {
 void Ship::traceVertices(const double width, const double height,
 	double tail) const {
 	glBegin(GL_TRIANGLE_STRIP);
-		glVertex2d(position_.x - width, position_.y + height);
-		glVertex2d(tail, position_.y);
-		glVertex2d(position_.x + width, position_.y);
-		glVertex2d(position_.x - width, position_.y - height);
+		glVertex2d(-width, height);
+		glVertex2d(tail, 0);
+		glVertex2d(width, 0);
+		glVertex2d(-width, -height);
 	glEnd();
 }
 
